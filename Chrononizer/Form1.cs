@@ -7,9 +7,9 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using NAudio.Wave;
-
-using BigMansStuff.NAudio.FLAC;
+//using NAudio.Wave;
+using Luminescence.Xiph;
+//using BigMansStuff.NAudio.FLAC;
 
 namespace Chrononizer
 {
@@ -211,11 +211,34 @@ namespace Chrononizer
             return num;
         }
 
+        private void button1_Click(object sender, EventArgs e)
+        {
+            Luminescence.Xiph.FlacTagger flacTagTest = new FlacTagger("E:\\PinkiePieSwear\\Test\\TestBadFile2.flac");
+
+            int bitDepth = flacTagTest.BitsPerSample; //this gets the file's bit depth
+            int bitRate = flacTagTest.SampleRate; //this gets the file's bit rate
+            button1.Text = bitRate.ToString();
+
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+
+        }
+
         /// <summary>
         /// The Code below is for testing and learning.
         /// It ultimately serves no purpose.
         /// </summary>
 
+
+
+
+
+
+
+
+        /*
         private NAudio.Wave.WaveFileReader waveFile = null;
         private NAudio.Wave.DirectSoundOut output = null;
         private BigMansStuff.NAudio.FLAC.FLACFileReader flacFile = null;
@@ -260,21 +283,23 @@ namespace Chrononizer
 
             flacFile = new BigMansStuff.NAudio.FLAC.FLACFileReader(open.FileName);
 
-            /*
-            OpenFileDialog open = new OpenFileDialog();
-            open.Filter = "Wave File (*.wav)|*.wav;";
-            if (open.ShowDialog() != DialogResult.OK) return;
+            
+            //OpenFileDialog open = new OpenFileDialog();
+            //open.Filter = "Wave File (*.wav)|*.wav;";
+            //if (open.ShowDialog() != DialogResult.OK) return;
 
-            waveFile = new NAudio.Wave.WaveFileReader(open.FileName);
-            output = new NAudio.Wave.DirectSoundOut();
-            output.Init(new NAudio.Wave.WaveChannel32(wave));
-            output.Play();
-            */
+            //waveFile = new NAudio.Wave.WaveFileReader(open.FileName);
+            //output = new NAudio.Wave.DirectSoundOut();
+            //output.Init(new NAudio.Wave.WaveChannel32(wave));
+            //output.Play();
+            
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
 
         }
+         * 
+         * */
     }
 }
