@@ -46,7 +46,8 @@ namespace Chrononizer
             double dSize = 0;
             long dFlac = 0;
             double allSize = 0;
-            double s1 = GetDirectorySize("E:\\Music\\", 0, ref flac, ref mp3, ref wma, ref m4a, ref ogg, ref wav, ref xm, ref mod, ref nsf, ref dSize, ref dFlac);
+            double s1 = GetDirectorySize("E:\\Music\\", 0, ref flac, ref mp3, ref wma, ref m4a, ref ogg, ref wav, ref xm, ref mod, ref nsf);
+            dSize = GetDownscaledSize("E:\\Music\\.downscaled", dSize, ref dFlac); //recurse through the downscaled files
             label1.Text = "Library: " + BytesToSize(s1); //display the size
             label2.Text = "FLAC: " + flac.ToString() + " files"; //display the number of flac songs
             label3.Text = "MP3: " + mp3.ToString() + " files"; //display the number of mp3 songs
@@ -127,7 +128,7 @@ namespace Chrononizer
             return s;
         }
 
-        private double GetDirectorySize(string root, double num, ref long flac, ref long mp3, ref long wma, ref long m4a, ref long ogg, ref long wav, ref long xm, ref long mod, ref long nsf, ref double dSize, ref long dFlac)
+        private double GetDirectorySize(string root, double num, ref long flac, ref long mp3, ref long wma, ref long m4a, ref long ogg, ref long wav, ref long xm, ref long mod, ref long nsf)
         {
             string[] files = Directory.GetFiles(root, "*.*"); //get array of all file names
             string[] folders = Directory.GetDirectories(root); //get array of all folder names for this directory
@@ -144,7 +145,18 @@ namespace Chrononizer
                     Luminescence.Xiph.FlacTagger flacTag = new FlacTagger(name); //get the flac's tag
                     if (flacTag.BitsPerSample > 16 || flacTag.SampleRate > 48000)
                     {
-                        listBox1.Items.Add(name); //if it does not meet the minimum requirements, it needs to be downscaled
+                        string musicLibrary = "E:\\Music\\";
+                        string downscaledLibrary = "E:\\Music\\.downscaled\\";
+                        string downscaledFile = downscaledLibrary + name.Substring(musicLibrary.Length);
+                        if (File.Exists(downscaledFile))
+                        {
+                            flacTag = new FlacTagger(downscaledFile);
+                            if (flacTag.BitsPerSample > 16 || flacTag.SampleRate > 48000)
+                            {
+                                listBox1.Items.Add(name); //if it does not meet the minimum requirements, it needs to be downscaled
+                            }
+                        }
+                        else listBox1.Items.Add(name); //no downscaled file exists
                     }
                     flacTag = null; //make sure it is not accessed again
                 }
@@ -183,32 +195,47 @@ namespace Chrononizer
             }
             foreach (string name in folders)
             {
-                if (Path.GetFullPath(name) == "E:\\Music\\.downscaled")
-                {
-                    dSize = GetDownscaledSize(name, dSize, ref dFlac); //recurse through the downscaled files
-                    continue;
-                }
-                num = GetDirectorySize(name, num, ref flac, ref mp3, ref wma, ref m4a, ref ogg, ref wav, ref xm, ref mod, ref nsf, ref dSize, ref dFlac); //recurse through the folders
+                if (Path.GetFullPath(name) == "E:\\Music\\.downscaled") continue; //don't scan through the downscaled files yet
+                num = GetDirectorySize(name, num, ref flac, ref mp3, ref wma, ref m4a, ref ogg, ref wav, ref xm, ref mod, ref nsf); //recurse through the folders
             }
-
             return num;
         }
 
-        static double GetDownscaledSize(string root, double num, ref long flac)
+        private double GetDownscaledSize(string root, double num, ref long flac)
         {
             string[] files = Directory.GetFiles(root, "*.*"); //get array of all file names
             string[] folders = Directory.GetDirectories(root); //get array of all folder names for this directory
+            if (!Directory.EnumerateFileSystemEntries(root).Any())
+            {
+                Directory.Delete(root); //delete empty folders
+                return num;
+            }
 
             foreach (string name in files)
             {
                 FileInfo info = new FileInfo(name); //read in the file
                 String ext = Path.GetExtension(name); //get the file's extension
-                num += info.Length; //get the length
                 //increment count based upon file type and extension type
                 if (ext == ".flac")
                 {
-                    flac++;
+                    string musicLibrary = "E:\\Music\\";
+                    string downscaledLibrary = "E:\\Music\\.downscaled\\";
+                    string defaultFile = musicLibrary + name.Substring(downscaledLibrary.Length);
+                    Luminescence.Xiph.FlacTagger flacTag = new FlacTagger(name); //get the flac's tag
+                    if (!File.Exists(defaultFile) || flacTag.BitsPerSample > 16 || flacTag.SampleRate > 48000) File.Delete(name); //downscaled flac not necessary
+                    else
+                    {
+                        flacTag = new FlacTagger(defaultFile);
+                        if (flacTag.BitsPerSample > 16 || flacTag.SampleRate > 48000)
+                        {
+                            num += info.Length; //add to the size
+                            flac++; //flac is ok to use
+                        }
+                        else File.Delete(name); //flac did not need downscaling
+                    }
+                    flacTag = null;
                 }
+                else File.Delete(name);
             }
             foreach (string name in folders)
             {
