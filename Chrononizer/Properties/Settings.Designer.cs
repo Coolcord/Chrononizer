@@ -25,7 +25,7 @@ namespace Chrononizer.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("E:\\Music\\")]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string MusicLibrary {
             get {
                 return ((string)(this["MusicLibrary"]));
@@ -37,7 +37,7 @@ namespace Chrononizer.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("E:\\Music\\.downscaled\\")]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string DownscaledLibrary {
             get {
                 return ((string)(this["DownscaledLibrary"]));

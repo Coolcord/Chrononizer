@@ -8,8 +8,9 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-//using NAudio.Wave;
+using System.Security.Principal;
 using Luminescence.Xiph;
+//using NAudio.Wave;
 //using BigMansStuff.NAudio.FLAC;
 
 namespace Chrononizer
@@ -18,8 +19,9 @@ namespace Chrononizer
     {
         private string MusicLibrary = " ";
         private string DownscaledLibrary = " ";
+        Boolean AutoHandle = true;
         Boolean Modify = true;
-        Boolean ShowFiles = true;
+        Boolean ShowFiles = false;
 
         public Form1()
         {
@@ -45,9 +47,14 @@ namespace Chrononizer
                 //first time launching application
                 Properties.Settings.Default.FirstBoot = false;
 
+                //attempt to find the music library
+                string drive = Environment.GetFolderPath(Environment.SpecialFolder.System);
+                drive = drive.Substring(0, 1); //get drive letter
+                string username = WindowsIdentity.GetCurrent().Name.Split('\\')[1]; //get username from login
+                
                 //load default settings
-                textBox1.Text = Properties.Settings.Default.MusicLibrary;
-                textBox2.Text = Properties.Settings.Default.DownscaledLibrary;
+                textBox1.Text = drive + ":\\Users\\" + username + "\\Music\\";
+                textBox2.Text = drive + ":\\Users\\" + username + "\\Music\\.downscaled\\";
                 checkBox1.Checked = Properties.Settings.Default.RemoveFiles;
                 checkBox2.Checked = Properties.Settings.Default.AutoHandle;
                 checkBox3.Checked = Properties.Settings.Default.ShowFiles;
@@ -58,6 +65,7 @@ namespace Chrononizer
             //store the values
             MusicLibrary = textBox1.Text;
             DownscaledLibrary = textBox2.Text;
+            AutoHandle = checkBox2.Checked;
             Modify = checkBox1.Checked;
             ShowFiles = checkBox3.Checked;
         }
@@ -82,6 +90,7 @@ namespace Chrononizer
             long dFlac = 0;
             double allSize = 0;
             dSize = GetDownscaledSize(DownscaledLibrary, dSize, ref dFlac); //recurse through the downscaled files
+            if (AutoHandle) File.SetAttributes(DownscaledLibrary, FileAttributes.Hidden | FileAttributes.System);
             double s1 = GetDirectorySize(MusicLibrary, 0, ref flac, ref mp3, ref wma, ref m4a, ref ogg, ref wav, ref xm, ref mod, ref nsf);
             label1.Text = "Library: " + BytesToSize(s1); //display the size
             label2.Text = "FLAC: " + Plural(flac, "file"); //display the number of flac songs
@@ -142,7 +151,8 @@ namespace Chrononizer
             switch (type)
             {
                 case 0:
-                    s += " bytes";
+                    if (num == 1) s += " byte";
+                    else s += " bytes";
                     break;
                 case 1:
                     s += " KB";
@@ -241,7 +251,7 @@ namespace Chrononizer
         {
             if (!Directory.Exists(root))
             {
-                Directory.CreateDirectory(root); //create the directory if it doesn't exist
+                if (AutoHandle) Directory.CreateDirectory(root); //create the directory if it doesn't exist
                 return num;
             }
             string[] files = Directory.GetFiles(root, "*.*"); //get array of all file names
@@ -390,6 +400,7 @@ namespace Chrononizer
                 button5.Enabled = true;
                 checkBox1.Enabled = true;
             }
+            AutoHandle = checkBox2.Checked;
             Properties.Settings.Default.AutoHandle = checkBox2.Checked;
             Properties.Settings.Default.Save();
         }
