@@ -126,7 +126,7 @@ namespace Chrononizer
             return s;
         }
 
-        static double GetDirectorySize(string root, double num, ref long flac, ref long mp3, ref long wma, ref long m4a, ref long ogg, ref long wav, ref long xm, ref long mod, ref long nsf, ref double dSize, ref long dFlac)
+        private double GetDirectorySize(string root, double num, ref long flac, ref long mp3, ref long wma, ref long m4a, ref long ogg, ref long wav, ref long xm, ref long mod, ref long nsf, ref double dSize, ref long dFlac)
         {
             string[] files = Directory.GetFiles(root, "*.*"); //get array of all file names
             string[] folders = Directory.GetDirectories(root); //get array of all folder names for this directory
@@ -140,6 +140,12 @@ namespace Chrononizer
                 if (ext == ".flac")
                 {
                     flac++;
+                    Luminescence.Xiph.FlacTagger flacTag = new FlacTagger(name); //get the flac's tag
+                    if (flacTag.BitsPerSample > 16 || flacTag.SampleRate > 48000)
+                    {
+                        listBox1.Items.Add(name); //if it does not meet the minimum requirements, it needs to be downscaled
+                    }
+                    flacTag = null; //make sure it is not accessed again
                 }
                 else if (ext == ".mp3")
                 {
@@ -213,7 +219,7 @@ namespace Chrononizer
 
         private void button1_Click(object sender, EventArgs e)
         {
-            Luminescence.Xiph.FlacTagger flacTagTest = new FlacTagger("E:\\PinkiePieSwear\\Test\\TestBadFile2.flac");
+            Luminescence.Xiph.FlacTagger flacTagTest = new FlacTagger("E:\\PinkiePieSwear\\Test\\TestBadFile1.flac");
 
             int bitDepth = flacTagTest.BitsPerSample; //this gets the file's bit depth
             int bitRate = flacTagTest.SampleRate; //this gets the file's bit rate

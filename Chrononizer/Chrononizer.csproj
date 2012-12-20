@@ -55,12 +55,6 @@
     <Reference Include="Luminescence.Xiph">
       <HintPath>lib\Luminescence.Xiph.dll</HintPath>
     </Reference>
-    <Reference Include="NAudio">
-      <HintPath>lib\NAudio.dll</HintPath>
-    </Reference>
-    <Reference Include="NAudioFLAC">
-      <HintPath>lib\NAudioFLAC.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
