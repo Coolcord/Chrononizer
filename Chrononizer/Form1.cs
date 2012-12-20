@@ -25,6 +25,21 @@ namespace Chrononizer
         {
             Form form1 = this;
             form1.FormBorderStyle = FormBorderStyle.FixedDialog;
+
+            if (!Properties.Settings.Default.FirstBoot)
+            {
+                //load saved settings
+                textBox1.Text = Properties.Settings.Default.MusicLibrary;
+                textBox2.Text = Properties.Settings.Default.DownscaledLibrary;
+                checkBox1.Checked = Properties.Settings.Default.RemoveFiles;
+                checkBox2.Checked = Properties.Settings.Default.AutoHandle;
+            }
+            else
+            {
+                //first time launching application
+                Properties.Settings.Default.FirstBoot = false;
+                Properties.Settings.Default.Save();
+            }
         }
 
         private void CheckSize_Click(object sender, EventArgs e)
@@ -268,6 +283,79 @@ namespace Chrononizer
                 return;
             }
             Process.Start("explorer.exe", @"/select, " + file); //open windows explorer and selected the file
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            OpenFolderDialog(1);
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            OpenFolderDialog(2);
+        }
+
+        private void textBox1_Click(object sender, EventArgs e)
+        {
+            OpenFolderDialog(1);
+        }
+
+        private void textBox2_Click(object sender, EventArgs e)
+        {
+            OpenFolderDialog(2);
+        }
+
+        private void OpenFolderDialog(int TextBox)
+        {
+            FolderBrowserDialog open = new FolderBrowserDialog();
+            if (open.ShowDialog() != DialogResult.OK) return;
+            //set the path accordingly
+            if (TextBox == 1)
+            {
+                textBox1.Text = open.SelectedPath + "\\";
+                if (checkBox2.Checked) textBox2.Text = textBox1.Text + ".downscaled\\";
+            }
+            else if (TextBox == 2) textBox2.Text = open.SelectedPath + "\\";
+        }
+
+        private void checkBox2_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBox2.Checked)
+            {
+                label22.Enabled = false;
+                textBox2.Enabled = false;
+                button5.Enabled = false;
+                checkBox1.Enabled = false;
+                checkBox1.Checked = true;
+                textBox2.Text = textBox1.Text + ".downscaled\\";
+            }
+            else
+            {
+                label22.Enabled = true;
+                textBox2.Enabled = true;
+                button5.Enabled = true;
+                checkBox1.Enabled = true;
+            }
+            Properties.Settings.Default.AutoHandle = checkBox2.Checked;
+            Properties.Settings.Default.Save();
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.MusicLibrary = textBox1.Text;
+            Properties.Settings.Default.Save();
+        }
+
+        private void textBox2_TextChanged(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.DownscaledLibrary = textBox2.Text;
+            Properties.Settings.Default.Save();
+        }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.RemoveFiles = checkBox1.Checked;
+            Properties.Settings.Default.Save();
         }
 
         /// <summary>
