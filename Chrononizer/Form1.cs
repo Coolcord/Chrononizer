@@ -80,23 +80,23 @@ namespace Chrononizer
             dSize = GetDownscaledSize(DownscaledLibrary, dSize, ref dFlac); //recurse through the downscaled files
             double s1 = GetDirectorySize(MusicLibrary, 0, ref flac, ref mp3, ref wma, ref m4a, ref ogg, ref wav, ref xm, ref mod, ref nsf);
             label1.Text = "Library: " + BytesToSize(s1); //display the size
-            label2.Text = "FLAC: " + flac.ToString() + " files"; //display the number of flac songs
-            label3.Text = "MP3: " + mp3.ToString() + " files"; //display the number of mp3 songs
-            label4.Text = "WMA: " + wma.ToString() + " files"; //display the number of wma songs
-            label5.Text = "M4A: " + m4a.ToString() + " files"; //display the number of m4a songs
-            label6.Text = "OGG: " + ogg.ToString() + " files"; //display the number of ogg songs
-            label7.Text = "WAV: " + wav.ToString() + " files"; //display the number of wav songs
-            label8.Text = "XM: " + xm.ToString() + " files"; //display the number of xm songs
-            label9.Text = "MOD: " + mod.ToString() + " files"; //display the number of mod songs
-            label10.Text = "NSF: " + nsf.ToString() + " files"; //display the number of nsf songs
+            label2.Text = "FLAC: " + Plural(flac, "file"); //display the number of flac songs
+            label3.Text = "MP3: " + Plural(mp3, "file"); //display the number of mp3 songs
+            label4.Text = "WMA: " + Plural(wma, "file"); //display the number of wma songs
+            label5.Text = "M4A: " + Plural(m4a, "file"); //display the number of m4a songs
+            label6.Text = "OGG: " + Plural(ogg, "file"); //display the number of ogg songs
+            label7.Text = "WAV: " + Plural(wav, "file"); //display the number of wav songs
+            label8.Text = "XM: " + Plural(xm, "file"); //display the number of xm songs
+            label9.Text = "MOD: " + Plural(mod, "file"); //display the number of mod songs
+            label10.Text = "NSF: " + Plural(nsf, "file"); //display the number of nsf songs
             audioTotal = flac + mp3 + wma + m4a + ogg + wav;
             chiptunesTotal = xm + mod + nsf;
             total = audioTotal + chiptunesTotal;
-            label11.Text = "Library: " + audioTotal.ToString() + " songs";
-            label12.Text = "Chiptunes: " + chiptunesTotal.ToString() + " songs";
-            label13.Text = "Total (without downscaled): " + total.ToString() + " songs";
+            label11.Text = "Library: " + Plural(audioTotal,  "song");
+            label12.Text = "Chiptunes: " + Plural(chiptunesTotal, "song");
+            label13.Text = "Total (without downscaled): " + Plural(total, "song");
             label15.Text = "Downscaled: " + BytesToSize(dSize);
-            label16.Text = "Downscaled: " + dFlac.ToString() + " files";
+            label16.Text = "Downscaled: " + Plural(dFlac, "file");
             allSize = s1 + dSize;
             label18.Text = "Total: " + BytesToSize(allSize);
             if (listBox1.Items.Count == 0)
@@ -104,6 +104,20 @@ namespace Chrononizer
                 listBox1.Items.Add("No files need downscaling!");
             }
             CheckSize.Text = "Rescan Library";
+        }
+
+        static string Plural(long value, string units)
+        {
+            string plural = " ";
+            if (value == 1)
+            {
+                plural = value.ToString() + " " + units; //only one object
+            }
+            else
+            {
+                plural = value.ToString() + " " + units + "s"; //add an s if plural
+            }
+            return plural;
         }
 
         static string BytesToSize(double num)
