@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.Security.Principal;
+using System.Media;
 using Luminescence.Xiph;
 //using NAudio.Wave;
 //using BigMansStuff.NAudio.FLAC;
@@ -326,12 +327,20 @@ namespace Chrononizer
 
         private void button1_Click(object sender, EventArgs e)
         {
-
+            System.Media.SoundPlayer aSoundPlayer = new System.Media.SoundPlayer(Chrononizer.Properties.Resources.Chronoboost);
+            aSoundPlayer.Play();  //Plays the sound in a new thread
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
+            System.Media.SoundPlayer aSoundPlayer = new System.Media.SoundPlayer(Chrononizer.Properties.Resources.Chronoboost);
+            aSoundPlayer.Play();  //Plays the sound in a new thread
+        }
 
+        private void button3_Click(object sender, EventArgs e)
+        {
+            System.Media.SoundPlayer aSoundPlayer = new System.Media.SoundPlayer(Chrononizer.Properties.Resources.Chronoboost);
+            aSoundPlayer.Play();  //Plays the sound in a new thread
         }
 
         private void listBox1_DoubleClick(object sender, EventArgs e)

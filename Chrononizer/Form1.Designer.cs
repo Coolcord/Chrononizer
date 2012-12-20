@@ -112,6 +112,7 @@
             this.button3.TabIndex = 2;
             this.button3.Text = "Synchronize Laptop";
             this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // button2
             // 
@@ -495,9 +496,9 @@
             this.checkBox3.AutoSize = true;
             this.checkBox3.Location = new System.Drawing.Point(12, 153);
             this.checkBox3.Name = "checkBox3";
-            this.checkBox3.Size = new System.Drawing.Size(431, 21);
+            this.checkBox3.Size = new System.Drawing.Size(430, 21);
             this.checkBox3.TabIndex = 8;
-            this.checkBox3.Text = "Show files in downscaled library that aren\'t properly downscaled";
+            this.checkBox3.Text = "Show files in downscaled library that are improperly downscaled";
             this.checkBox3.UseVisualStyleBackColor = true;
             this.checkBox3.CheckedChanged += new System.EventHandler(this.checkBox3_CheckedChanged);
             // 
