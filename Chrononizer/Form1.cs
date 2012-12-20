@@ -46,8 +46,8 @@ namespace Chrononizer
             double dSize = 0;
             long dFlac = 0;
             double allSize = 0;
-            double s1 = GetDirectorySize("E:\\Music\\", 0, ref flac, ref mp3, ref wma, ref m4a, ref ogg, ref wav, ref xm, ref mod, ref nsf);
             dSize = GetDownscaledSize("E:\\Music\\.downscaled", dSize, ref dFlac); //recurse through the downscaled files
+            double s1 = GetDirectorySize("E:\\Music\\", 0, ref flac, ref mp3, ref wma, ref m4a, ref ogg, ref wav, ref xm, ref mod, ref nsf);
             label1.Text = "Library: " + BytesToSize(s1); //display the size
             label2.Text = "FLAC: " + flac.ToString() + " files"; //display the number of flac songs
             label3.Text = "MP3: " + mp3.ToString() + " files"; //display the number of mp3 songs
@@ -195,7 +195,7 @@ namespace Chrononizer
             }
             foreach (string name in folders)
             {
-                if (Path.GetFullPath(name) == "E:\\Music\\.downscaled") continue; //don't scan through the downscaled files yet
+                if (Path.GetFullPath(name) == "E:\\Music\\.downscaled") continue; //don't scan through the downscaled files
                 num = GetDirectorySize(name, num, ref flac, ref mp3, ref wma, ref m4a, ref ogg, ref wav, ref xm, ref mod, ref nsf); //recurse through the folders
             }
             return num;
