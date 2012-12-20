@@ -3,10 +3,10 @@
   <Profiles />
   <Settings>
     <Setting Name="MusicLibrary" Type="System.String" Scope="User">
-      <Value Profile="(Default)">"E:\\Music\\"</Value>
+      <Value Profile="(Default)">E:\Music\</Value>
     </Setting>
     <Setting Name="DownscaledLibrary" Type="System.String" Scope="User">
-      <Value Profile="(Default)">"E:\\Music\\.downscaled\\"</Value>
+      <Value Profile="(Default)">E:\Music\.downscaled\</Value>
     </Setting>
     <Setting Name="FirstBoot" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>

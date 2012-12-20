@@ -38,6 +38,13 @@ namespace Chrononizer
             {
                 //first time launching application
                 Properties.Settings.Default.FirstBoot = false;
+
+                //load default settings
+                textBox1.Text = Properties.Settings.Default.MusicLibrary;
+                textBox2.Text = Properties.Settings.Default.DownscaledLibrary;
+                checkBox1.Checked = Properties.Settings.Default.RemoveFiles;
+                checkBox2.Checked = Properties.Settings.Default.AutoHandle;
+
                 Properties.Settings.Default.Save();
             }
         }
