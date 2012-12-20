@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -219,17 +220,27 @@ namespace Chrononizer
 
         private void button1_Click(object sender, EventArgs e)
         {
-            Luminescence.Xiph.FlacTagger flacTagTest = new FlacTagger("E:\\PinkiePieSwear\\Test\\TestBadFile1.flac");
-
-            int bitDepth = flacTagTest.BitsPerSample; //this gets the file's bit depth
-            int bitRate = flacTagTest.SampleRate; //this gets the file's bit rate
-            button1.Text = bitRate.ToString();
 
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void listBox1_DoubleClick(object sender, EventArgs e)
+        {
+            int index = listBox1.SelectedIndex; //determine what is selected
+            string file = listBox1.Items[index].ToString(); //get the selected filename
+            if (file == "No files need downscaling!") return; //don't try to open windows explorer
+            if (!File.Exists(file)) //check to see if the file is still in the folder
+            {
+                listBox1.Items.RemoveAt(index); //remove the value if it no longer exists
+                if (listBox1.Items.Count == 0)
+                    listBox1.Items.Add("No files need downscaling!"); //no more files need downscaling
+                return;
+            }
+            Process.Start("explorer.exe", @"/select, " + file); //open windows explorer and selected the file
         }
 
         /// <summary>
