@@ -90,7 +90,8 @@ namespace Chrononizer
             long dFlac = 0;
             double allSize = 0;
             dSize = GetDownscaledSize(DownscaledLibrary, dSize, ref dFlac); //recurse through the downscaled files
-            if (AutoHandle) File.SetAttributes(DownscaledLibrary, FileAttributes.Hidden | FileAttributes.System);
+            if (AutoHandle) if (Directory.Exists(DownscaledLibrary)) //set the file attributes if auto handling is on
+                    File.SetAttributes(DownscaledLibrary, FileAttributes.Hidden | FileAttributes.System);
             double s1 = GetDirectorySize(MusicLibrary, 0, ref flac, ref mp3, ref wma, ref m4a, ref ogg, ref wav, ref xm, ref mod, ref nsf);
             label1.Text = "Library: " + BytesToSize(s1); //display the size
             label2.Text = "FLAC: " + Plural(flac, "file"); //display the number of flac songs
@@ -251,7 +252,8 @@ namespace Chrononizer
         {
             if (!Directory.Exists(root))
             {
-                if (AutoHandle) Directory.CreateDirectory(root); //create the directory if it doesn't exist
+                if (AutoHandle)
+                    if (Directory.Exists(MusicLibrary)) Directory.CreateDirectory(root); //create the directory if it doesn't exist
                 return num;
             }
             string[] files = Directory.GetFiles(root, "*.*"); //get array of all file names
