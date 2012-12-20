@@ -118,5 +118,17 @@ namespace Chrononizer.Properties {
                 this["RemoveUnsupported"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool RemoveEmpty {
+            get {
+                return ((bool)(this["RemoveEmpty"]));
+            }
+            set {
+                this["RemoveEmpty"] = value;
+            }
+        }
     }
 }

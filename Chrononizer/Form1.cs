@@ -25,6 +25,7 @@ namespace Chrononizer
         Boolean ShowFiles = false;
         Boolean RemoveUnsupported = true;
         Boolean RemoveUnnecessary = true;
+        Boolean RemoveEmpty = true;
 
         public Form1()
         {
@@ -46,6 +47,7 @@ namespace Chrononizer
                 checkBox3.Checked = Properties.Settings.Default.ShowFiles;
                 checkBox4.Checked = Properties.Settings.Default.RemoveUnsupported;
                 checkBox5.Checked = Properties.Settings.Default.RemoveUnnecessary;
+                checkBox6.Checked = Properties.Settings.Default.RemoveEmpty;
             }
             else
             {
@@ -65,6 +67,7 @@ namespace Chrononizer
                 checkBox3.Checked = Properties.Settings.Default.ShowFiles;
                 checkBox4.Checked = Properties.Settings.Default.RemoveUnsupported;
                 checkBox5.Checked = Properties.Settings.Default.RemoveUnnecessary;
+                checkBox6.Checked = Properties.Settings.Default.RemoveEmpty;
 
                 Properties.Settings.Default.Save();
             }
@@ -77,6 +80,7 @@ namespace Chrononizer
             ShowFiles = checkBox3.Checked;
             RemoveUnsupported = checkBox4.Checked;
             RemoveUnnecessary = checkBox5.Checked;
+            RemoveEmpty = checkBox6.Checked;
         }
 
         private void CheckSize_Click(object sender, EventArgs e)
@@ -99,7 +103,7 @@ namespace Chrononizer
             long dFlac = 0;
             double allSize = 0;
             dSize = GetDownscaledSize(DownscaledLibrary, dSize, ref dFlac); //recurse through the downscaled files
-            if (AutoHandle) if (Directory.Exists(DownscaledLibrary)) //set the file attributes if auto handling is on
+            if (AutoHandle && Directory.Exists(DownscaledLibrary)) //set the file attributes if auto handling is on
                     File.SetAttributes(DownscaledLibrary, FileAttributes.Hidden | FileAttributes.System);
             double s1 = GetDirectorySize(MusicLibrary, 0, ref flac, ref mp3, ref wma, ref m4a, ref ogg, ref wav, ref xm, ref mod, ref nsf);
             label1.Text = "Library: " + BytesToSize(s1); //display the size
@@ -261,17 +265,11 @@ namespace Chrononizer
         {
             if (!Directory.Exists(root))
             {
-                if (AutoHandle)
-                    if (Directory.Exists(MusicLibrary)) Directory.CreateDirectory(root); //create the directory if it doesn't exist
+                if (AutoHandle && Directory.Exists(MusicLibrary)) Directory.CreateDirectory(root); //create the directory if it doesn't exist
                 return num;
             }
             string[] files = Directory.GetFiles(root, "*.*"); //get array of all file names
             string[] folders = Directory.GetDirectories(root); //get array of all folder names for this directory
-            if (!Directory.EnumerateFileSystemEntries(root).Any())
-            {
-                Directory.Delete(root); //delete empty folders
-                return num;
-            }
 
             foreach (string name in files)
             {
@@ -331,6 +329,11 @@ namespace Chrononizer
                 num = GetDownscaledSize(name, num, ref flac); //recurse through the folders
             }
 
+            if (RemoveEmpty && !Directory.EnumerateFileSystemEntries(root).Any() && Path.GetFullPath(root) != DownscaledLibrary)
+            {
+                Directory.Delete(root); //delete empty folders
+                return num;
+            }
             return num;
         }
 
@@ -415,6 +418,8 @@ namespace Chrononizer
                 checkBox4.Checked = true;
                 checkBox5.Enabled = false;
                 checkBox5.Checked = true;
+                checkBox6.Enabled = false;
+                checkBox6.Checked = true;
                 textBox2.Text = textBox1.Text + ".downscaled\\";
             }
             else
@@ -425,6 +430,7 @@ namespace Chrononizer
                 checkBox1.Enabled = true;
                 checkBox4.Enabled = true;
                 checkBox5.Enabled = true;
+                checkBox6.Enabled = true;
             }
             AutoHandle = checkBox2.Checked;
             Properties.Settings.Default.AutoHandle = checkBox2.Checked;
@@ -479,6 +485,13 @@ namespace Chrononizer
         {
             RemoveUnnecessary = checkBox5.Checked;
             Properties.Settings.Default.RemoveUnnecessary = checkBox5.Checked;
+            Properties.Settings.Default.Save();
+        }
+
+        private void checkBox6_CheckedChanged(object sender, EventArgs e)
+        {
+            RemoveEmpty = checkBox6.Checked;
+            Properties.Settings.Default.RemoveEmpty = checkBox6.Checked;
             Properties.Settings.Default.Save();
         }
 
