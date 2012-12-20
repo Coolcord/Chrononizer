@@ -82,5 +82,17 @@ namespace Chrononizer.Properties {
                 this["RemoveFiles"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool ShowFiles {
+            get {
+                return ((bool)(this["ShowFiles"]));
+            }
+            set {
+                this["ShowFiles"] = value;
+            }
+        }
     }
 }
