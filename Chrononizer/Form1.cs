@@ -18,6 +18,7 @@ namespace Chrononizer
     {
         private string MusicLibrary = " ";
         private string DownscaledLibrary = " ";
+        Boolean Modify = true;
 
         public Form1()
         {
@@ -54,6 +55,7 @@ namespace Chrononizer
             //store the values
             MusicLibrary = textBox1.Text;
             DownscaledLibrary = textBox2.Text;
+            Modify = checkBox1.Checked;
         }
 
         private void CheckSize_Click(object sender, EventArgs e)
@@ -211,7 +213,7 @@ namespace Chrononizer
             }
             foreach (string name in folders)
             {
-                if (Path.GetFullPath(name) == "E:\\Music\\.downscaled") continue; //don't scan through the downscaled files
+                if (Path.GetFullPath(name) == DownscaledLibrary.Substring(0, DownscaledLibrary.Length - 1)) continue; //don't scan through the downscaled files
                 num = GetDirectorySize(name, num, ref flac, ref mp3, ref wma, ref m4a, ref ogg, ref wav, ref xm, ref mod, ref nsf); //recurse through the folders
             }
             return num;
@@ -237,24 +239,35 @@ namespace Chrononizer
                 FileInfo info = new FileInfo(name); //read in the file
                 String ext = Path.GetExtension(name); //get the file's extension
                 //increment count based upon file type and extension type
-                if (ext == ".flac")
+                if (Modify)
                 {
-                    string defaultFile = MusicLibrary + name.Substring(DownscaledLibrary.Length);
-                    Luminescence.Xiph.FlacTagger flacTag = new FlacTagger(name); //get the flac's tag
-                    if (!File.Exists(defaultFile) || flacTag.BitsPerSample > 16 || flacTag.SampleRate > 48000) File.Delete(name); //downscaled flac not necessary
-                    else
+                    if (ext == ".flac")
                     {
-                        flacTag = new FlacTagger(defaultFile);
-                        if (flacTag.BitsPerSample > 16 || flacTag.SampleRate > 48000)
+                        string defaultFile = MusicLibrary + name.Substring(DownscaledLibrary.Length);
+                        Luminescence.Xiph.FlacTagger flacTag = new FlacTagger(name); //get the flac's tag
+                        if (!File.Exists(defaultFile) || flacTag.BitsPerSample > 16 || flacTag.SampleRate > 48000) File.Delete(name); //downscaled flac not necessary
+                        else
                         {
-                            num += info.Length; //add to the size
-                            flac++; //flac is ok to use
+                            flacTag = new FlacTagger(defaultFile);
+                            if (flacTag.BitsPerSample > 16 || flacTag.SampleRate > 48000)
+                            {
+                                num += info.Length; //add to the size
+                                flac++; //flac is ok to use
+                            }
+                            else File.Delete(name); //flac did not need downscaling
                         }
-                        else File.Delete(name); //flac did not need downscaling
+                        flacTag = null;
                     }
-                    flacTag = null;
+                    else File.Delete(name);
                 }
-                else File.Delete(name);
+                else
+                {
+                    if (ext == ".flac")
+                    {
+                        num += info.Length; //add to the size
+                        flac++;
+                    }
+                }
             }
             foreach (string name in folders)
             {
@@ -360,6 +373,7 @@ namespace Chrononizer
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
+            Modify = checkBox1.Checked;
             Properties.Settings.Default.RemoveFiles = checkBox1.Checked;
             Properties.Settings.Default.Save();
         }
