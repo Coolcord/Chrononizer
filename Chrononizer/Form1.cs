@@ -21,8 +21,10 @@ namespace Chrononizer
         private string MusicLibrary = " ";
         private string DownscaledLibrary = " ";
         Boolean AutoHandle = true;
-        Boolean Modify = true;
+        Boolean RemoveImproper = true;
         Boolean ShowFiles = false;
+        Boolean RemoveUnsupported = true;
+        Boolean RemoveUnnecessary = true;
 
         public Form1()
         {
@@ -39,9 +41,11 @@ namespace Chrononizer
                 //load saved settings
                 textBox1.Text = Properties.Settings.Default.MusicLibrary;
                 textBox2.Text = Properties.Settings.Default.DownscaledLibrary;
-                checkBox1.Checked = Properties.Settings.Default.RemoveFiles;
+                checkBox1.Checked = Properties.Settings.Default.RemoveImproper;
                 checkBox2.Checked = Properties.Settings.Default.AutoHandle;
                 checkBox3.Checked = Properties.Settings.Default.ShowFiles;
+                checkBox4.Checked = Properties.Settings.Default.RemoveUnsupported;
+                checkBox5.Checked = Properties.Settings.Default.RemoveUnnecessary;
             }
             else
             {
@@ -56,9 +60,11 @@ namespace Chrononizer
                 //load default settings
                 textBox1.Text = drive + ":\\Users\\" + username + "\\Music\\";
                 textBox2.Text = drive + ":\\Users\\" + username + "\\Music\\.downscaled\\";
-                checkBox1.Checked = Properties.Settings.Default.RemoveFiles;
+                checkBox1.Checked = Properties.Settings.Default.RemoveImproper;
                 checkBox2.Checked = Properties.Settings.Default.AutoHandle;
                 checkBox3.Checked = Properties.Settings.Default.ShowFiles;
+                checkBox4.Checked = Properties.Settings.Default.RemoveUnsupported;
+                checkBox5.Checked = Properties.Settings.Default.RemoveUnnecessary;
 
                 Properties.Settings.Default.Save();
             }
@@ -67,8 +73,10 @@ namespace Chrononizer
             MusicLibrary = textBox1.Text;
             DownscaledLibrary = textBox2.Text;
             AutoHandle = checkBox2.Checked;
-            Modify = checkBox1.Checked;
+            RemoveImproper = checkBox1.Checked;
             ShowFiles = checkBox3.Checked;
+            RemoveUnsupported = checkBox4.Checked;
+            RemoveUnnecessary = checkBox5.Checked;
         }
 
         private void CheckSize_Click(object sender, EventArgs e)
@@ -270,52 +278,53 @@ namespace Chrononizer
                 FileInfo info = new FileInfo(name); //read in the file
                 String ext = Path.GetExtension(name); //get the file's extension
                 //increment count based upon file type and extension type
-                if (Modify)
+                if (ext == ".flac")
                 {
-                    if (ext == ".flac")
+                    string defaultFile = MusicLibrary + name.Substring(DownscaledLibrary.Length);
+                    Luminescence.Xiph.FlacTagger flacTag = new FlacTagger(name); //get the flac's tag
+                    if (!File.Exists(defaultFile))
                     {
-                        string defaultFile = MusicLibrary + name.Substring(DownscaledLibrary.Length);
-                        Luminescence.Xiph.FlacTagger flacTag = new FlacTagger(name); //get the flac's tag
-                        if (!File.Exists(defaultFile) || flacTag.BitsPerSample > 16 || flacTag.SampleRate > 48000) File.Delete(name); //downscaled flac not necessary
+                        if (RemoveUnnecessary)
+                            File.Delete(name); //flac's upscaled file does not exist and is unnecessary
                         else
                         {
-                            flacTag = new FlacTagger(defaultFile);
-                            if (flacTag.BitsPerSample > 16 || flacTag.SampleRate > 48000)
-                            {
-                                num += info.Length; //add to the size
-                                flac++; //flac is ok to use
-                            }
-                            else File.Delete(name); //flac did not need downscaling
+                            num += info.Length; //add to the size
+                            flac++;
                         }
-                        flacTag = null;
                     }
-                    else File.Delete(name);
-                }
-                else
-                {
-                    if (ext == ".flac")
+                    else if (flacTag.BitsPerSample > 16 || flacTag.SampleRate > 48000)
                     {
-                        if (ShowFiles)
+                        if (RemoveImproper)
+                            File.Delete(name); //downscaled flac not necessary
+                        else
                         {
-                            string defaultFile = MusicLibrary + name.Substring(DownscaledLibrary.Length);
-                            Luminescence.Xiph.FlacTagger flacTag = new FlacTagger(name); //get the flac's tag
-                            if (!File.Exists(defaultFile) || flacTag.BitsPerSample > 16 || flacTag.SampleRate > 48000) listBox1.Items.Add(name); //downscaled flac not necessary
+                            if (ShowFiles) listBox1.Items.Add(name); //show the file in the list
+                            num += info.Length; //add to the size
+                            flac++;
+                        }
+                    }
+                    else
+                    {
+                        flacTag = new FlacTagger(defaultFile);
+                        if (flacTag.BitsPerSample > 16 || flacTag.SampleRate > 48000)
+                        {
+                            num += info.Length; //add to the size
+                            flac++; //flac is ok to use
+                        }
+                        else
+                        {
+                            if (RemoveUnnecessary)
+                                File.Delete(name); //flac did not need downscaling and is unnecessary
                             else
                             {
-                                flacTag = new FlacTagger(defaultFile);
-                                if (flacTag.BitsPerSample > 16 || flacTag.SampleRate > 48000)
-                                {
-                                    num += info.Length; //add to the size
-                                    flac++; //flac is ok to use
-                                }
-                                else listBox1.Items.Add(name); //flac did not need downscaling
+                                num += info.Length; //add to the size
+                                flac++;
                             }
-                            flacTag = null;
                         }
-                        num += info.Length; //add to the size
-                        flac++;
                     }
+                    flacTag = null;
                 }
+                else if (RemoveUnsupported) File.Delete(name); //remove unsupported files
             }
             foreach (string name in folders)
             {
@@ -402,6 +411,10 @@ namespace Chrononizer
                 checkBox1.Checked = true;
                 checkBox3.Enabled = false;
                 checkBox3.Checked = false;
+                checkBox4.Enabled = false;
+                checkBox4.Checked = true;
+                checkBox5.Enabled = false;
+                checkBox5.Checked = true;
                 textBox2.Text = textBox1.Text + ".downscaled\\";
             }
             else
@@ -410,6 +423,8 @@ namespace Chrononizer
                 textBox2.Enabled = true;
                 button5.Enabled = true;
                 checkBox1.Enabled = true;
+                checkBox4.Enabled = true;
+                checkBox5.Enabled = true;
             }
             AutoHandle = checkBox2.Checked;
             Properties.Settings.Default.AutoHandle = checkBox2.Checked;
@@ -441,8 +456,8 @@ namespace Chrononizer
             {
                 checkBox3.Enabled = true;
             }
-            Modify = checkBox1.Checked;
-            Properties.Settings.Default.RemoveFiles = checkBox1.Checked;
+            RemoveImproper = checkBox1.Checked;
+            Properties.Settings.Default.RemoveImproper = checkBox1.Checked;
             Properties.Settings.Default.Save();
         }
 
@@ -450,6 +465,20 @@ namespace Chrononizer
         {
             ShowFiles = checkBox3.Checked;
             Properties.Settings.Default.ShowFiles = checkBox3.Checked;
+            Properties.Settings.Default.Save();
+        }
+
+        private void checkBox4_CheckedChanged(object sender, EventArgs e)
+        {
+            RemoveUnsupported = checkBox4.Checked;
+            Properties.Settings.Default.RemoveUnsupported = checkBox4.Checked;
+            Properties.Settings.Default.Save();
+        }
+
+        private void checkBox5_CheckedChanged(object sender, EventArgs e)
+        {
+            RemoveUnnecessary = checkBox5.Checked;
+            Properties.Settings.Default.RemoveUnnecessary = checkBox5.Checked;
             Properties.Settings.Default.Save();
         }
 

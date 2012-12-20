@@ -74,12 +74,12 @@ namespace Chrononizer.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool RemoveFiles {
+        public bool RemoveImproper {
             get {
-                return ((bool)(this["RemoveFiles"]));
+                return ((bool)(this["RemoveImproper"]));
             }
             set {
-                this["RemoveFiles"] = value;
+                this["RemoveImproper"] = value;
             }
         }
         
@@ -92,6 +92,30 @@ namespace Chrononizer.Properties {
             }
             set {
                 this["ShowFiles"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool RemoveUnnecessary {
+            get {
+                return ((bool)(this["RemoveUnnecessary"]));
+            }
+            set {
+                this["RemoveUnnecessary"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool RemoveUnsupported {
+            get {
+                return ((bool)(this["RemoveUnsupported"]));
+            }
+            set {
+                this["RemoveUnsupported"] = value;
             }
         }
     }
