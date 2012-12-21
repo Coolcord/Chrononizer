@@ -85,6 +85,9 @@ namespace Chrononizer
 
         private void CheckSize_Click(object sender, EventArgs e)
         {
+            System.Media.SoundPlayer aSoundPlayer = new System.Media.SoundPlayer(Chrononizer.Properties.Resources.ScannerSweep);
+            aSoundPlayer.Play();  //Plays the sound in a new thread
+
             listBox1.Items.Clear(); //clear out previous items
 
             long flac = 0;

@@ -101,6 +101,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="chrononizer.ico" />
+    <None Include="data\ScannerSweep.wav" />
     <None Include="data\ChronoBoost.wav" />
   </ItemGroup>
   <ItemGroup>

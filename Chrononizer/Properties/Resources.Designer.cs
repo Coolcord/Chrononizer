@@ -65,5 +65,11 @@ namespace Chrononizer.Properties {
                 return ResourceManager.GetStream("ChronoBoost", resourceCulture);
             }
         }
+        
+        internal static System.IO.UnmanagedMemoryStream ScannerSweep {
+            get {
+                return ResourceManager.GetStream("ScannerSweep", resourceCulture);
+            }
+        }
     }
 }
