@@ -60,9 +60,9 @@ namespace Chrononizer.Properties {
             }
         }
         
-        internal static System.IO.UnmanagedMemoryStream Chronoboost {
+        internal static System.IO.UnmanagedMemoryStream ChronoBoost {
             get {
-                return ResourceManager.GetStream("Chronoboost", resourceCulture);
+                return ResourceManager.GetStream("ChronoBoost", resourceCulture);
             }
         }
     }

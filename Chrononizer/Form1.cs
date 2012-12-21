@@ -103,8 +103,8 @@ namespace Chrononizer
             long dFlac = 0;
             double allSize = 0;
             dSize = GetDownscaledSize(DownscaledLibrary, dSize, ref dFlac); //recurse through the downscaled files
-            if (AutoHandle && Directory.Exists(DownscaledLibrary)) //set the file attributes if auto handling is on
-                    File.SetAttributes(DownscaledLibrary, FileAttributes.Hidden | FileAttributes.System);
+            if (AutoHandle && Directory.Exists(MusicLibrary) && Directory.Exists(DownscaledLibrary)) //set the file attributes if auto handling is on
+                File.SetAttributes(DownscaledLibrary, FileAttributes.Hidden | FileAttributes.System);
             double s1 = GetDirectorySize(MusicLibrary, 0, ref flac, ref mp3, ref wma, ref m4a, ref ogg, ref wav, ref xm, ref mod, ref nsf);
             label1.Text = "Library: " + BytesToSize(s1); //display the size
             label2.Text = "FLAC: " + Plural(flac, "file"); //display the number of flac songs
@@ -339,19 +339,19 @@ namespace Chrononizer
 
         private void button1_Click(object sender, EventArgs e)
         {
-            System.Media.SoundPlayer aSoundPlayer = new System.Media.SoundPlayer(Chrononizer.Properties.Resources.Chronoboost);
+            System.Media.SoundPlayer aSoundPlayer = new System.Media.SoundPlayer(Chrononizer.Properties.Resources.ChronoBoost);
             aSoundPlayer.Play();  //Plays the sound in a new thread
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            System.Media.SoundPlayer aSoundPlayer = new System.Media.SoundPlayer(Chrononizer.Properties.Resources.Chronoboost);
+            System.Media.SoundPlayer aSoundPlayer = new System.Media.SoundPlayer(Chrononizer.Properties.Resources.ChronoBoost);
             aSoundPlayer.Play();  //Plays the sound in a new thread
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
-            System.Media.SoundPlayer aSoundPlayer = new System.Media.SoundPlayer(Chrononizer.Properties.Resources.Chronoboost);
+            System.Media.SoundPlayer aSoundPlayer = new System.Media.SoundPlayer(Chrononizer.Properties.Resources.ChronoBoost);
             aSoundPlayer.Play();  //Plays the sound in a new thread
         }
 

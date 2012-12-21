@@ -101,6 +101,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="chrononizer.ico" />
+    <None Include="data\ChronoBoost.wav" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0,Profile=Client">
