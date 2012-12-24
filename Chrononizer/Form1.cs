@@ -91,22 +91,12 @@ namespace Chrononizer
 
             listBox1.Items.Clear(); //clear out previous items
  
-            long flac = 0;
-            long mp3 = 0;
-            long wma = 0;
-            long m4a = 0;
-            long ogg = 0;
-            long wav = 0;
-            long xm = 0;
-            long mod = 0;
-            long nsf = 0;
-            long audioTotal = 0;
-            long chiptunesTotal = 0;
-            long total = 0;
-            double dSize = 0;
-            long dFlac = 0;
-            double allSize = 0;
-            double s1 = GetDirectorySize(MusicLibrary, 0, ref flac, ref mp3, ref wma, ref m4a, ref ogg, ref wav, ref xm, ref mod, ref nsf);
+            long flac, mp3, wma, m4a, ogg, wav, xm, mod, nsf, audioTotal, chiptunesTotal, total, dFlac;
+            flac = mp3 = wma = m4a = ogg = wav = xm = mod = nsf = audioTotal = chiptunesTotal = total = dFlac = 0;
+            double dSize, allSize, s1;
+            dSize = allSize = s1 = 0;
+
+            s1 = GetDirectorySize(MusicLibrary, 0, ref flac, ref mp3, ref wma, ref m4a, ref ogg, ref wav, ref xm, ref mod, ref nsf);
             dSize = GetDownscaledSize(DownscaledLibrary, dSize, ref dFlac); //recurse through the downscaled files
             if (AutoHandle && Directory.Exists(MusicLibrary) && Directory.Exists(DownscaledLibrary)) //set the file attributes if auto handling is on
                 File.SetAttributes(DownscaledLibrary, FileAttributes.Hidden | FileAttributes.System);
