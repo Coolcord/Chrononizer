@@ -26,7 +26,7 @@ namespace Chrononizer
         Boolean RemoveUnsupported = true;
         Boolean RemoveUnnecessary = true;
         Boolean RemoveEmpty = true;
-        Dictionary<string, Boolean> checkedFiles = null;
+        Dictionary<string, Boolean> checkedFiles = new Dictionary<string, Boolean>();
 
         public Form1()
         {
@@ -90,8 +90,7 @@ namespace Chrononizer
             aSoundPlayer.Play();  //Plays the sound in a new thread
 
             listBox1.Items.Clear(); //clear out previous items
-            checkedFiles = new Dictionary<string, Boolean>();
-
+ 
             long flac = 0;
             long mp3 = 0;
             long wma = 0;
@@ -230,38 +229,14 @@ namespace Chrononizer
                     else checkedFiles.Add(name, true); //mark that it has been checked and is not proper
                     flacTag = null; //make sure it is not accessed again
                 }
-                else if (ext == ".mp3")
-                {
-                    mp3++;
-                }
-                else if (ext == ".wma")
-                {
-                    wma++;
-                }
-                else if (ext == ".m4a")
-                {
-                    m4a++;
-                }
-                else if (ext == ".ogg")
-                {
-                    ogg++;
-                }
-                else if (ext == ".wav")
-                {
-                    wav++;
-                }
-                else if (ext == ".xm")
-                {
-                    xm++;
-                }
-                else if (ext == ".mod")
-                {
-                    mod++;
-                }
-                else if (ext == ".nsf")
-                {
-                    nsf++;
-                }
+                else if (ext == ".mp3") mp3++;
+                else if (ext == ".wma") wma++;
+                else if (ext == ".m4a") m4a++;
+                else if (ext == ".ogg") ogg++;
+                else if (ext == ".wav") wav++;
+                else if (ext == ".xm") xm++;
+                else if (ext == ".mod") mod++;
+                else if (ext == ".nsf") nsf++;
             }
             foreach (string name in folders)
             {
