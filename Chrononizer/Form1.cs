@@ -20,6 +20,7 @@ namespace Chrononizer
     {
         private string MusicLibrary = " ";
         private string DownscaledLibrary = " ";
+        private string ChiptunesLibrary = " ";
         Boolean AutoHandle = true;
         Boolean RemoveImproper = true;
         Boolean ShowFiles = false;
@@ -43,6 +44,7 @@ namespace Chrononizer
                 //load saved settings
                 textBox1.Text = Properties.Settings.Default.MusicLibrary;
                 textBox2.Text = Properties.Settings.Default.DownscaledLibrary;
+                textBox3.Text = Properties.Settings.Default.ChiptunesLibrary;
                 checkBox1.Checked = Properties.Settings.Default.RemoveImproper;
                 checkBox2.Checked = Properties.Settings.Default.AutoHandle;
                 checkBox3.Checked = Properties.Settings.Default.ShowFiles;
@@ -63,6 +65,7 @@ namespace Chrononizer
                 //load default settings
                 textBox1.Text = drive + ":\\Users\\" + username + "\\Music\\";
                 textBox2.Text = drive + ":\\Users\\" + username + "\\Music\\.downscaled\\";
+                textBox3.Text = drive + ":\\Users\\" + username + "\\Music\\Chiptunes";
                 checkBox1.Checked = Properties.Settings.Default.RemoveImproper;
                 checkBox2.Checked = Properties.Settings.Default.AutoHandle;
                 checkBox3.Checked = Properties.Settings.Default.ShowFiles;
@@ -76,6 +79,7 @@ namespace Chrononizer
             //store the values
             MusicLibrary = textBox1.Text;
             DownscaledLibrary = textBox2.Text;
+            ChiptunesLibrary = textBox3.Text;
             AutoHandle = checkBox2.Checked;
             RemoveImproper = checkBox1.Checked;
             ShowFiles = checkBox3.Checked;
@@ -350,6 +354,21 @@ namespace Chrononizer
             return num;
         }
 
+        private void RemoveEmptyDirectories(string root)
+        {
+            string[] folders = Directory.GetDirectories(root); //get array of all folder names for this directory
+            if (!Directory.EnumerateFileSystemEntries(root).Any() && Path.GetFullPath(root) != MusicLibrary)
+            {
+                Directory.Delete(root); //delete empty folders
+                return;
+            }
+            foreach (string name in folders)
+            {
+                RemoveEmptyDirectories(name); //recurse through the folders
+            }
+            return;
+        }
+
         private void button1_Click(object sender, EventArgs e)
         {
             System.Media.SoundPlayer aSoundPlayer = new System.Media.SoundPlayer(Chrononizer.Properties.Resources.ChronoBoost);
@@ -361,7 +380,45 @@ namespace Chrononizer
             System.Media.SoundPlayer aSoundPlayer = new System.Media.SoundPlayer(Chrononizer.Properties.Resources.ChronoBoost);
             aSoundPlayer.Play();  //Plays the sound in a new thread
 
+            FileSyncOptions options = FileSyncOptions.None;
+            FileSyncScopeFilter filter = new FileSyncScopeFilter();
+            string chiptunesLocation = ChiptunesLibrary.Substring(0, ChiptunesLibrary.Length - 1);
+            filter.SubdirectoryExcludes.Add(DownscaledLibrary);
+            filter.SubdirectoryExcludes.Add(chiptunesLocation);
 
+            string sourceRootPath = Path.GetFullPath("E:\\SynchronizationTests\\Base\\");
+            string destinationRootPath = Path.GetFullPath("E:\\SynchronizationTests\\PMP\\");
+            Guid sourceId = new Guid("FE7ABA94-F64B-4985-B021-4DB7D829A87C");
+            Guid destinationId = new Guid("96C7D297-3926-486B-B455-FD19E7E4CDB8");
+
+            FileSyncProvider path1Provider = new FileSyncProvider(sourceId, sourceRootPath, filter, options);
+            FileSyncProvider path2Provider = new FileSyncProvider(destinationId, destinationRootPath, filter, options);
+
+            SyncOrchestrator manager = new SyncOrchestrator();
+            manager.LocalProvider = path1Provider;
+            manager.RemoteProvider = path2Provider;
+            manager.Direction = SyncDirectionOrder.Upload;
+            manager.Synchronize();
+
+            /*
+            if (File.Exists(destinationRootPath + "filesync.metadata"))
+                File.Delete(destinationRootPath + "filesync.metadata");
+            if (File.Exists(sourceRootPath + "filesync.metadata"))
+                File.Delete(sourceRootPath + "filesync.metadata");
+            path1Provider = new FileSyncProvider(sourceId, sourceRootPath, filter, options);
+            path2Provider = new FileSyncProvider(destinationId, destinationRootPath, filter, options);
+            manager = new SyncOrchestrator();
+            manager.LocalProvider = path1Provider;
+            manager.RemoteProvider = path2Provider;
+            manager.Direction = SyncDirectionOrder.Upload;
+            manager.Synchronize();
+             * */
+
+            RemoveEmptyDirectories(destinationRootPath); //remove empty directories
+            if (File.Exists(destinationRootPath + "filesync.metadata")) //hide the filesync.metadata in the music library
+                File.SetAttributes(destinationRootPath + "filesync.metadata", FileAttributes.Hidden | FileAttributes.System);
+            if (File.Exists(sourceRootPath + "filesync.metadata")) //hide the filesync.metadata in the music library
+                File.SetAttributes(sourceRootPath + "filesync.metadata", FileAttributes.Hidden | FileAttributes.System);
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -395,6 +452,11 @@ namespace Chrononizer
             OpenFolderDialog(2);
         }
 
+        private void button6_Click(object sender, EventArgs e)
+        {
+            OpenFolderDialog(3);
+        }
+
         private void textBox1_Click(object sender, EventArgs e)
         {
             OpenFolderDialog(1);
@@ -403,6 +465,11 @@ namespace Chrononizer
         private void textBox2_Click(object sender, EventArgs e)
         {
             OpenFolderDialog(2);
+        }
+
+        private void textBox3_Click(object sender, EventArgs e)
+        {
+            OpenFolderDialog(3);
         }
 
         private void OpenFolderDialog(int TextBox)
@@ -416,6 +483,7 @@ namespace Chrononizer
                 if (checkBox2.Checked) textBox2.Text = textBox1.Text + ".downscaled\\";
             }
             else if (TextBox == 2) textBox2.Text = open.SelectedPath + "\\";
+            else if (TextBox == 3) textBox3.Text = open.SelectedPath + "\\";
         }
 
         private void checkBox2_CheckedChanged(object sender, EventArgs e)
@@ -463,6 +531,13 @@ namespace Chrononizer
         {
             DownscaledLibrary = textBox2.Text;
             Properties.Settings.Default.DownscaledLibrary = textBox2.Text;
+            Properties.Settings.Default.Save();
+        }
+
+        private void textBox3_TextChanged(object sender, EventArgs e)
+        {
+            ChiptunesLibrary = textBox3.Text;
+            Properties.Settings.Default.ChiptunesLibrary = textBox3.Text;
             Properties.Settings.Default.Save();
         }
 

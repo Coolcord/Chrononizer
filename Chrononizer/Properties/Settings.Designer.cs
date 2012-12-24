@@ -130,5 +130,17 @@ namespace Chrononizer.Properties {
                 this["RemoveEmpty"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string ChiptunesLibrary {
+            get {
+                return ((string)(this["ChiptunesLibrary"]));
+            }
+            set {
+                this["ChiptunesLibrary"] = value;
+            }
+        }
     }
 }

@@ -60,6 +60,9 @@
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.CheckSize = new System.Windows.Forms.Button();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.button6 = new System.Windows.Forms.Button();
+            this.label23 = new System.Windows.Forms.Label();
+            this.textBox3 = new System.Windows.Forms.TextBox();
             this.checkBox6 = new System.Windows.Forms.CheckBox();
             this.checkBox5 = new System.Windows.Forms.CheckBox();
             this.checkBox4 = new System.Windows.Forms.CheckBox();
@@ -397,6 +400,9 @@
             // 
             // tabPage3
             // 
+            this.tabPage3.Controls.Add(this.button6);
+            this.tabPage3.Controls.Add(this.label23);
+            this.tabPage3.Controls.Add(this.textBox3);
             this.tabPage3.Controls.Add(this.checkBox6);
             this.tabPage3.Controls.Add(this.checkBox5);
             this.tabPage3.Controls.Add(this.checkBox4);
@@ -415,6 +421,36 @@
             this.tabPage3.TabIndex = 3;
             this.tabPage3.Text = "Preferences";
             this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // button6
+            // 
+            this.button6.Location = new System.Drawing.Point(301, 278);
+            this.button6.Name = "button6";
+            this.button6.Size = new System.Drawing.Size(31, 23);
+            this.button6.TabIndex = 14;
+            this.button6.Text = "...";
+            this.button6.UseVisualStyleBackColor = true;
+            this.button6.Click += new System.EventHandler(this.button6_Click);
+            // 
+            // label23
+            // 
+            this.label23.AutoSize = true;
+            this.label23.Location = new System.Drawing.Point(8, 258);
+            this.label23.Name = "label23";
+            this.label23.Size = new System.Drawing.Size(181, 17);
+            this.label23.TabIndex = 13;
+            this.label23.Text = "Chiptunes Library Location:";
+            // 
+            // textBox3
+            // 
+            this.textBox3.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.textBox3.Location = new System.Drawing.Point(11, 278);
+            this.textBox3.Name = "textBox3";
+            this.textBox3.ReadOnly = true;
+            this.textBox3.Size = new System.Drawing.Size(284, 22);
+            this.textBox3.TabIndex = 12;
+            this.textBox3.Click += new System.EventHandler(this.textBox3_Click);
+            this.textBox3.TextChanged += new System.EventHandler(this.textBox3_TextChanged);
             // 
             // checkBox6
             // 
@@ -452,7 +488,7 @@
             // checkBox3
             // 
             this.checkBox3.AutoSize = true;
-            this.checkBox3.Location = new System.Drawing.Point(10, 234);
+            this.checkBox3.Location = new System.Drawing.Point(11, 234);
             this.checkBox3.Name = "checkBox3";
             this.checkBox3.Size = new System.Drawing.Size(430, 21);
             this.checkBox3.TabIndex = 8;
@@ -474,7 +510,7 @@
             // checkBox1
             // 
             this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(10, 207);
+            this.checkBox1.Location = new System.Drawing.Point(11, 207);
             this.checkBox1.Name = "checkBox1";
             this.checkBox1.Size = new System.Drawing.Size(412, 21);
             this.checkBox1.TabIndex = 6;
@@ -508,9 +544,9 @@
             this.label22.AutoSize = true;
             this.label22.Location = new System.Drawing.Point(8, 76);
             this.label22.Name = "label22";
-            this.label22.Size = new System.Drawing.Size(190, 17);
+            this.label22.Size = new System.Drawing.Size(194, 17);
             this.label22.TabIndex = 3;
-            this.label22.Text = "Downscaled Library Location";
+            this.label22.Text = "Downscaled Library Location:";
             // 
             // button4
             // 
@@ -527,9 +563,9 @@
             this.label21.AutoSize = true;
             this.label21.Location = new System.Drawing.Point(8, 4);
             this.label21.Name = "label21";
-            this.label21.Size = new System.Drawing.Size(150, 17);
+            this.label21.Size = new System.Drawing.Size(154, 17);
             this.label21.TabIndex = 1;
-            this.label21.Text = "Music Library Location";
+            this.label21.Text = "Music Library Location:";
             // 
             // textBox1
             // 
@@ -615,6 +651,9 @@
         private System.Windows.Forms.CheckBox checkBox5;
         private System.Windows.Forms.CheckBox checkBox4;
         private System.Windows.Forms.CheckBox checkBox6;
+        private System.Windows.Forms.Button button6;
+        private System.Windows.Forms.Label label23;
+        private System.Windows.Forms.TextBox textBox3;
     }
 }
 
