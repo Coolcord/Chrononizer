@@ -377,19 +377,31 @@ namespace Chrononizer
 
         private void button2_Click(object sender, EventArgs e)
         {
+            Stopwatch time = new Stopwatch();
+            time.Start();
+
             System.Media.SoundPlayer aSoundPlayer = new System.Media.SoundPlayer(Chrononizer.Properties.Resources.ChronoBoost);
             aSoundPlayer.Play();  //Plays the sound in a new thread
 
             FileSyncOptions options = FileSyncOptions.None;
             FileSyncScopeFilter filter = new FileSyncScopeFilter();
             string chiptunesLocation = ChiptunesLibrary.Substring(0, ChiptunesLibrary.Length - 1);
-            filter.SubdirectoryExcludes.Add(DownscaledLibrary);
+            //filter.FileNameExcludes.Add("*.flac");
+            filter.SubdirectoryExcludes.Add(DownscaledLibrary.Substring(0, DownscaledLibrary.Length - 1));
             filter.SubdirectoryExcludes.Add(chiptunesLocation);
+
+            FileSyncScopeFilter filterFLAC = new FileSyncScopeFilter();
+            filterFLAC.FileNameIncludes.Add("*.flac");
+            filterFLAC.SubdirectoryExcludes.Add(DownscaledLibrary);
+
+            FileSyncScopeFilter filterDownscaled = new FileSyncScopeFilter();
+            filterDownscaled.FileNameIncludes.Add("*.flac");
 
             string sourceRootPath = Path.GetFullPath("E:\\SynchronizationTests\\Base\\");
             string destinationRootPath = Path.GetFullPath("E:\\SynchronizationTests\\PMP\\");
             Guid sourceId = new Guid("FE7ABA94-F64B-4985-B021-4DB7D829A87C");
             Guid destinationId = new Guid("96C7D297-3926-486B-B455-FD19E7E4CDB8");
+            Guid downscaledId = new Guid("0F30371A-52A2-4368-8249-B8D32FA10729");
 
             FileSyncProvider path1Provider = new FileSyncProvider(sourceId, sourceRootPath, filter, options);
             FileSyncProvider path2Provider = new FileSyncProvider(destinationId, destinationRootPath, filter, options);
@@ -400,7 +412,6 @@ namespace Chrononizer
             manager.Direction = SyncDirectionOrder.Upload;
             manager.Synchronize();
 
-            
             if (File.Exists(destinationRootPath + "filesync.metadata"))
                 File.Delete(destinationRootPath + "filesync.metadata");
             path2Provider = new FileSyncProvider(destinationId, destinationRootPath, filter, options);
@@ -409,19 +420,96 @@ namespace Chrononizer
             manager.RemoteProvider = path2Provider;
             manager.Direction = SyncDirectionOrder.Upload;
             manager.Synchronize();
-            
+
+            /*
+            path1Provider = new FileSyncProvider(sourceId, sourceRootPath, filterFLAC, options);
+            manager = new SyncOrchestrator();
+            manager.LocalProvider = path1Provider;
+            manager.RemoteProvider = path2Provider;
+            manager.Direction = SyncDirectionOrder.Upload;
+            manager.Synchronize();
+            */
+
+            /*
+            path1Provider = new FileSyncProvider(downscaledId, DownscaledLibrary, filterDownscaled, options);
+            manager = new SyncOrchestrator();
+            manager.LocalProvider = path1Provider;
+            manager.RemoteProvider = path2Provider;
+            manager.Direction = SyncDirectionOrder.Upload;
+            manager.Synchronize();
+            */
 
             RemoveEmptyDirectories(destinationRootPath); //remove empty directories
             if (File.Exists(destinationRootPath + "filesync.metadata")) //hide the filesync.metadata in the music library
                 File.SetAttributes(destinationRootPath + "filesync.metadata", FileAttributes.Hidden | FileAttributes.System);
             if (File.Exists(sourceRootPath + "filesync.metadata")) //hide the filesync.metadata in the music library
                 File.SetAttributes(sourceRootPath + "filesync.metadata", FileAttributes.Hidden | FileAttributes.System);
+
+            time.Stop();
+            long ticks = time.ElapsedMilliseconds;
+            button2.Text = ticks.ToString();
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
-            System.Media.SoundPlayer aSoundPlayer = new System.Media.SoundPlayer(Chrononizer.Properties.Resources.ChronoBoost);
+            Stopwatch time = new Stopwatch();
+            time.Start();
+
+            System.Media.SoundPlayer aSoundPlayer = new System.Media.SoundPlayer(Chrononizer.Properties.Resources.ScannerSweep);
             aSoundPlayer.Play();  //Plays the sound in a new thread
+
+            string sourceRootPath = Path.GetFullPath("E:\\SynchronizationTests\\Base\\");
+            string destinationRootPath = Path.GetFullPath("E:\\SynchronizationTests\\PMP\\");
+
+            long flac, mp3, wma, m4a, ogg, wav, xm, mod, nsf, audioTotal, chiptunesTotal, total, dFlac;
+            flac = mp3 = wma = m4a = ogg = wav = xm = mod = nsf = audioTotal = chiptunesTotal = total = dFlac = 0;
+            double dSize, allSize, s1;
+            dSize = allSize = s1 = 0;
+
+            //s1 = GetDirectorySize(MusicLibrary, 0, ref flac, ref mp3, ref wma, ref m4a, ref ogg, ref wav, ref xm, ref mod, ref nsf);
+            //dSize = GetDownscaledSize(DownscaledLibrary, dSize, ref dFlac); //recurse through the downscaled files
+            SynchronizePMP(sourceRootPath, destinationRootPath);
+
+            checkedFiles.Clear();
+
+            time.Stop();
+            long ticks = time.ElapsedMilliseconds;
+            button3.Text = ticks.ToString();
+        }
+
+        private void SynchronizePMP(string src, string dst)
+        {
+            if (!Directory.Exists(src))
+            {
+                return;
+            }
+            string[] files = Directory.GetFiles(src, "*.*"); //get array of all file names
+            string[] folders = Directory.GetDirectories(src); //get array of all folder names for this directory
+
+            foreach (string name in files)
+            {
+                string check = dst + Path.GetFileName(name);
+                if (Path.GetFileName(name) == "filesync.metadata")
+                    continue;
+                if (File.Exists(check))
+                {
+                    DateTime lastWriteTimeSrc = File.GetLastWriteTime(name);
+                    DateTime lastWriteTimeDst = File.GetLastWriteTime(check);
+                    if (lastWriteTimeSrc > lastWriteTimeDst)
+                    {
+                        File.Copy(name, check);
+                    }
+                }
+                else
+                {
+                    //File.Copy(name, check);
+                }
+            }
+            foreach (string name in folders)
+            {
+                Directory.GetCurrentDirectory();
+                SynchronizePMP(name, dst + Path.GetDirectoryName(name));
+            }
         }
 
         private void listBox1_DoubleClick(object sender, EventArgs e)
