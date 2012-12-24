@@ -10,9 +10,9 @@ using System.Text;
 using System.Windows.Forms;
 using System.Security.Principal;
 using System.Media;
+using Microsoft.Synchronization;
+using Microsoft.Synchronization.Files;
 using Luminescence.Xiph;
-//using NAudio.Wave;
-//using BigMansStuff.NAudio.FLAC;
 
 namespace Chrononizer
 {
@@ -26,6 +26,7 @@ namespace Chrononizer
         Boolean RemoveUnsupported = true;
         Boolean RemoveUnnecessary = true;
         Boolean RemoveEmpty = true;
+        Dictionary<string, Boolean> checkedFiles = null;
 
         public Form1()
         {
@@ -89,6 +90,7 @@ namespace Chrononizer
             aSoundPlayer.Play();  //Plays the sound in a new thread
 
             listBox1.Items.Clear(); //clear out previous items
+            checkedFiles = new Dictionary<string, Boolean>();
 
             long flac = 0;
             long mp3 = 0;
@@ -105,10 +107,10 @@ namespace Chrononizer
             double dSize = 0;
             long dFlac = 0;
             double allSize = 0;
+            double s1 = GetDirectorySize(MusicLibrary, 0, ref flac, ref mp3, ref wma, ref m4a, ref ogg, ref wav, ref xm, ref mod, ref nsf);
             dSize = GetDownscaledSize(DownscaledLibrary, dSize, ref dFlac); //recurse through the downscaled files
             if (AutoHandle && Directory.Exists(MusicLibrary) && Directory.Exists(DownscaledLibrary)) //set the file attributes if auto handling is on
                 File.SetAttributes(DownscaledLibrary, FileAttributes.Hidden | FileAttributes.System);
-            double s1 = GetDirectorySize(MusicLibrary, 0, ref flac, ref mp3, ref wma, ref m4a, ref ogg, ref wav, ref xm, ref mod, ref nsf);
             label1.Text = "Library: " + BytesToSize(s1); //display the size
             label2.Text = "FLAC: " + Plural(flac, "file"); //display the number of flac songs
             label3.Text = "MP3: " + Plural(mp3, "file"); //display the number of mp3 songs
@@ -134,6 +136,7 @@ namespace Chrononizer
                 listBox1.Items.Add("No files need downscaling!");
             }
             CheckSize.Text = "Rescan Library";
+            checkedFiles.Clear();
         }
 
         static string Plural(long value, string units)
@@ -210,6 +213,7 @@ namespace Chrononizer
                     Luminescence.Xiph.FlacTagger flacTag = new FlacTagger(name); //get the flac's tag
                     if (flacTag.BitsPerSample > 16 || flacTag.SampleRate > 48000)
                     {
+                        checkedFiles.Add(name, false); //mark that it has been checked and is proper
                         string downscaledFile = DownscaledLibrary + name.Substring(MusicLibrary.Length);
                         if (File.Exists(downscaledFile))
                         {
@@ -217,10 +221,13 @@ namespace Chrononizer
                             if (flacTag.BitsPerSample > 16 || flacTag.SampleRate > 48000)
                             {
                                 listBox1.Items.Add(name); //if it does not meet the minimum requirements, it needs to be downscaled
+                                checkedFiles.Add(downscaledFile, false); //mark that it has been checked and is not proper
                             }
+                            else checkedFiles.Add(downscaledFile, true); //mark that it has been checked and is proper
                         }
                         else listBox1.Items.Add(name); //no downscaled file exists
                     }
+                    else checkedFiles.Add(name, true); //mark that it has been checked and is not proper
                     flacTag = null; //make sure it is not accessed again
                 }
                 else if (ext == ".mp3")
@@ -281,19 +288,15 @@ namespace Chrononizer
                 //increment count based upon file type and extension type
                 if (ext == ".flac")
                 {
-                    string defaultFile = MusicLibrary + name.Substring(DownscaledLibrary.Length);
-                    Luminescence.Xiph.FlacTagger flacTag = new FlacTagger(name); //get the flac's tag
-                    if (!File.Exists(defaultFile))
+                    Boolean valid = false;
+                    Boolean scanned = false;
+                    scanned = checkedFiles.TryGetValue(name, out valid);
+                    if (scanned && valid)
                     {
-                        if (RemoveUnnecessary)
-                            File.Delete(name); //flac's upscaled file does not exist and is unnecessary
-                        else
-                        {
-                            num += info.Length; //add to the size
-                            flac++;
-                        }
+                        num += info.Length; //add to the size
+                        flac++;
                     }
-                    else if (flacTag.BitsPerSample > 16 || flacTag.SampleRate > 48000)
+                    else if (scanned && !valid)
                     {
                         if (RemoveImproper)
                             File.Delete(name); //downscaled flac not necessary
@@ -306,24 +309,66 @@ namespace Chrononizer
                     }
                     else
                     {
-                        flacTag = new FlacTagger(defaultFile);
-                        if (flacTag.BitsPerSample > 16 || flacTag.SampleRate > 48000)
+                        string defaultFile = MusicLibrary + name.Substring(DownscaledLibrary.Length);
+                        valid = false;
+                        scanned = false;
+                        scanned = checkedFiles.TryGetValue(name, out valid);
+                        checkedFiles.TryGetValue(defaultFile, out valid);
+                        if (scanned && !valid)
                         {
                             num += info.Length; //add to the size
-                            flac++; //flac is ok to use
+                            flac++;
+                        }
+                        else if (scanned && valid)
+                        {
+                            if (RemoveUnnecessary) File.Delete(name); //file is unnecessary
                         }
                         else
                         {
-                            if (RemoveUnnecessary)
-                                File.Delete(name); //flac did not need downscaling and is unnecessary
+                            Luminescence.Xiph.FlacTagger flacTag = new FlacTagger(name); //get the flac's tag
+                            if (!File.Exists(defaultFile))
+                            {
+                                if (RemoveUnnecessary)
+                                    File.Delete(name); //flac's upscaled file does not exist and is unnecessary
+                                else
+                                {
+                                    num += info.Length; //add to the size
+                                    flac++;
+                                }
+                            }
+                            else if (flacTag.BitsPerSample > 16 || flacTag.SampleRate > 48000)
+                            {
+                                if (RemoveImproper)
+                                    File.Delete(name); //downscaled flac not necessary
+                                else
+                                {
+                                    if (ShowFiles) listBox1.Items.Add(name); //show the file in the list
+                                    num += info.Length; //add to the size
+                                    flac++;
+                                }
+                            }
                             else
                             {
-                                num += info.Length; //add to the size
-                                flac++;
+                                flacTag = new FlacTagger(defaultFile);
+                                if (flacTag.BitsPerSample > 16 || flacTag.SampleRate > 48000)
+                                {
+                                    num += info.Length; //add to the size
+                                    flac++; //flac is ok to use
+                                }
+                                else
+                                {
+                                    if (RemoveUnnecessary)
+                                        File.Delete(name); //flac did not need downscaling and is unnecessary
+                                    else
+                                    {
+                                        num += info.Length; //add to the size
+                                        flac++;
+                                    }
+                                }
                             }
+                            flacTag = null;
                         }
                     }
-                    flacTag = null;
                 }
                 else if (RemoveUnsupported) File.Delete(name); //remove unsupported files
             }
@@ -350,6 +395,8 @@ namespace Chrononizer
         {
             System.Media.SoundPlayer aSoundPlayer = new System.Media.SoundPlayer(Chrononizer.Properties.Resources.ChronoBoost);
             aSoundPlayer.Play();  //Plays the sound in a new thread
+
+
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -497,81 +544,5 @@ namespace Chrononizer
             Properties.Settings.Default.RemoveEmpty = checkBox6.Checked;
             Properties.Settings.Default.Save();
         }
-
-        /// <summary>
-        /// The Code below is for testing and learning.
-        /// It ultimately serves no purpose.
-        /// </summary>
-
-
-
-
-
-
-
-
-        /*
-        private NAudio.Wave.WaveFileReader waveFile = null;
-        private NAudio.Wave.DirectSoundOut output = null;
-        private BigMansStuff.NAudio.FLAC.FLACFileReader flacFile = null;
-
-        private void DisposeWave()
-        {
-            if (output != null)
-            {
-                if (output.PlaybackState == NAudio.Wave.PlaybackState.Playing) output.Stop();
-                output.Dispose();
-                output = null;
-            }
-            if (waveFile != null)
-            {
-                waveFile.Dispose();
-                waveFile = null;
-            }
-        }
-
-        private void DisposeFLAC()
-        {
-            if (output != null)
-            {
-                if (output.PlaybackState == NAudio.Wave.PlaybackState.Playing) output.Stop();
-                output.Dispose();
-                output = null;
-            }
-            if (flacFile != null)
-            {
-                flacFile.Dispose();
-                flacFile = null;
-            }
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            DisposeWave();
-            DisposeFLAC();
-            OpenFileDialog open = new OpenFileDialog();
-            open.Filter = "FLAC File (*.flac)|*.flac;";
-            if (open.ShowDialog() != DialogResult.OK) return;
-
-            flacFile = new BigMansStuff.NAudio.FLAC.FLACFileReader(open.FileName);
-
-            
-            //OpenFileDialog open = new OpenFileDialog();
-            //open.Filter = "Wave File (*.wav)|*.wav;";
-            //if (open.ShowDialog() != DialogResult.OK) return;
-
-            //waveFile = new NAudio.Wave.WaveFileReader(open.FileName);
-            //output = new NAudio.Wave.DirectSoundOut();
-            //output.Init(new NAudio.Wave.WaveChannel32(wave));
-            //output.Play();
-            
-        }
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-
-        }
-         * 
-         * */
     }
 }
