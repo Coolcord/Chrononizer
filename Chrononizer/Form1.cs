@@ -400,19 +400,16 @@ namespace Chrononizer
             manager.Direction = SyncDirectionOrder.Upload;
             manager.Synchronize();
 
-            /*
+            
             if (File.Exists(destinationRootPath + "filesync.metadata"))
                 File.Delete(destinationRootPath + "filesync.metadata");
-            if (File.Exists(sourceRootPath + "filesync.metadata"))
-                File.Delete(sourceRootPath + "filesync.metadata");
-            path1Provider = new FileSyncProvider(sourceId, sourceRootPath, filter, options);
             path2Provider = new FileSyncProvider(destinationId, destinationRootPath, filter, options);
             manager = new SyncOrchestrator();
             manager.LocalProvider = path1Provider;
             manager.RemoteProvider = path2Provider;
             manager.Direction = SyncDirectionOrder.Upload;
             manager.Synchronize();
-             * */
+            
 
             RemoveEmptyDirectories(destinationRootPath); //remove empty directories
             if (File.Exists(destinationRootPath + "filesync.metadata")) //hide the filesync.metadata in the music library
