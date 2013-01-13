@@ -377,6 +377,9 @@ namespace Chrononizer
 
         private void button2_Click(object sender, EventArgs e)
         {
+
+
+            /*
             Stopwatch time = new Stopwatch();
             time.Start();
 
@@ -421,23 +424,19 @@ namespace Chrononizer
             manager.Direction = SyncDirectionOrder.Upload;
             manager.Synchronize();
 
-            /*
-            path1Provider = new FileSyncProvider(sourceId, sourceRootPath, filterFLAC, options);
-            manager = new SyncOrchestrator();
-            manager.LocalProvider = path1Provider;
-            manager.RemoteProvider = path2Provider;
-            manager.Direction = SyncDirectionOrder.Upload;
-            manager.Synchronize();
-            */
+            //path1Provider = new FileSyncProvider(sourceId, sourceRootPath, filterFLAC, options);
+            //manager = new SyncOrchestrator();
+            //manager.LocalProvider = path1Provider;
+            //manager.RemoteProvider = path2Provider;
+            //manager.Direction = SyncDirectionOrder.Upload;
+            //manager.Synchronize();
 
-            /*
-            path1Provider = new FileSyncProvider(downscaledId, DownscaledLibrary, filterDownscaled, options);
-            manager = new SyncOrchestrator();
-            manager.LocalProvider = path1Provider;
-            manager.RemoteProvider = path2Provider;
-            manager.Direction = SyncDirectionOrder.Upload;
-            manager.Synchronize();
-            */
+            //path1Provider = new FileSyncProvider(downscaledId, DownscaledLibrary, filterDownscaled, options);
+            //manager = new SyncOrchestrator();
+            //manager.LocalProvider = path1Provider;
+            //manager.RemoteProvider = path2Provider;
+            //manager.Direction = SyncDirectionOrder.Upload;
+            //manager.Synchronize();
 
             RemoveEmptyDirectories(destinationRootPath); //remove empty directories
             if (File.Exists(destinationRootPath + "filesync.metadata")) //hide the filesync.metadata in the music library
@@ -448,6 +447,7 @@ namespace Chrononizer
             time.Stop();
             long ticks = time.ElapsedMilliseconds;
             button2.Text = ticks.ToString();
+            */
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -458,58 +458,112 @@ namespace Chrononizer
             System.Media.SoundPlayer aSoundPlayer = new System.Media.SoundPlayer(Chrononizer.Properties.Resources.ScannerSweep);
             aSoundPlayer.Play();  //Plays the sound in a new thread
 
-            string sourceRootPath = Path.GetFullPath("E:\\SynchronizationTests\\Base\\");
-            string destinationRootPath = Path.GetFullPath("E:\\SynchronizationTests\\PMP\\");
-
-            long flac, mp3, wma, m4a, ogg, wav, xm, mod, nsf, audioTotal, chiptunesTotal, total, dFlac;
-            flac = mp3 = wma = m4a = ogg = wav = xm = mod = nsf = audioTotal = chiptunesTotal = total = dFlac = 0;
-            double dSize, allSize, s1;
-            dSize = allSize = s1 = 0;
-
-            //s1 = GetDirectorySize(MusicLibrary, 0, ref flac, ref mp3, ref wma, ref m4a, ref ogg, ref wav, ref xm, ref mod, ref nsf);
-            //dSize = GetDownscaledSize(DownscaledLibrary, dSize, ref dFlac); //recurse through the downscaled files
-            SynchronizePMP(sourceRootPath, destinationRootPath);
-
-            checkedFiles.Clear();
+            Sync(MusicLibrary, "E:\\SynchronizationTests\\PMP");
+            //SynchronizePMP(MusicLibrary, "E:\\SynchronizationTests\\PMP");
 
             time.Stop();
             long ticks = time.ElapsedMilliseconds;
             button3.Text = ticks.ToString();
         }
 
-        private void SynchronizePMP(string src, string dst)
+        public static void Sync(string sourcePath, string destinationPath)
         {
-            if (!Directory.Exists(src))
-            {
-                return;
-            }
-            string[] files = Directory.GetFiles(src, "*.*"); //get array of all file names
-            string[] folders = Directory.GetDirectories(src); //get array of all folder names for this directory
+            bool dirExisted = DirExists(destinationPath);
 
-            foreach (string name in files)
+            //get the source files
+            string[] srcFiles = Directory.GetFiles(sourcePath);
+            foreach (string sourceFile in srcFiles)
             {
-                string check = dst + Path.GetFileName(name);
-                if (Path.GetFileName(name) == "filesync.metadata")
-                    continue;
-                if (File.Exists(check))
+                FileInfo sourceInfo = new FileInfo(sourceFile);
+                string destFile = Path.Combine(destinationPath, sourceInfo.Name);
+                if (!dirExisted && File.Exists(destFile))
                 {
-                    DateTime lastWriteTimeSrc = File.GetLastWriteTime(name);
-                    DateTime lastWriteTimeDst = File.GetLastWriteTime(check);
-                    if (lastWriteTimeSrc > lastWriteTimeDst)
+                    FileInfo destInfo = new FileInfo(destFile);
+                    if (sourceInfo.LastWriteTime > destInfo.LastWriteTime)
                     {
-                        File.Copy(name, check);
+                        //file is newer, so copy it
+                        File.Copy(sourceFile, Path.Combine(destinationPath, sourceInfo.Name), true);
                     }
                 }
                 else
                 {
-                    //File.Copy(name, check);
+                    File.Copy(sourceFile, Path.Combine(destinationPath, sourceInfo.Name));
                 }
             }
-            foreach (string name in folders)
+
+            DeleteOldDestinationFiles(srcFiles, destinationPath);
+
+            //now process the directories if exist
+            string[] dirs = Directory.GetDirectories(sourcePath);
+            DeleteOldDestinationDirectories(dirs, destinationPath);
+            foreach (string dir in dirs)
             {
-                Directory.GetCurrentDirectory();
-                SynchronizePMP(name, dst + Path.GetDirectoryName(name));
+                DirectoryInfo dirInfo = new DirectoryInfo(dir);
+                //recursive do the directories
+                Sync(dir, Path.Combine(destinationPath, dirInfo.Name));
             }
+        }
+
+        private static bool DirExists(string path)
+        {
+            //create destination directory if not exist
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        private static void DeleteOldDestinationFiles(string[] sourceFiles, string destinationPath)
+        {
+            //get the destination files
+            string[] dstFiles = Directory.GetFiles(destinationPath);
+
+            foreach (string dstFile in dstFiles)
+            {
+                FileInfo f = new FileInfo(dstFile);
+                string[] found = Array.FindAll(sourceFiles, str => GetFileName(str).Equals(f.Name));
+
+                if (found.Length == 0)
+                {
+                    //delete file if not found in destination
+                    File.Delete(dstFile);
+                }
+            }
+        }
+
+        private static void DeleteOldDestinationDirectories(string[] sourceDirectories, string destinationPath)
+        {
+            //get the destination files
+            string[] dstDirectories = Directory.GetDirectories(destinationPath);
+
+            foreach (string dstDirectory in dstDirectories)
+            {
+                FileInfo f = new FileInfo(dstDirectory);
+                string[] found = Array.FindAll(sourceDirectories, str => GetDirectoryName(str).Equals(f.Name));
+
+                if (found.Length == 0)
+                {
+                    //delete file if not found in destination
+                    Directory.Delete(dstDirectory, true);
+                }
+            }
+        }
+
+        private static string GetFileName(string path)
+        {
+            FileInfo i = new FileInfo(path);
+            return i.Name;
+        }
+
+        private static string GetDirectoryName(string path)
+        {
+            FileInfo i = new FileInfo(path);
+            return i.Name;
         }
 
         private void listBox1_DoubleClick(object sender, EventArgs e)
