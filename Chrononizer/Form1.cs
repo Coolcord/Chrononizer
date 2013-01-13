@@ -21,6 +21,7 @@ namespace Chrononizer
         private string MusicLibrary = " ";
         private string DownscaledLibrary = " ";
         private string ChiptunesLibrary = " ";
+        Boolean EnableChiptunes = true;
         Boolean AutoHandle = true;
         Boolean RemoveImproper = true;
         Boolean ShowFiles = false;
@@ -51,6 +52,7 @@ namespace Chrononizer
                 checkBox4.Checked = Properties.Settings.Default.RemoveUnsupported;
                 checkBox5.Checked = Properties.Settings.Default.RemoveUnnecessary;
                 checkBox6.Checked = Properties.Settings.Default.RemoveEmpty;
+                checkBox7.Checked = Properties.Settings.Default.EnableChiptunes;
             }
             else
             {
@@ -72,6 +74,7 @@ namespace Chrononizer
                 checkBox4.Checked = Properties.Settings.Default.RemoveUnsupported;
                 checkBox5.Checked = Properties.Settings.Default.RemoveUnnecessary;
                 checkBox6.Checked = Properties.Settings.Default.RemoveEmpty;
+                checkBox7.Checked = Properties.Settings.Default.EnableChiptunes;
 
                 Properties.Settings.Default.Save();
             }
@@ -86,6 +89,7 @@ namespace Chrononizer
             RemoveUnsupported = checkBox4.Checked;
             RemoveUnnecessary = checkBox5.Checked;
             RemoveEmpty = checkBox6.Checked;
+            EnableChiptunes = checkBox7.Checked;
         }
 
         private void CheckSize_Click(object sender, EventArgs e)
@@ -459,8 +463,10 @@ namespace Chrononizer
             DeleteOldDestinationDirectories(dirs, destinationPath);
             foreach (string dir in dirs)
             {
-                if (dir == DownscaledLibrary.Substring(0, DownscaledLibrary.Length - 1) || dir == ChiptunesLibrary.Substring(0, ChiptunesLibrary.Length - 1))
-                    continue;
+                if (dir == DownscaledLibrary.Substring(0, DownscaledLibrary.Length - 1))
+                    continue; //skip downscaled folder
+                if (EnableChiptunes && dir == ChiptunesLibrary.Substring(0, ChiptunesLibrary.Length - 1))
+                    continue; //skip chiptunes folder
                 DirectoryInfo dirInfo = new DirectoryInfo(dir);
                 //recursive do the directories
                 SyncPMP(dir, Path.Combine(destinationPath, dirInfo.Name));
@@ -724,6 +730,25 @@ namespace Chrononizer
         {
             RemoveEmpty = checkBox6.Checked;
             Properties.Settings.Default.RemoveEmpty = checkBox6.Checked;
+            Properties.Settings.Default.Save();
+        }
+
+        private void checkBox7_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBox7.Checked)
+            {
+                label23.Enabled = true;
+                textBox3.Enabled = true;
+                button6.Enabled = true;
+            }
+            else
+            {
+                label23.Enabled = false;
+                textBox3.Enabled = false;
+                button6.Enabled = false;
+            }
+            EnableChiptunes = checkBox7.Checked;
+            Properties.Settings.Default.EnableChiptunes = checkBox7.Checked;
             Properties.Settings.Default.Save();
         }
     }

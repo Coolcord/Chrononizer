@@ -142,5 +142,17 @@ namespace Chrononizer.Properties {
                 this["ChiptunesLibrary"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool EnableChiptunes {
+            get {
+                return ((bool)(this["EnableChiptunes"]));
+            }
+            set {
+                this["EnableChiptunes"] = value;
+            }
+        }
     }
 }
