@@ -466,7 +466,7 @@ namespace Chrononizer
             button3.Text = ticks.ToString();
         }
 
-        public static void Sync(string sourcePath, string destinationPath)
+        public void Sync(string sourcePath, string destinationPath)
         {
             bool dirExisted = DirExists(destinationPath);
 
@@ -498,13 +498,15 @@ namespace Chrononizer
             DeleteOldDestinationDirectories(dirs, destinationPath);
             foreach (string dir in dirs)
             {
+                if (dir == DownscaledLibrary.Substring(0, DownscaledLibrary.Length-1))
+                    continue;
                 DirectoryInfo dirInfo = new DirectoryInfo(dir);
                 //recursive do the directories
                 Sync(dir, Path.Combine(destinationPath, dirInfo.Name));
             }
         }
 
-        private static bool DirExists(string path)
+        private bool DirExists(string path)
         {
             //create destination directory if not exist
             if (!Directory.Exists(path))
