@@ -356,24 +356,30 @@ namespace Chrononizer
             Progress.Increment(1);
             */
 
-            if (PMPSyncBW.IsBusy != true)
+            if (!PMPSyncBW.IsBusy && !LaptopSyncBW.IsBusy)
             {
                 PMPSyncBW.RunWorkerAsync();
+                LaptopSyncBW.RunWorkerAsync();
                 button1.Text = "Running...";
             }
-
-            //PrepareSyncPMP();
-            //PrepareSyncLaptop();
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            PrepareSyncPMP();
+            if (!PMPSyncBW.IsBusy && !LaptopSyncBW.IsBusy)
+            {
+                PMPSyncBW.RunWorkerAsync();
+                button2.Text = "Running...";
+            }
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
-            PrepareSyncLaptop();
+            if (!PMPSyncBW.IsBusy && !LaptopSyncBW.IsBusy)
+            {
+                LaptopSyncBW.RunWorkerAsync();
+                button3.Text = "Running...";
+            }
         }
 
         public void ShowSyncStatus(Boolean visible)
@@ -785,7 +791,13 @@ namespace Chrononizer
 
         private void PMPSyncBW_DoWork(object sender, DoWorkEventArgs e)
         {
-            Thread.Sleep(1000);
+            PrepareSyncPMP();
+            this.BeginInvoke(new MethodInvoker(() =>
+            {
+                button2.Text = "Synchronize PMP";
+                if (LaptopSyncBW.IsBusy == false)
+                    button1.Text = "Synchronize Both";
+            }));
         }
 
         private void ScanBW_DoWork(object sender, DoWorkEventArgs e)
@@ -837,7 +849,13 @@ namespace Chrononizer
 
         private void LaptopSyncBW_DoWork(object sender, DoWorkEventArgs e)
         {
-            
+            PrepareSyncLaptop();
+            this.BeginInvoke (new MethodInvoker(() => 
+            {
+                button3.Text = "Synchronize Laptop";
+                if (PMPSyncBW.IsBusy == false)
+                    button1.Text = "Synchronize Both";
+            }));
         }
     }
 }
