@@ -10,6 +10,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.Security.Principal;
 using System.Media;
+using System.Windows.Forms;
 using Microsoft.Synchronization;
 using Microsoft.Synchronization.Files;
 using Luminescence.Xiph;
@@ -381,8 +382,53 @@ namespace Chrononizer
             System.Media.SoundPlayer aSoundPlayer = new System.Media.SoundPlayer(Chrononizer.Properties.Resources.ChronoBoost);
             aSoundPlayer.Play();  //Plays the sound in a new thread
 
+            DirectoryInfo PMPDrive = null;
+            Boolean PMPFound = false;
+            var drives = DriveInfo.GetDrives();
+            foreach (var drive in drives)
+            {
+                try
+                {
+                    if (drive.VolumeLabel == "X7 HDD")
+                    {
+                        PMPDrive = drive.RootDirectory;
+                        if (!Directory.Exists(PMPDrive + "System\\") || !Directory.Exists(PMPDrive + "Music\\") || !File.Exists(PMPDrive + "DID.bin") || !File.Exists(PMPDrive + "nonce.bin"))
+                            PMPFound = false; //PMP is missing some core system files
+                        else
+                            PMPFound = true; //PMP found
+                        break;
+                    }
+                }
+                catch (Exception ex) {}
+            }
+
+            ProgressBar Progress = progressBar1;
+            Progress.Maximum = 5;
+            Progress.Value = 0;
+            Progress.Increment(1);
+            Progress.Increment(1);
+            Progress.Increment(1);
+            Progress.Increment(1);
+            Progress.Increment(1);
+
+            new Form2().Show();
+
+            if (PMPFound)
+            {
+                DialogResult result = MessageBox.Show("PMP found on " + PMPDrive + "\nWould you like to sync to this device?", "Device Found!", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (result == DialogResult.Yes)
+                {
+                    SyncPMP(MusicLibrary, PMPDrive + "Music");
+                    MessageBox.Show("Done!");
+                }
+            }
+            else MessageBox.Show("PMP could not be found! Make sure that it is connected!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+
+            /*
             SyncPMP(MusicLibrary, "E:\\SynchronizationTests\\PMP"); //fist PMP
             Sync(MusicLibrary, "E:\\SynchronizationTests\\PMP"); //then laptop
+            */
 
             time.Stop();
             long ticks = time.ElapsedMilliseconds;
