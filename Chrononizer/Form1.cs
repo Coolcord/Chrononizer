@@ -384,16 +384,19 @@ namespace Chrononizer
 
         public void ShowSyncStatus(Boolean visible)
         {
-            if (visible)
+            this.BeginInvoke(new MethodInvoker(() =>
             {
-                panel1.Visible = true;
-                tabControl1.Visible = false;
-            }
-            else
-            {
-                tabControl1.Visible = true;
-                panel1.Visible = false;
-            }
+                if (visible)
+                {
+                    panel1.Visible = true;
+                    tabControl1.Visible = false;
+                }
+                else
+                {
+                    tabControl1.Visible = true;
+                    panel1.Visible = false;
+                }
+            }));
         }
 
         public void PrepareSyncPMP()
