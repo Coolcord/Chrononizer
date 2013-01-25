@@ -10,7 +10,6 @@ using System.Text;
 using System.Windows.Forms;
 using System.Security.Principal;
 using System.Media;
-using System.Windows.Forms;
 using Microsoft.Synchronization;
 using Microsoft.Synchronization.Files;
 using Luminescence.Xiph;
@@ -424,6 +423,20 @@ namespace Chrononizer
             button3.Text = ticks.ToString();
         }
 
+        public void ShowSyncStatus(Boolean visible)
+        {
+            if (visible)
+            {
+                panel1.Visible = true;
+                tabControl1.Visible = false;
+            }
+            else
+            {
+                tabControl1.Visible = true;
+                panel1.Visible = false;
+            }
+        }
+
         public void PrepareSyncPMP()
         {
             DirectoryInfo PMPDrive = null;
@@ -453,8 +466,10 @@ namespace Chrononizer
                 {
                     System.Media.SoundPlayer aSoundPlayer = new System.Media.SoundPlayer(Chrononizer.Properties.Resources.ChronoBoost);
                     aSoundPlayer.Play();  //Plays the sound in a new thread
+                    ShowSyncStatus(true);
                     SyncPMP(MusicLibrary, PMPDrive + "Music");
                     MessageBox.Show("Done!");
+                    ShowSyncStatus(false);
                 }
             }
             else MessageBox.Show("PMP could not be found! Make sure that it is connected!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -472,8 +487,10 @@ namespace Chrononizer
                 {
                     System.Media.SoundPlayer aSoundPlayer = new System.Media.SoundPlayer(Chrononizer.Properties.Resources.ChronoBoost);
                     aSoundPlayer.Play();  //Plays the sound in a new thread
+                    ShowSyncStatus(true);
                     Sync(MusicLibrary, "\\\\" + LaptopName + "\\Users\\" + LaptopUsername + "\\Music");
                     MessageBox.Show("Done!");
+                    ShowSyncStatus(false);
                 }
             }
             else MessageBox.Show("Laptop is not connected! Make sure that it is mounted properly!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);

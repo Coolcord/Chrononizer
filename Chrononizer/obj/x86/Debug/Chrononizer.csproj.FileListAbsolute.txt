@@ -9,4 +9,3 @@ d:\my documents\visual studio 2010\Projects\Chrononizer\Chrononizer\obj\x86\Debu
 d:\my documents\visual studio 2010\Projects\Chrononizer\Chrononizer\obj\x86\Debug\GenerateResource.write.1.tlog
 d:\my documents\visual studio 2010\Projects\Chrononizer\Chrononizer\obj\x86\Debug\Chrononizer.exe
 d:\my documents\visual studio 2010\Projects\Chrononizer\Chrononizer\obj\x86\Debug\Chrononizer.pdb
-d:\my documents\visual studio 2010\Projects\Chrononizer\Chrononizer\obj\x86\Debug\Chrononizer.Form2.resources
