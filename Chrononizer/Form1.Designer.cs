@@ -30,6 +30,10 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.button3 = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
@@ -72,17 +76,17 @@
             this.button4 = new System.Windows.Forms.Button();
             this.label21 = new System.Windows.Forms.Label();
             this.textBox1 = new System.Windows.Forms.TextBox();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.button3 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
             this.listBox2 = new System.Windows.Forms.ListBox();
             this.label26 = new System.Windows.Forms.Label();
             this.label25 = new System.Windows.Forms.Label();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.label24 = new System.Windows.Forms.Label();
+            this.PMPSyncBW = new System.ComponentModel.BackgroundWorker();
+            this.ScanBW = new System.ComponentModel.BackgroundWorker();
+            this.LaptopSyncBW = new System.ComponentModel.BackgroundWorker();
             this.tabControl1.SuspendLayout();
+            this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -90,7 +94,6 @@
             this.splitContainer1.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
             this.tabPage3.SuspendLayout();
-            this.tabPage1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -104,6 +107,49 @@
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(785, 556);
             this.tabControl1.TabIndex = 8;
+            // 
+            // tabPage1
+            // 
+            this.tabPage1.Controls.Add(this.button3);
+            this.tabPage1.Controls.Add(this.button2);
+            this.tabPage1.Controls.Add(this.button1);
+            this.tabPage1.Location = new System.Drawing.Point(4, 25);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage1.Size = new System.Drawing.Size(777, 527);
+            this.tabPage1.TabIndex = 0;
+            this.tabPage1.Text = "Synchronize";
+            this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(392, 276);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(376, 151);
+            this.button3.TabIndex = 2;
+            this.button3.Text = "Synchronize Laptop";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
+            // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(11, 276);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(376, 151);
+            this.button2.TabIndex = 1;
+            this.button2.Text = "Synchronize PMP";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(11, 65);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(758, 182);
+            this.button1.TabIndex = 0;
+            this.button1.Text = "Synchronize Both";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // tabPage2
             // 
@@ -558,49 +604,6 @@
             this.textBox1.Click += new System.EventHandler(this.textBox1_Click);
             this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
-            // tabPage1
-            // 
-            this.tabPage1.Controls.Add(this.button3);
-            this.tabPage1.Controls.Add(this.button2);
-            this.tabPage1.Controls.Add(this.button1);
-            this.tabPage1.Location = new System.Drawing.Point(4, 25);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(777, 527);
-            this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "Synchronize";
-            this.tabPage1.UseVisualStyleBackColor = true;
-            // 
-            // button3
-            // 
-            this.button3.Location = new System.Drawing.Point(392, 276);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(376, 151);
-            this.button3.TabIndex = 2;
-            this.button3.Text = "Synchronize Laptop";
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
-            // 
-            // button2
-            // 
-            this.button2.Location = new System.Drawing.Point(11, 276);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(376, 151);
-            this.button2.TabIndex = 1;
-            this.button2.Text = "Synchronize PMP";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(11, 65);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(758, 182);
-            this.button1.TabIndex = 0;
-            this.button1.Text = "Synchronize Both";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.SystemColors.Window;
@@ -658,6 +661,18 @@
             this.label24.TabIndex = 0;
             this.label24.Text = "Synchronizing...";
             // 
+            // PMPSyncBW
+            // 
+            this.PMPSyncBW.DoWork += new System.ComponentModel.DoWorkEventHandler(this.PMPSyncBW_DoWork);
+            // 
+            // ScanBW
+            // 
+            this.ScanBW.DoWork += new System.ComponentModel.DoWorkEventHandler(this.ScanBW_DoWork);
+            // 
+            // LaptopSyncBW
+            // 
+            this.LaptopSyncBW.DoWork += new System.ComponentModel.DoWorkEventHandler(this.LaptopSyncBW_DoWork);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -672,6 +687,7 @@
             this.Text = "Chrononizer";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.tabControl1.ResumeLayout(false);
+            this.tabPage1.ResumeLayout(false);
             this.tabPage2.ResumeLayout(false);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
@@ -682,7 +698,6 @@
             this.flowLayoutPanel1.PerformLayout();
             this.tabPage3.ResumeLayout(false);
             this.tabPage3.PerformLayout();
-            this.tabPage1.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.ResumeLayout(false);
@@ -744,6 +759,9 @@
         private System.Windows.Forms.Label label26;
         private System.Windows.Forms.Label label25;
         private System.Windows.Forms.ListBox listBox2;
+        private System.ComponentModel.BackgroundWorker PMPSyncBW;
+        private System.ComponentModel.BackgroundWorker LaptopSyncBW;
+        public System.ComponentModel.BackgroundWorker ScanBW;
     }
 }
 

@@ -7,6 +7,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Windows.Forms;
 using System.Security.Principal;
 using System.Media;
@@ -94,46 +95,15 @@ namespace Chrononizer
 
         private void CheckSize_Click(object sender, EventArgs e)
         {
-            System.Media.SoundPlayer aSoundPlayer = new System.Media.SoundPlayer(Chrononizer.Properties.Resources.ScannerSweep);
-            aSoundPlayer.Play();  //Plays the sound in a new thread
-
-            listBox1.Items.Clear(); //clear out previous items
- 
-            long flac, mp3, wma, m4a, ogg, wav, xm, mod, nsf, audioTotal, chiptunesTotal, total, dFlac;
-            flac = mp3 = wma = m4a = ogg = wav = xm = mod = nsf = audioTotal = chiptunesTotal = total = dFlac = 0;
-            double dSize, allSize, s1;
-            dSize = allSize = s1 = 0;
-
-            s1 = GetDirectorySize(MusicLibrary, 0, ref flac, ref mp3, ref wma, ref m4a, ref ogg, ref wav, ref xm, ref mod, ref nsf);
-            dSize = GetDownscaledSize(DownscaledLibrary, dSize, ref dFlac); //recurse through the downscaled files
-            if (AutoHandle && Directory.Exists(MusicLibrary) && Directory.Exists(DownscaledLibrary)) //set the file attributes if auto handling is on
-                File.SetAttributes(DownscaledLibrary, FileAttributes.Hidden | FileAttributes.System);
-            label1.Text = "Library: " + BytesToSize(s1); //display the size
-            label2.Text = "FLAC: " + Plural(flac, "file"); //display the number of flac songs
-            label3.Text = "MP3: " + Plural(mp3, "file"); //display the number of mp3 songs
-            label4.Text = "WMA: " + Plural(wma, "file"); //display the number of wma songs
-            label5.Text = "M4A: " + Plural(m4a, "file"); //display the number of m4a songs
-            label6.Text = "OGG: " + Plural(ogg, "file"); //display the number of ogg songs
-            label7.Text = "WAV: " + Plural(wav, "file"); //display the number of wav songs
-            label8.Text = "XM: " + Plural(xm, "file"); //display the number of xm songs
-            label9.Text = "MOD: " + Plural(mod, "file"); //display the number of mod songs
-            label10.Text = "NSF: " + Plural(nsf, "file"); //display the number of nsf songs
-            audioTotal = flac + mp3 + wma + m4a + ogg + wav;
-            chiptunesTotal = xm + mod + nsf;
-            total = audioTotal + chiptunesTotal;
-            label11.Text = "Library: " + Plural(audioTotal,  "song");
-            label12.Text = "Chiptunes: " + Plural(chiptunesTotal, "song");
-            label13.Text = "Total (without downscaled): " + Plural(total, "song");
-            label15.Text = "Downscaled: " + BytesToSize(dSize);
-            label16.Text = "Downscaled: " + Plural(dFlac, "file");
-            allSize = s1 + dSize;
-            label18.Text = "Total: " + BytesToSize(allSize);
-            if (listBox1.Items.Count == 0)
+            if (ScanBW.IsBusy != true)
             {
-                listBox1.Items.Add("No files need downscaling!");
+                CheckSize.Text = "Scanning...";
+                ScanBW.RunWorkerAsync();
             }
-            CheckSize.Text = "Rescan Library";
-            checkedFiles.Clear();
+            else
+            {
+                CheckSize.Text = "Not done yet!";
+            }
         }
 
         static string Plural(long value, string units)
@@ -217,12 +187,12 @@ namespace Chrononizer
                             flacTag = new FlacTagger(downscaledFile);
                             if (flacTag.BitsPerSample > 16 || flacTag.SampleRate > 48000)
                             {
-                                listBox1.Items.Add(name); //if it does not meet the minimum requirements, it needs to be downscaled
+                                this.BeginInvoke (new MethodInvoker(() => listBox1.Items.Add(name))); //if it does not meet the minimum requirements, it needs to be downscaled
                                 checkedFiles.Add(downscaledFile, false); //mark that it has been checked and is not proper
                             }
                             else checkedFiles.Add(downscaledFile, true); //mark that it has been checked and is proper
                         }
-                        else listBox1.Items.Add(name); //no downscaled file exists
+                        else this.BeginInvoke (new MethodInvoker(() => listBox1.Items.Add(name))); //no downscaled file exists
                     }
                     else checkedFiles.Add(name, true); //mark that it has been checked and is not proper
                     flacTag = null; //make sure it is not accessed again
@@ -275,7 +245,7 @@ namespace Chrononizer
                             File.Delete(name); //downscaled flac not necessary
                         else
                         {
-                            if (ShowFiles) listBox1.Items.Add(name); //show the file in the list
+                            if (ShowFiles) this.BeginInvoke (new MethodInvoker(() => listBox1.Items.Add(name))); //show the file in the list
                             num += info.Length; //add to the size
                             flac++;
                         }
@@ -315,7 +285,7 @@ namespace Chrononizer
                                     File.Delete(name); //downscaled flac not necessary
                                 else
                                 {
-                                    if (ShowFiles) listBox1.Items.Add(name); //show the file in the list
+                                    if (ShowFiles) this.BeginInvoke (new MethodInvoker(() => listBox1.Items.Add(name))); //show the file in the list
                                     num += info.Length; //add to the size
                                     flac++;
                                 }
@@ -375,9 +345,6 @@ namespace Chrononizer
 
         private void button1_Click(object sender, EventArgs e)
         {
-            Stopwatch time = new Stopwatch();
-            time.Start();
-
             /*
             ProgressBar Progress = progressBar1;
             Progress.Maximum = 5;
@@ -389,38 +356,24 @@ namespace Chrononizer
             Progress.Increment(1);
             */
 
-            //new Form2().Show();
+            if (PMPSyncBW.IsBusy != true)
+            {
+                PMPSyncBW.RunWorkerAsync();
+                button1.Text = "Running...";
+            }
 
-            PrepareSyncPMP();
-            PrepareSyncLaptop();
-
-            time.Stop();
-            long ticks = time.ElapsedMilliseconds;
-            button1.Text = ticks.ToString();
+            //PrepareSyncPMP();
+            //PrepareSyncLaptop();
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            Stopwatch time = new Stopwatch();
-            time.Start();
-
             PrepareSyncPMP();
-
-            time.Stop();
-            long ticks = time.ElapsedMilliseconds;
-            button2.Text = ticks.ToString();
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
-            Stopwatch time = new Stopwatch();
-            time.Start();
-
             PrepareSyncLaptop();
-
-            time.Stop();
-            long ticks = time.ElapsedMilliseconds;
-            button3.Text = ticks.ToString();
         }
 
         public void ShowSyncStatus(Boolean visible)
@@ -456,7 +409,7 @@ namespace Chrononizer
                         break;
                     }
                 }
-                catch (Exception ex) { }
+                catch (Exception) { }
             }
 
             if (PMPFound)
@@ -655,6 +608,7 @@ namespace Chrononizer
         private void listBox1_DoubleClick(object sender, EventArgs e)
         {
             int index = listBox1.SelectedIndex; //determine what is selected
+            if (index < 0) return;
             string file = listBox1.Items[index].ToString(); //get the selected filename
             if (file == "No files need downscaling!") return; //don't try to open windows explorer
             if (!File.Exists(file)) //check to see if the file is still in the folder
@@ -827,6 +781,63 @@ namespace Chrononizer
             EnableChiptunes = checkBox7.Checked;
             Properties.Settings.Default.EnableChiptunes = checkBox7.Checked;
             Properties.Settings.Default.Save();
+        }
+
+        private void PMPSyncBW_DoWork(object sender, DoWorkEventArgs e)
+        {
+            Thread.Sleep(1000);
+        }
+
+        private void ScanBW_DoWork(object sender, DoWorkEventArgs e)
+        {
+            System.Media.SoundPlayer aSoundPlayer = new System.Media.SoundPlayer(Chrononizer.Properties.Resources.ScannerSweep);
+            aSoundPlayer.Play();  //Plays the sound in a new thread
+
+            this.BeginInvoke (new MethodInvoker(() => listBox1.Items.Clear())); //clear out previous items
+
+            long flac, mp3, wma, m4a, ogg, wav, xm, mod, nsf, audioTotal, chiptunesTotal, total, dFlac;
+            flac = mp3 = wma = m4a = ogg = wav = xm = mod = nsf = audioTotal = chiptunesTotal = total = dFlac = 0;
+            double dSize, allSize, s1;
+            dSize = allSize = s1 = 0;
+
+            s1 = GetDirectorySize(MusicLibrary, 0, ref flac, ref mp3, ref wma, ref m4a, ref ogg, ref wav, ref xm, ref mod, ref nsf);
+            dSize = GetDownscaledSize(DownscaledLibrary, dSize, ref dFlac); //recurse through the downscaled files
+            if (AutoHandle && Directory.Exists(MusicLibrary) && Directory.Exists(DownscaledLibrary)) //set the file attributes if auto handling is on
+                File.SetAttributes(DownscaledLibrary, FileAttributes.Hidden | FileAttributes.System);
+            audioTotal = flac + mp3 + wma + m4a + ogg + wav;
+            chiptunesTotal = xm + mod + nsf;
+            total = audioTotal + chiptunesTotal;
+            allSize = s1 + dSize;
+            this.BeginInvoke(new MethodInvoker(() =>
+            {
+                label1.Text = "Library: " + BytesToSize(s1); //display the size
+                label2.Text = "FLAC: " + Plural(flac, "file"); //display the number of flac songs
+                label3.Text = "MP3: " + Plural(mp3, "file"); //display the number of mp3 songs
+                label4.Text = "WMA: " + Plural(wma, "file"); //display the number of wma songs
+                label5.Text = "M4A: " + Plural(m4a, "file"); //display the number of m4a songs
+                label6.Text = "OGG: " + Plural(ogg, "file"); //display the number of ogg songs
+                label7.Text = "WAV: " + Plural(wav, "file"); //display the number of wav songs
+                label8.Text = "XM: " + Plural(xm, "file"); //display the number of xm songs
+                label9.Text = "MOD: " + Plural(mod, "file"); //display the number of mod songs
+                label10.Text = "NSF: " + Plural(nsf, "file"); //display the number of nsf songs
+                label11.Text = "Library: " + Plural(audioTotal, "song");
+                label12.Text = "Chiptunes: " + Plural(chiptunesTotal, "song");
+                label13.Text = "Total (without downscaled): " + Plural(total, "song");
+                label15.Text = "Downscaled: " + BytesToSize(dSize);
+                label16.Text = "Downscaled: " + Plural(dFlac, "file");
+                label18.Text = "Total: " + BytesToSize(allSize);
+                if (listBox1.Items.Count == 0)
+                {
+                    listBox1.Items.Add("No files need downscaling!");
+                }
+                CheckSize.Text = "Rescan Library";
+                checkedFiles.Clear();
+            }));
+        }
+
+        private void LaptopSyncBW_DoWork(object sender, DoWorkEventArgs e)
+        {
+            
         }
     }
 }
