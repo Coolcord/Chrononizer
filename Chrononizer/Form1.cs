@@ -379,9 +379,53 @@ namespace Chrononizer
             Stopwatch time = new Stopwatch();
             time.Start();
 
-            System.Media.SoundPlayer aSoundPlayer = new System.Media.SoundPlayer(Chrononizer.Properties.Resources.ChronoBoost);
-            aSoundPlayer.Play();  //Plays the sound in a new thread
+            /*
+            ProgressBar Progress = progressBar1;
+            Progress.Maximum = 5;
+            Progress.Value = 0;
+            Progress.Increment(1);
+            Progress.Increment(1);
+            Progress.Increment(1);
+            Progress.Increment(1);
+            Progress.Increment(1);
+            */
 
+            //new Form2().Show();
+
+            PrepareSyncPMP();
+            PrepareSyncLaptop();
+
+            time.Stop();
+            long ticks = time.ElapsedMilliseconds;
+            button1.Text = ticks.ToString();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            Stopwatch time = new Stopwatch();
+            time.Start();
+
+            PrepareSyncPMP();
+
+            time.Stop();
+            long ticks = time.ElapsedMilliseconds;
+            button2.Text = ticks.ToString();
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            Stopwatch time = new Stopwatch();
+            time.Start();
+
+            PrepareSyncLaptop();
+
+            time.Stop();
+            long ticks = time.ElapsedMilliseconds;
+            button3.Text = ticks.ToString();
+        }
+
+        public void PrepareSyncPMP()
+        {
             DirectoryInfo PMPDrive = null;
             Boolean PMPFound = false;
             var drives = DriveInfo.GetDrives();
@@ -399,31 +443,25 @@ namespace Chrononizer
                         break;
                     }
                 }
-                catch (Exception ex) {}
+                catch (Exception ex) { }
             }
-
-            ProgressBar Progress = progressBar1;
-            Progress.Maximum = 5;
-            Progress.Value = 0;
-            Progress.Increment(1);
-            Progress.Increment(1);
-            Progress.Increment(1);
-            Progress.Increment(1);
-            Progress.Increment(1);
-
-            //new Form2().Show();
 
             if (PMPFound)
             {
                 DialogResult result = MessageBox.Show("PMP found on " + PMPDrive + "\nWould you like to sync to this device?", "Device Found!", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (result == DialogResult.Yes)
                 {
+                    System.Media.SoundPlayer aSoundPlayer = new System.Media.SoundPlayer(Chrononizer.Properties.Resources.ChronoBoost);
+                    aSoundPlayer.Play();  //Plays the sound in a new thread
                     SyncPMP(MusicLibrary, PMPDrive + "Music");
                     MessageBox.Show("Done!");
                 }
             }
             else MessageBox.Show("PMP could not be found! Make sure that it is connected!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
 
+        public void PrepareSyncLaptop()
+        {
             string LaptopName = "SUPERMOBILEROB";
             string LaptopUsername = "Cord";
 
@@ -432,50 +470,13 @@ namespace Chrononizer
                 DialogResult result = MessageBox.Show(LaptopName + " logged in as " + LaptopUsername + " is mounted.\nWould you like to sync to this device?", "Device Found!", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (result == DialogResult.Yes)
                 {
+                    System.Media.SoundPlayer aSoundPlayer = new System.Media.SoundPlayer(Chrononizer.Properties.Resources.ChronoBoost);
+                    aSoundPlayer.Play();  //Plays the sound in a new thread
                     Sync(MusicLibrary, "\\\\" + LaptopName + "\\Users\\" + LaptopUsername + "\\Music");
                     MessageBox.Show("Done!");
                 }
             }
             else MessageBox.Show("Laptop is not connected! Make sure that it is mounted properly!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-
-            /*
-            SyncPMP(MusicLibrary, "E:\\SynchronizationTests\\PMP"); //fist PMP
-            Sync(MusicLibrary, "E:\\SynchronizationTests\\PMP"); //then laptop
-            */
-
-            time.Stop();
-            long ticks = time.ElapsedMilliseconds;
-            button1.Text = ticks.ToString();
-        }
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-            Stopwatch time = new Stopwatch();
-            time.Start();
-
-            System.Media.SoundPlayer aSoundPlayer = new System.Media.SoundPlayer(Chrononizer.Properties.Resources.ChronoBoost);
-            aSoundPlayer.Play();  //Plays the sound in a new thread
-
-            SyncPMP(MusicLibrary, "E:\\SynchronizationTests\\PMP");
-
-            time.Stop();
-            long ticks = time.ElapsedMilliseconds;
-            button2.Text = ticks.ToString();
-        }
-
-        private void button3_Click(object sender, EventArgs e)
-        {
-            Stopwatch time = new Stopwatch();
-            time.Start();
-
-            System.Media.SoundPlayer aSoundPlayer = new System.Media.SoundPlayer(Chrononizer.Properties.Resources.ChronoBoost);
-            aSoundPlayer.Play();  //Plays the sound in a new thread
-
-            Sync(MusicLibrary, "E:\\SynchronizationTests\\PMP");
-
-            time.Stop();
-            long ticks = time.ElapsedMilliseconds;
-            button3.Text = ticks.ToString();
         }
 
         public void SyncPMP(string sourcePath, string destinationPath)
