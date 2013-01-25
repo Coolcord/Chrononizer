@@ -411,7 +411,7 @@ namespace Chrononizer
             Progress.Increment(1);
             Progress.Increment(1);
 
-            new Form2().Show();
+            //new Form2().Show();
 
             if (PMPFound)
             {
@@ -424,6 +424,19 @@ namespace Chrononizer
             }
             else MessageBox.Show("PMP could not be found! Make sure that it is connected!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
+            string LaptopName = "SUPERMOBILEROB";
+            string LaptopUsername = "Cord";
+
+            if (Directory.Exists("\\\\" + LaptopName + "\\Users\\" + LaptopUsername + "\\Music"))
+            {
+                DialogResult result = MessageBox.Show(LaptopName + " logged in as " + LaptopUsername + " is mounted.\nWould you like to sync to this device?", "Device Found!", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (result == DialogResult.Yes)
+                {
+                    Sync(MusicLibrary, "\\\\" + LaptopName + "\\Users\\" + LaptopUsername + "\\Music");
+                    MessageBox.Show("Done!");
+                }
+            }
+            else MessageBox.Show("Laptop is not connected! Make sure that it is mounted properly!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
             /*
             SyncPMP(MusicLibrary, "E:\\SynchronizationTests\\PMP"); //fist PMP
