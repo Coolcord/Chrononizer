@@ -77,18 +77,18 @@
             this.label21 = new System.Windows.Forms.Label();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
+            this.label24 = new System.Windows.Forms.Label();
+            this.label25 = new System.Windows.Forms.Label();
+            this.progressBar1 = new System.Windows.Forms.ProgressBar();
+            this.listBox2 = new System.Windows.Forms.ListBox();
+            this.label26 = new System.Windows.Forms.Label();
+            this.label27 = new System.Windows.Forms.Label();
+            this.progressBar2 = new System.Windows.Forms.ProgressBar();
+            this.listBox3 = new System.Windows.Forms.ListBox();
             this.PMPSyncBW = new System.ComponentModel.BackgroundWorker();
             this.ScanBW = new System.ComponentModel.BackgroundWorker();
             this.LaptopSyncBW = new System.ComponentModel.BackgroundWorker();
-            this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
-            this.label24 = new System.Windows.Forms.Label();
-            this.progressBar1 = new System.Windows.Forms.ProgressBar();
-            this.listBox2 = new System.Windows.Forms.ListBox();
-            this.progressBar2 = new System.Windows.Forms.ProgressBar();
-            this.listBox3 = new System.Windows.Forms.ListBox();
-            this.label25 = new System.Windows.Forms.Label();
-            this.label26 = new System.Windows.Forms.Label();
-            this.label27 = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -619,18 +619,6 @@
             this.panel1.TabIndex = 9;
             this.panel1.Visible = false;
             // 
-            // PMPSyncBW
-            // 
-            this.PMPSyncBW.DoWork += new System.ComponentModel.DoWorkEventHandler(this.PMPSyncBW_DoWork);
-            // 
-            // ScanBW
-            // 
-            this.ScanBW.DoWork += new System.ComponentModel.DoWorkEventHandler(this.ScanBW_DoWork);
-            // 
-            // LaptopSyncBW
-            // 
-            this.LaptopSyncBW.DoWork += new System.ComponentModel.DoWorkEventHandler(this.LaptopSyncBW_DoWork);
-            // 
             // flowLayoutPanel2
             // 
             this.flowLayoutPanel2.Controls.Add(this.label24);
@@ -652,9 +640,18 @@
             this.label24.AutoSize = true;
             this.label24.Location = new System.Drawing.Point(3, 0);
             this.label24.Name = "label24";
-            this.label24.Size = new System.Drawing.Size(166, 17);
+            this.label24.Size = new System.Drawing.Size(205, 17);
             this.label24.TabIndex = 0;
-            this.label24.Text = "Synchronizing PMP... 0%";
+            this.label24.Text = "Scanning and preparing PMP...";
+            // 
+            // label25
+            // 
+            this.label25.AutoSize = true;
+            this.label25.Location = new System.Drawing.Point(3, 17);
+            this.label25.Name = "label25";
+            this.label25.Size = new System.Drawing.Size(36, 17);
+            this.label25.TabIndex = 1;
+            this.label25.Text = "0 / 0";
             // 
             // progressBar1
             // 
@@ -671,31 +668,6 @@
             this.listBox2.Name = "listBox2";
             this.listBox2.Size = new System.Drawing.Size(765, 164);
             this.listBox2.TabIndex = 2;
-            // 
-            // progressBar2
-            // 
-            this.progressBar2.Location = new System.Drawing.Point(3, 285);
-            this.progressBar2.Name = "progressBar2";
-            this.progressBar2.Size = new System.Drawing.Size(765, 38);
-            this.progressBar2.TabIndex = 4;
-            // 
-            // listBox3
-            // 
-            this.listBox3.FormattingEnabled = true;
-            this.listBox3.ItemHeight = 16;
-            this.listBox3.Location = new System.Drawing.Point(3, 329);
-            this.listBox3.Name = "listBox3";
-            this.listBox3.Size = new System.Drawing.Size(765, 196);
-            this.listBox3.TabIndex = 5;
-            // 
-            // label25
-            // 
-            this.label25.AutoSize = true;
-            this.label25.Location = new System.Drawing.Point(3, 17);
-            this.label25.Name = "label25";
-            this.label25.Size = new System.Drawing.Size(36, 17);
-            this.label25.TabIndex = 1;
-            this.label25.Text = "0 / 0";
             // 
             // label26
             // 
@@ -714,6 +686,34 @@
             this.label27.Size = new System.Drawing.Size(36, 17);
             this.label27.TabIndex = 1;
             this.label27.Text = "0 / 0";
+            // 
+            // progressBar2
+            // 
+            this.progressBar2.Location = new System.Drawing.Point(3, 285);
+            this.progressBar2.Name = "progressBar2";
+            this.progressBar2.Size = new System.Drawing.Size(765, 38);
+            this.progressBar2.TabIndex = 4;
+            // 
+            // listBox3
+            // 
+            this.listBox3.FormattingEnabled = true;
+            this.listBox3.ItemHeight = 16;
+            this.listBox3.Location = new System.Drawing.Point(3, 329);
+            this.listBox3.Name = "listBox3";
+            this.listBox3.Size = new System.Drawing.Size(765, 196);
+            this.listBox3.TabIndex = 5;
+            // 
+            // PMPSyncBW
+            // 
+            this.PMPSyncBW.DoWork += new System.ComponentModel.DoWorkEventHandler(this.PMPSyncBW_DoWork);
+            // 
+            // ScanBW
+            // 
+            this.ScanBW.DoWork += new System.ComponentModel.DoWorkEventHandler(this.ScanBW_DoWork);
+            // 
+            // LaptopSyncBW
+            // 
+            this.LaptopSyncBW.DoWork += new System.ComponentModel.DoWorkEventHandler(this.LaptopSyncBW_DoWork);
             // 
             // Form1
             // 

@@ -31,6 +31,12 @@ namespace Chrononizer
         Boolean RemoveEmpty = true;
         Dictionary<string, Boolean> checkedFiles = new Dictionary<string, Boolean>();
 
+        public struct UpdateLocation
+        {
+            public string SourceFile;
+            public string DestinationFile;
+        }
+
         public Form1()
         {
             InitializeComponent();
@@ -388,6 +394,7 @@ namespace Chrononizer
             {
                 if (visible)
                 {
+                    label24.Text = "Scanning and preparing PMP..."; //reset the text
                     panel1.Visible = true;
                     tabControl1.Visible = false;
                 }
@@ -421,6 +428,10 @@ namespace Chrononizer
                 catch (Exception) { }
             }
 
+            //debug code
+            PMPFound = true;
+
+
             if (PMPFound)
             {
                 DialogResult result = MessageBox.Show("PMP found on " + PMPDrive + "\nWould you like to sync to this device?", "Device Found!", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
@@ -429,7 +440,50 @@ namespace Chrononizer
                     System.Media.SoundPlayer aSoundPlayer = new System.Media.SoundPlayer(Chrononizer.Properties.Resources.ChronoBoost);
                     aSoundPlayer.Play();  //Plays the sound in a new thread
                     ShowSyncStatus(true);
-                    SyncPMP(MusicLibrary, PMPDrive + "Music");
+
+                    double CopySize = 0;
+                    Queue<UpdateLocation> UpdateFiles = new Queue<UpdateLocation>();
+
+                    //CopySize = SyncPMP(MusicLibrary, PMPDrive + "Music", ref UpdateFiles);
+                    CopySize = SyncPMP(MusicLibrary, "E:\\SynchronizationTests\\PMP", ref UpdateFiles); //debug code
+
+                    //set up the progress bar
+                    int progress = 0;
+                    double percent = 0;
+                    this.BeginInvoke(new MethodInvoker(() =>
+                    {
+                        label24.Text = "Copying updated files to PMP...";
+                        progressBar1.Maximum = 100000;
+                        label25.Text = "0%";
+                    }));
+
+                    //copy files to PMP here
+                    while (UpdateFiles.Count > 0)
+                    {
+                        UpdateLocation update = UpdateFiles.Dequeue();
+                        string source = update.SourceFile;
+                        string destination = update.DestinationFile;
+                        FileInfo info = new FileInfo(source);
+                        double x = info.Length / CopySize;
+                        progress += (int)((x * 100000));
+                        //percent += (Math.Round(((info.Length / CopySize) * 100), 2)); //this is very inaccurate as of now. The progress bar can theoretically go over 100%
+                        percent = Math.Round((((double)progress) / 1000), 2);
+                        this.BeginInvoke(new MethodInvoker(() =>
+                        {
+                            //progressBar1.Value += (int)info.Length; //get the file's size
+                            progressBar1.Value = progress; //get the file's size
+                            label25.Text = percent.ToString() + "%";
+                        }));
+                        File.Copy(source, destination, true);
+                    }
+
+                    this.BeginInvoke(new MethodInvoker(() =>
+                    {
+                        progressBar1.Value = progressBar1.Maximum; //get the file's size
+                        label25.Text = "100%";
+                    }));
+
+
                     MessageBox.Show("Done!");
                     ShowSyncStatus(false);
                 }
@@ -458,8 +512,9 @@ namespace Chrononizer
             else MessageBox.Show("Laptop is not connected! Make sure that it is mounted properly!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
-        public void SyncPMP(string sourcePath, string destinationPath)
+        public double SyncPMP(string sourcePath, string destinationPath, ref Queue<UpdateLocation> UpdateFiles)
         {
+            double num = 0; //size of all files in this directory that will need to be copied
             bool dirExisted = DirExists(destinationPath);
 
             //get the source files
@@ -485,13 +540,26 @@ namespace Chrononizer
                     FileInfo destInfo = new FileInfo(destFile);
                     if (sourceInfo.LastWriteTime > destInfo.LastWriteTime)
                     {
-                        //file is newer, so copy it
-                        File.Copy(correctFile, Path.Combine(destinationPath, sourceInfo.Name), true);
+                        //file is newer, so add it to the queue of files that need to be copied
+                        UpdateLocation update = new UpdateLocation();
+                        update.SourceFile = correctFile;
+                        update.DestinationFile = Path.Combine(destinationPath, sourceInfo.Name);
+                        UpdateFiles.Enqueue(update);
+                        FileInfo info = new FileInfo(correctFile);
+                        num += info.Length; //get the file's size
+                        //File.Copy(correctFile, Path.Combine(destinationPath, sourceInfo.Name), true);
                     }
                 }
                 else
                 {
-                    File.Copy(correctFile, Path.Combine(destinationPath, sourceInfo.Name));
+                    //add it tot he queue of files that need to be copied
+                    UpdateLocation update = new UpdateLocation();
+                    update.SourceFile = correctFile;
+                    update.DestinationFile = Path.Combine(destinationPath, sourceInfo.Name);
+                    UpdateFiles.Enqueue(update);
+                    FileInfo info = new FileInfo(correctFile);
+                    num += info.Length; //get the file's size
+                    //File.Copy(correctFile, Path.Combine(destinationPath, sourceInfo.Name));
                 }
             }
 
@@ -508,8 +576,10 @@ namespace Chrononizer
                     continue; //skip chiptunes folder
                 DirectoryInfo dirInfo = new DirectoryInfo(dir);
                 //recursive do the directories
-                SyncPMP(dir, Path.Combine(destinationPath, dirInfo.Name));
+                num += SyncPMP(dir, Path.Combine(destinationPath, dirInfo.Name), ref UpdateFiles);
             }
+
+            return num;
         }
 
         public void Sync(string sourcePath, string destinationPath)
