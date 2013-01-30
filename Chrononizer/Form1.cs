@@ -447,6 +447,16 @@ namespace Chrononizer
                     //CopySize = SyncPMP(MusicLibrary, PMPDrive + "Music", ref UpdateFiles);
                     CopySize = SyncPMP(MusicLibrary, "E:\\SynchronizationTests\\PMP", ref UpdateFiles); //debug code
 
+                    Queue<UpdateLocation> CopyFiles = new Queue<UpdateLocation>();
+
+                    //populate the listbox with files that need to be copied
+                    while (UpdateFiles.Count > 0)
+                    {
+                        UpdateLocation update = UpdateFiles.Dequeue();
+                        this.BeginInvoke(new MethodInvoker(() => listBox2.Items.Add(update.DestinationFile)));
+                        CopyFiles.Enqueue(update);
+                    }
+
                     //set up the progress bar
                     int progress = 0;
                     double percent = 0;
@@ -458,23 +468,24 @@ namespace Chrononizer
                     }));
 
                     //copy files to PMP here
-                    while (UpdateFiles.Count > 0)
+                    while (CopyFiles.Count > 0)
                     {
-                        UpdateLocation update = UpdateFiles.Dequeue();
+                        UpdateLocation update = CopyFiles.Dequeue();
                         string source = update.SourceFile;
                         string destination = update.DestinationFile;
                         FileInfo info = new FileInfo(source);
-                        double x = info.Length / CopySize;
-                        progress += (int)((x * 100000));
-                        //percent += (Math.Round(((info.Length / CopySize) * 100), 2)); //this is very inaccurate as of now. The progress bar can theoretically go over 100%
+
+                        File.Copy(source, destination, true); //copy the file
+
+                        //calculate progress
+                        progress += (int)(((info.Length / CopySize) * 100000));
                         percent = Math.Round((((double)progress) / 1000), 2);
                         this.BeginInvoke(new MethodInvoker(() =>
                         {
-                            //progressBar1.Value += (int)info.Length; //get the file's size
                             progressBar1.Value = progress; //get the file's size
                             label25.Text = percent.ToString() + "%";
+                            listBox2.Items.Remove(destination);
                         }));
-                        File.Copy(source, destination, true);
                     }
 
                     this.BeginInvoke(new MethodInvoker(() =>
