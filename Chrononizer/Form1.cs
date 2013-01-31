@@ -98,6 +98,25 @@ namespace Chrononizer
             RemoveUnnecessary = checkBox5.Checked;
             RemoveEmpty = checkBox6.Checked;
             EnableChiptunes = checkBox7.Checked;
+
+            /*
+            //All of this is testing code
+            FlowLayoutPanel flow1 = new FlowLayoutPanel();
+            flow1.FlowDirection = FlowDirection.LeftToRight;
+            flow1.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            flow1.AutoSize = true;
+            Label lbl1 = new Label();
+            lbl1.Text = "Hi";
+            flow1.Controls.Add(lbl1);
+            Label lbl2 = new Label();
+            lbl2.Text = "Ho";
+            flow1.Controls.Add(lbl2);
+            TextBox txt = new TextBox();
+            txt.Text = "Hello World";
+            flow1.Controls.Add(txt);
+            flowLayoutPanel2.Controls.Add(flow1);
+            ShowSyncStatus(true); //debug code
+             * */
         }
 
         private void CheckSize_Click(object sender, EventArgs e)

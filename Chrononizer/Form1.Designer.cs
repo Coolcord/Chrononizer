@@ -82,13 +82,10 @@
             this.label25 = new System.Windows.Forms.Label();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.listBox2 = new System.Windows.Forms.ListBox();
-            this.label26 = new System.Windows.Forms.Label();
-            this.label27 = new System.Windows.Forms.Label();
-            this.progressBar2 = new System.Windows.Forms.ProgressBar();
-            this.listBox3 = new System.Windows.Forms.ListBox();
             this.PMPSyncBW = new System.ComponentModel.BackgroundWorker();
             this.ScanBW = new System.ComponentModel.BackgroundWorker();
             this.LaptopSyncBW = new System.ComponentModel.BackgroundWorker();
+            this.flowLayoutPanel3 = new System.Windows.Forms.FlowLayoutPanel();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -100,6 +97,7 @@
             this.tabPage3.SuspendLayout();
             this.panel1.SuspendLayout();
             this.flowLayoutPanel2.SuspendLayout();
+            this.flowLayoutPanel3.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -621,14 +619,9 @@
             // 
             // flowLayoutPanel2
             // 
-            this.flowLayoutPanel2.Controls.Add(this.label24);
-            this.flowLayoutPanel2.Controls.Add(this.label25);
+            this.flowLayoutPanel2.Controls.Add(this.flowLayoutPanel3);
             this.flowLayoutPanel2.Controls.Add(this.progressBar1);
             this.flowLayoutPanel2.Controls.Add(this.listBox2);
-            this.flowLayoutPanel2.Controls.Add(this.label26);
-            this.flowLayoutPanel2.Controls.Add(this.label27);
-            this.flowLayoutPanel2.Controls.Add(this.progressBar2);
-            this.flowLayoutPanel2.Controls.Add(this.listBox3);
             this.flowLayoutPanel2.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.flowLayoutPanel2.Location = new System.Drawing.Point(7, 12);
             this.flowLayoutPanel2.Name = "flowLayoutPanel2";
@@ -647,15 +640,15 @@
             // label25
             // 
             this.label25.AutoSize = true;
-            this.label25.Location = new System.Drawing.Point(3, 17);
+            this.label25.Location = new System.Drawing.Point(214, 0);
             this.label25.Name = "label25";
-            this.label25.Size = new System.Drawing.Size(36, 17);
+            this.label25.Size = new System.Drawing.Size(28, 17);
             this.label25.TabIndex = 1;
-            this.label25.Text = "0 / 0";
+            this.label25.Text = "0%";
             // 
             // progressBar1
             // 
-            this.progressBar1.Location = new System.Drawing.Point(3, 37);
+            this.progressBar1.Location = new System.Drawing.Point(3, 26);
             this.progressBar1.Name = "progressBar1";
             this.progressBar1.Size = new System.Drawing.Size(765, 38);
             this.progressBar1.TabIndex = 1;
@@ -664,44 +657,10 @@
             // 
             this.listBox2.FormattingEnabled = true;
             this.listBox2.ItemHeight = 16;
-            this.listBox2.Location = new System.Drawing.Point(3, 81);
+            this.listBox2.Location = new System.Drawing.Point(3, 70);
             this.listBox2.Name = "listBox2";
             this.listBox2.Size = new System.Drawing.Size(765, 164);
             this.listBox2.TabIndex = 2;
-            // 
-            // label26
-            // 
-            this.label26.AutoSize = true;
-            this.label26.Location = new System.Drawing.Point(3, 248);
-            this.label26.Name = "label26";
-            this.label26.Size = new System.Drawing.Size(181, 17);
-            this.label26.TabIndex = 0;
-            this.label26.Text = "Synchronizing Laptop... 0%";
-            // 
-            // label27
-            // 
-            this.label27.AutoSize = true;
-            this.label27.Location = new System.Drawing.Point(3, 265);
-            this.label27.Name = "label27";
-            this.label27.Size = new System.Drawing.Size(36, 17);
-            this.label27.TabIndex = 1;
-            this.label27.Text = "0 / 0";
-            // 
-            // progressBar2
-            // 
-            this.progressBar2.Location = new System.Drawing.Point(3, 285);
-            this.progressBar2.Name = "progressBar2";
-            this.progressBar2.Size = new System.Drawing.Size(765, 38);
-            this.progressBar2.TabIndex = 4;
-            // 
-            // listBox3
-            // 
-            this.listBox3.FormattingEnabled = true;
-            this.listBox3.ItemHeight = 16;
-            this.listBox3.Location = new System.Drawing.Point(3, 329);
-            this.listBox3.Name = "listBox3";
-            this.listBox3.Size = new System.Drawing.Size(765, 196);
-            this.listBox3.TabIndex = 5;
             // 
             // PMPSyncBW
             // 
@@ -714,6 +673,17 @@
             // LaptopSyncBW
             // 
             this.LaptopSyncBW.DoWork += new System.ComponentModel.DoWorkEventHandler(this.LaptopSyncBW_DoWork);
+            // 
+            // flowLayoutPanel3
+            // 
+            this.flowLayoutPanel3.AutoSize = true;
+            this.flowLayoutPanel3.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.flowLayoutPanel3.Controls.Add(this.label24);
+            this.flowLayoutPanel3.Controls.Add(this.label25);
+            this.flowLayoutPanel3.Location = new System.Drawing.Point(3, 3);
+            this.flowLayoutPanel3.Name = "flowLayoutPanel3";
+            this.flowLayoutPanel3.Size = new System.Drawing.Size(245, 17);
+            this.flowLayoutPanel3.TabIndex = 6;
             // 
             // Form1
             // 
@@ -743,6 +713,8 @@
             this.panel1.ResumeLayout(false);
             this.flowLayoutPanel2.ResumeLayout(false);
             this.flowLayoutPanel2.PerformLayout();
+            this.flowLayoutPanel3.ResumeLayout(false);
+            this.flowLayoutPanel3.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -804,11 +776,8 @@
         private System.Windows.Forms.Label label24;
         private System.Windows.Forms.ProgressBar progressBar1;
         private System.Windows.Forms.ListBox listBox2;
-        private System.Windows.Forms.ProgressBar progressBar2;
-        private System.Windows.Forms.ListBox listBox3;
         private System.Windows.Forms.Label label25;
-        private System.Windows.Forms.Label label26;
-        private System.Windows.Forms.Label label27;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel3;
     }
 }
 
