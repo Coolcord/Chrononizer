@@ -35,6 +35,7 @@ namespace Chrononizer
         {
             public string SourceFile;
             public string DestinationFile;
+            public Boolean Overwrite;
         }
 
         public Form1()
@@ -429,7 +430,7 @@ namespace Chrononizer
             }
 
             //debug code
-            PMPFound = true;
+            //PMPFound = true;
 
 
             if (PMPFound)
@@ -444,8 +445,8 @@ namespace Chrononizer
                     double CopySize = 0;
                     Queue<UpdateLocation> UpdateFiles = new Queue<UpdateLocation>();
 
-                    //CopySize = SyncPMP(MusicLibrary, PMPDrive + "Music", ref UpdateFiles);
-                    CopySize = SyncPMP(MusicLibrary, "E:\\SynchronizationTests\\PMP", ref UpdateFiles); //debug code
+                    CopySize = SyncPMP(MusicLibrary, PMPDrive + "Music", ref UpdateFiles);
+                    //CopySize = SyncPMP(MusicLibrary, "E:\\SynchronizationTests\\PMP", ref UpdateFiles); //debug code
 
                     Queue<UpdateLocation> CopyFiles = new Queue<UpdateLocation>();
 
@@ -473,9 +474,10 @@ namespace Chrononizer
                         UpdateLocation update = CopyFiles.Dequeue();
                         string source = update.SourceFile;
                         string destination = update.DestinationFile;
+                        Boolean overwrite = update.Overwrite;
                         FileInfo info = new FileInfo(source);
 
-                        File.Copy(source, destination, true); //copy the file
+                        File.Copy(source, destination, overwrite); //copy the file
 
                         //calculate progress
                         progress += (int)(((info.Length / CopySize) * 100000));
@@ -555,10 +557,10 @@ namespace Chrononizer
                         UpdateLocation update = new UpdateLocation();
                         update.SourceFile = correctFile;
                         update.DestinationFile = Path.Combine(destinationPath, sourceInfo.Name);
+                        update.Overwrite = true;
                         UpdateFiles.Enqueue(update);
                         FileInfo info = new FileInfo(correctFile);
                         num += info.Length; //get the file's size
-                        //File.Copy(correctFile, Path.Combine(destinationPath, sourceInfo.Name), true);
                     }
                 }
                 else
@@ -567,10 +569,10 @@ namespace Chrononizer
                     UpdateLocation update = new UpdateLocation();
                     update.SourceFile = correctFile;
                     update.DestinationFile = Path.Combine(destinationPath, sourceInfo.Name);
+                    update.Overwrite = false;
                     UpdateFiles.Enqueue(update);
                     FileInfo info = new FileInfo(correctFile);
                     num += info.Length; //get the file's size
-                    //File.Copy(correctFile, Path.Combine(destinationPath, sourceInfo.Name));
                 }
             }
 
