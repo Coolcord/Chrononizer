@@ -31,6 +31,11 @@ namespace Chrononizer
         Boolean RemoveEmpty = true;
         Dictionary<string, Boolean> checkedFiles = new Dictionary<string, Boolean>();
 
+        ProgressBar pb1, pb2;
+        Label lbl1, lbl2, lbl3, lbl4;
+        ListBox lb1, lb2;
+        FlowLayoutPanel flow1, flow2;
+
         public struct UpdateLocation
         {
             public string SourceFile;
@@ -99,24 +104,7 @@ namespace Chrononizer
             RemoveEmpty = checkBox6.Checked;
             EnableChiptunes = checkBox7.Checked;
 
-            /*
-            //All of this is testing code
-            FlowLayoutPanel flow1 = new FlowLayoutPanel();
-            flow1.FlowDirection = FlowDirection.LeftToRight;
-            flow1.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            flow1.AutoSize = true;
-            Label lbl1 = new Label();
-            lbl1.Text = "Hi";
-            flow1.Controls.Add(lbl1);
-            Label lbl2 = new Label();
-            lbl2.Text = "Ho";
-            flow1.Controls.Add(lbl2);
-            TextBox txt = new TextBox();
-            txt.Text = "Hello World";
-            flow1.Controls.Add(txt);
-            flowLayoutPanel2.Controls.Add(flow1);
-            ShowSyncStatus(true); //debug code
-             * */
+            //ShowSyncStatus(true, true, true); //debug code
         }
 
         private void CheckSize_Click(object sender, EventArgs e)
@@ -371,17 +359,6 @@ namespace Chrononizer
 
         private void button1_Click(object sender, EventArgs e)
         {
-            /*
-            ProgressBar Progress = progressBar1;
-            Progress.Maximum = 5;
-            Progress.Value = 0;
-            Progress.Increment(1);
-            Progress.Increment(1);
-            Progress.Increment(1);
-            Progress.Increment(1);
-            Progress.Increment(1);
-            */
-
             if (!PMPSyncBW.IsBusy && !LaptopSyncBW.IsBusy)
             {
                 PMPSyncBW.RunWorkerAsync();
@@ -408,20 +385,125 @@ namespace Chrononizer
             }
         }
 
-        public void ShowSyncStatus(Boolean visible)
+        public void ShowSyncStatus(Boolean visible, Boolean pmp, Boolean laptop)
         {
             this.BeginInvoke(new MethodInvoker(() =>
             {
                 if (visible)
                 {
-                    label24.Text = "Scanning and preparing PMP..."; //reset the text
                     panel1.Visible = true;
                     tabControl1.Visible = false;
+
+                    if (!pmp && !laptop) return; //nothing to make
+
+                    //Status text
+                    flow1 = new FlowLayoutPanel();
+                    flow1.FlowDirection = FlowDirection.LeftToRight;
+                    flow1.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+                    flow1.AutoSize = true;
+                    lbl1 = new Label();
+                    if (pmp)
+                        lbl1.Text = "Synchronizing and Preparing PMP...";
+                    else //laptop sync assumed
+                        lbl1.Text = "Synchronizing and Preparing Laptop...";
+                    lbl1.AutoSize = true;
+                    flow1.Controls.Add(lbl1);
+                    lbl2 = new Label();
+                    lbl2.Text = "0%";
+                    lbl2.AutoSize = true;
+                    flow1.Controls.Add(lbl2);
+
+                    //Progressbar
+                    pb1 = new ProgressBar();
+                    pb1.Maximum = 100000;
+                    pb1.Value = 0;
+                    pb1.Width = 765;
+                    pb1.Height = 38;
+                    pb1.Value = 0;
+
+                    //Listbox
+                    lb1 = new ListBox();
+                    lb1.Width = 765;
+                    if (pmp && laptop)
+                        lb1.Height = 180; //when there is two
+                    else
+                        lb1.Height = 450; //when there is one
+
+                    //Add the objects to the layout
+                    flowLayoutPanel2.Controls.Add(flow1);
+                    flowLayoutPanel2.Controls.Add(pb1);
+                    flowLayoutPanel2.Controls.Add(lb1);
+
+                    //if there are two syncs at once, display two status screens
+                    if (pmp && laptop)
+                    {
+                        //Status text
+                        flow2 = new FlowLayoutPanel();
+                        flow2.FlowDirection = FlowDirection.LeftToRight;
+                        flow2.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+                        flow2.AutoSize = true;
+                        lbl3 = new Label();
+                        lbl3.Text = "Synchronizing and Preparing Laptop...";
+                        lbl3.AutoSize = true;
+                        flow2.Controls.Add(lbl3);
+                        lbl4 = new Label();
+                        lbl4.Text = "0%";
+                        lbl4.AutoSize = true;
+                        flow2.Controls.Add(lbl4);
+
+                        //Progressbar
+                        pb2 = new ProgressBar();
+                        pb2.Maximum = 100000;
+                        pb2.Value = 0;
+                        pb2.Width = 765;
+                        pb2.Height = 38;
+                        pb2.Value = 0;
+
+                        //Listbox
+                        lb2 = new ListBox();
+                        lb2.Width = 765;
+                        lb2.Height = 180;
+
+                        //Add the objects to the layout
+                        flowLayoutPanel2.Controls.Add(flow2);
+                        flowLayoutPanel2.Controls.Add(pb2);
+                        flowLayoutPanel2.Controls.Add(lb2);
+                    }
                 }
                 else
                 {
                     tabControl1.Visible = true;
                     panel1.Visible = false;
+
+                    if (!pmp && !laptop) return; //nothing to make
+
+                    //Clear out the status screen
+                    flow1.Controls.Remove(lbl1);
+                    flow1.Controls.Remove(lbl2);
+                    flowLayoutPanel2.Controls.Remove(lb1);
+                    flowLayoutPanel2.Controls.Remove(pb1);
+                    flowLayoutPanel2.Controls.Remove(flow1);
+                    lbl1 = null;
+                    lbl2 = null;
+                    flow1 = null;
+                    pb1 = null;
+                    lb1 = null;
+
+                    //Clear out the second status area if needed
+                    if (pmp && laptop)
+                    {
+                        //Status text
+                        flow2.Controls.Remove(lbl3);
+                        flow2.Controls.Remove(lbl4);
+                        flowLayoutPanel2.Controls.Remove(lb2);
+                        flowLayoutPanel2.Controls.Remove(pb2);
+                        flowLayoutPanel2.Controls.Remove(flow2);
+                        lbl3 = null;
+                        lbl4 = null;
+                        flow2 = null;
+                        pb2 = null;
+                        lb2 = null;
+                    }
                 }
             }));
         }
@@ -459,7 +541,8 @@ namespace Chrononizer
                 {
                     System.Media.SoundPlayer aSoundPlayer = new System.Media.SoundPlayer(Chrononizer.Properties.Resources.ChronoBoost);
                     aSoundPlayer.Play();  //Plays the sound in a new thread
-                    ShowSyncStatus(true);
+
+                    ShowSyncStatus(true, true, false);
 
                     double CopySize = 0;
                     Queue<UpdateLocation> UpdateFiles = new Queue<UpdateLocation>();
@@ -473,7 +556,7 @@ namespace Chrononizer
                     while (UpdateFiles.Count > 0)
                     {
                         UpdateLocation update = UpdateFiles.Dequeue();
-                        this.BeginInvoke(new MethodInvoker(() => listBox2.Items.Add(update.DestinationFile)));
+                        this.BeginInvoke(new MethodInvoker(() => lb1.Items.Add(update.DestinationFile)));
                         CopyFiles.Enqueue(update);
                     }
 
@@ -482,9 +565,8 @@ namespace Chrononizer
                     double percent = 0;
                     this.BeginInvoke(new MethodInvoker(() =>
                     {
-                        label24.Text = "Copying updated files to PMP...";
-                        progressBar1.Maximum = 100000;
-                        label25.Text = "0%";
+                        lbl1.Text = "Copying updated files to PMP...";
+                        lbl2.Text = "0%";
                     }));
 
                     //copy files to PMP here
@@ -503,21 +585,20 @@ namespace Chrononizer
                         percent = Math.Round((((double)progress) / 1000), 2);
                         this.BeginInvoke(new MethodInvoker(() =>
                         {
-                            progressBar1.Value = progress; //get the file's size
-                            label25.Text = percent.ToString() + "%";
-                            listBox2.Items.Remove(destination);
+                            pb1.Value = progress; //get the file's size
+                            lbl2.Text = percent.ToString() + "%";
+                            lb1.Items.Remove(destination);
                         }));
                     }
 
                     this.BeginInvoke(new MethodInvoker(() =>
                     {
-                        progressBar1.Value = progressBar1.Maximum; //get the file's size
-                        label25.Text = "100%";
+                        pb1.Value = pb1.Maximum;
+                        lbl2.Text = "100%";
                     }));
 
-
                     MessageBox.Show("Done!");
-                    ShowSyncStatus(false);
+                    ShowSyncStatus(false, true, false);
                 }
             }
             else MessageBox.Show("PMP could not be found! Make sure that it is connected!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -535,10 +616,8 @@ namespace Chrononizer
                 {
                     System.Media.SoundPlayer aSoundPlayer = new System.Media.SoundPlayer(Chrononizer.Properties.Resources.ChronoBoost);
                     aSoundPlayer.Play();  //Plays the sound in a new thread
-                    ShowSyncStatus(true);
                     Sync(MusicLibrary, "\\\\" + LaptopName + "\\Users\\" + LaptopUsername + "\\Music");
                     MessageBox.Show("Done!");
-                    ShowSyncStatus(false);
                 }
             }
             else MessageBox.Show("Laptop is not connected! Make sure that it is mounted properly!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
