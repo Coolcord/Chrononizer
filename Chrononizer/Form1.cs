@@ -616,8 +616,64 @@ namespace Chrononizer
                 {
                     System.Media.SoundPlayer aSoundPlayer = new System.Media.SoundPlayer(Chrononizer.Properties.Resources.ChronoBoost);
                     aSoundPlayer.Play();  //Plays the sound in a new thread
-                    Sync(MusicLibrary, "\\\\" + LaptopName + "\\Users\\" + LaptopUsername + "\\Music");
+
+                    ShowSyncStatus(true, false, true);
+
+                    double CopySize = 0;
+                    Queue<UpdateLocation> UpdateFiles = new Queue<UpdateLocation>();
+
+                    CopySize = Sync(MusicLibrary, "\\\\" + LaptopName + "\\Users\\" + LaptopUsername + "\\Music", ref UpdateFiles);
+                    //CopySize = Sync(MusicLibrary, "E:\\SynchronizationTests\\PMP", ref UpdateFiles); //debug code
+
+                    Queue<UpdateLocation> CopyFiles = new Queue<UpdateLocation>();
+
+                    //populate the listbox with files that need to be copied
+                    while (UpdateFiles.Count > 0)
+                    {
+                        UpdateLocation update = UpdateFiles.Dequeue();
+                        this.BeginInvoke(new MethodInvoker(() => lb1.Items.Add(update.DestinationFile)));
+                        CopyFiles.Enqueue(update);
+                    }
+
+                    //set up the progress bar
+                    int progress = 0;
+                    double percent = 0;
+                    this.BeginInvoke(new MethodInvoker(() =>
+                    {
+                        lbl1.Text = "Copying updated files to Laptop...";
+                        lbl2.Text = "0%";
+                    }));
+
+                    //copy files to PMP here
+                    while (CopyFiles.Count > 0)
+                    {
+                        UpdateLocation update = CopyFiles.Dequeue();
+                        string source = update.SourceFile;
+                        string destination = update.DestinationFile;
+                        Boolean overwrite = update.Overwrite;
+                        FileInfo info = new FileInfo(source);
+
+                        File.Copy(source, destination, overwrite); //copy the file
+
+                        //calculate progress
+                        progress += (int)(((info.Length / CopySize) * 100000));
+                        percent = Math.Round((((double)progress) / 1000), 2);
+                        this.BeginInvoke(new MethodInvoker(() =>
+                        {
+                            pb1.Value = progress; //get the file's size
+                            lbl2.Text = percent.ToString() + "%";
+                            lb1.Items.Remove(destination);
+                        }));
+                    }
+
+                    this.BeginInvoke(new MethodInvoker(() =>
+                    {
+                        pb1.Value = pb1.Maximum;
+                        lbl2.Text = "100%";
+                    }));
+
                     MessageBox.Show("Done!");
+                    ShowSyncStatus(false, false, true);
                 }
             }
             else MessageBox.Show("Laptop is not connected! Make sure that it is mounted properly!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -663,7 +719,7 @@ namespace Chrononizer
                 }
                 else
                 {
-                    //add it tot he queue of files that need to be copied
+                    //add it to the queue of files that need to be copied
                     UpdateLocation update = new UpdateLocation();
                     update.SourceFile = correctFile;
                     update.DestinationFile = Path.Combine(destinationPath, sourceInfo.Name);
@@ -693,8 +749,9 @@ namespace Chrononizer
             return num;
         }
 
-        public void Sync(string sourcePath, string destinationPath)
+        public double Sync(string sourcePath, string destinationPath, ref Queue<UpdateLocation> UpdateFiles)
         {
+            double num = 0; //size of all files in this directory that will need to be copied
             bool dirExisted = DirExists(destinationPath);
 
             //get the source files
@@ -708,13 +765,26 @@ namespace Chrononizer
                     FileInfo destInfo = new FileInfo(destFile);
                     if (sourceInfo.LastWriteTime > destInfo.LastWriteTime)
                     {
-                        //file is newer, so copy it
-                        File.Copy(sourceFile, Path.Combine(destinationPath, sourceInfo.Name), true);
+                        //file is newer, so add it to the queue of files that need to be copied
+                        UpdateLocation update = new UpdateLocation();
+                        update.SourceFile = sourceFile;
+                        update.DestinationFile = Path.Combine(destinationPath, sourceInfo.Name);
+                        update.Overwrite = true;
+                        UpdateFiles.Enqueue(update);
+                        FileInfo info = new FileInfo(sourceFile);
+                        num += info.Length; //get the file's size
                     }
                 }
                 else
                 {
-                    File.Copy(sourceFile, Path.Combine(destinationPath, sourceInfo.Name));
+                    //add it to the queue of files that need to be copied
+                    UpdateLocation update = new UpdateLocation();
+                    update.SourceFile = sourceFile;
+                    update.DestinationFile = Path.Combine(destinationPath, sourceInfo.Name);
+                    update.Overwrite = false;
+                    UpdateFiles.Enqueue(update);
+                    FileInfo info = new FileInfo(sourceFile);
+                    num += info.Length; //get the file's size
                 }
             }
 
@@ -729,8 +799,9 @@ namespace Chrononizer
                     continue;
                 DirectoryInfo dirInfo = new DirectoryInfo(dir);
                 //recursive do the directories
-                Sync(dir, Path.Combine(destinationPath, dirInfo.Name));
+                num += Sync(dir, Path.Combine(destinationPath, dirInfo.Name), ref UpdateFiles);
             }
+            return num;
         }
 
         private bool DirExists(string path)
