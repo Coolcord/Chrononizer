@@ -31,10 +31,10 @@ namespace Chrononizer
         Boolean RemoveEmpty = true;
         Dictionary<string, Boolean> checkedFiles = new Dictionary<string, Boolean>();
 
-        ProgressBar pb1, pb2;
-        Label lbl1, lbl2, lbl3, lbl4;
-        ListBox lb1, lb2;
-        FlowLayoutPanel flow1, flow2;
+        ProgressBar pb1, LTpb;
+        Label lbl1, lbl2, LTlbl1, LTlbl2;
+        ListBox lb1, LTlb;
+        FlowLayoutPanel flow1, LTflow;
 
         public struct UpdateLocation
         {
@@ -396,78 +396,80 @@ namespace Chrononizer
 
                     if (!pmp && !laptop) return; //nothing to make
 
-                    //Status text
-                    flow1 = new FlowLayoutPanel();
-                    flow1.FlowDirection = FlowDirection.LeftToRight;
-                    flow1.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-                    flow1.AutoSize = true;
-                    lbl1 = new Label();
                     if (pmp)
-                        lbl1.Text = "Synchronizing and Preparing PMP...";
-                    else //laptop sync assumed
-                        lbl1.Text = "Synchronizing and Preparing Laptop...";
-                    lbl1.AutoSize = true;
-                    flow1.Controls.Add(lbl1);
-                    lbl2 = new Label();
-                    lbl2.Text = "0%";
-                    lbl2.AutoSize = true;
-                    flow1.Controls.Add(lbl2);
-
-                    //Progressbar
-                    pb1 = new ProgressBar();
-                    pb1.Maximum = 100000;
-                    pb1.Value = 0;
-                    pb1.Width = 765;
-                    pb1.Height = 38;
-                    pb1.Value = 0;
-
-                    //Listbox
-                    lb1 = new ListBox();
-                    lb1.Width = 765;
-                    if (pmp && laptop)
-                        lb1.Height = 180; //when there is two
-                    else
-                        lb1.Height = 450; //when there is one
-
-                    //Add the objects to the layout
-                    flowLayoutPanel2.Controls.Add(flow1);
-                    flowLayoutPanel2.Controls.Add(pb1);
-                    flowLayoutPanel2.Controls.Add(lb1);
-
-                    //if there are two syncs at once, display two status screens
-                    if (pmp && laptop)
                     {
                         //Status text
-                        flow2 = new FlowLayoutPanel();
-                        flow2.FlowDirection = FlowDirection.LeftToRight;
-                        flow2.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-                        flow2.AutoSize = true;
-                        lbl3 = new Label();
-                        lbl3.Text = "Synchronizing and Preparing Laptop...";
-                        lbl3.AutoSize = true;
-                        flow2.Controls.Add(lbl3);
-                        lbl4 = new Label();
-                        lbl4.Text = "0%";
-                        lbl4.AutoSize = true;
-                        flow2.Controls.Add(lbl4);
+                        flow1 = new FlowLayoutPanel();
+                        flow1.FlowDirection = FlowDirection.LeftToRight;
+                        flow1.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+                        flow1.AutoSize = true;
+                        lbl1 = new Label();
+                        lbl1.Text = "Synchronizing and Preparing PMP...";
+                        lbl1.AutoSize = true;
+                        flow1.Controls.Add(lbl1);
+                        lbl2 = new Label();
+                        lbl2.Text = "0%";
+                        lbl2.AutoSize = true;
+                        flow1.Controls.Add(lbl2);
 
                         //Progressbar
-                        pb2 = new ProgressBar();
-                        pb2.Maximum = 100000;
-                        pb2.Value = 0;
-                        pb2.Width = 765;
-                        pb2.Height = 38;
-                        pb2.Value = 0;
+                        pb1 = new ProgressBar();
+                        pb1.Maximum = 100000;
+                        pb1.Value = 0;
+                        pb1.Width = 765;
+                        pb1.Height = 38;
+                        pb1.Value = 0;
 
                         //Listbox
-                        lb2 = new ListBox();
-                        lb2.Width = 765;
-                        lb2.Height = 180;
+                        lb1 = new ListBox();
+                        lb1.Width = 765;
+                        if (pmp && laptop)
+                            lb1.Height = 180; //when there is two
+                        else
+                            lb1.Height = 450; //when there is one
 
                         //Add the objects to the layout
-                        flowLayoutPanel2.Controls.Add(flow2);
-                        flowLayoutPanel2.Controls.Add(pb2);
-                        flowLayoutPanel2.Controls.Add(lb2);
+                        flowLayoutPanel2.Controls.Add(flow1);
+                        flowLayoutPanel2.Controls.Add(pb1);
+                        flowLayoutPanel2.Controls.Add(lb1);
+                    }
+
+                    if (laptop)
+                    {
+                        //Status text
+                        LTflow = new FlowLayoutPanel();
+                        LTflow.FlowDirection = FlowDirection.LeftToRight;
+                        LTflow.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+                        LTflow.AutoSize = true;
+                        LTlbl1 = new Label();
+                        LTlbl1.Text = "Synchronizing and Preparing Laptop...";
+                        LTlbl1.AutoSize = true;
+                        LTflow.Controls.Add(LTlbl1);
+                        LTlbl2 = new Label();
+                        LTlbl2.Text = "0%";
+                        LTlbl2.AutoSize = true;
+                        LTflow.Controls.Add(LTlbl2);
+
+                        //Progressbar
+                        LTpb = new ProgressBar();
+                        LTpb.Maximum = 100000;
+                        LTpb.Value = 0;
+                        LTpb.Width = 765;
+                        LTpb.Height = 38;
+                        LTpb.Value = 0;
+
+                        //Listbox
+                        LTlb = new ListBox();
+                        LTlb.Width = 765;
+                        if (pmp && laptop)
+                            LTlb.Height = 180;
+                        else
+                            LTlb.Height = 450;
+
+                        //Add the objects to the layout
+                        flowLayoutPanel2.Controls.Add(LTflow);
+                        flowLayoutPanel2.Controls.Add(LTpb);
+                        flowLayoutPanel2.Controls.Add(LTlb);
                     }
                 }
                 else
@@ -477,32 +479,34 @@ namespace Chrononizer
 
                     if (!pmp && !laptop) return; //nothing to make
 
-                    //Clear out the status screen
-                    flow1.Controls.Remove(lbl1);
-                    flow1.Controls.Remove(lbl2);
-                    flowLayoutPanel2.Controls.Remove(lb1);
-                    flowLayoutPanel2.Controls.Remove(pb1);
-                    flowLayoutPanel2.Controls.Remove(flow1);
-                    lbl1 = null;
-                    lbl2 = null;
-                    flow1 = null;
-                    pb1 = null;
-                    lb1 = null;
+                    if (pmp)
+                    {
+                        //Clear out the status screen
+                        flow1.Controls.Remove(lbl1);
+                        flow1.Controls.Remove(lbl2);
+                        flowLayoutPanel2.Controls.Remove(lb1);
+                        flowLayoutPanel2.Controls.Remove(pb1);
+                        flowLayoutPanel2.Controls.Remove(flow1);
+                        lbl1 = null;
+                        lbl2 = null;
+                        flow1 = null;
+                        pb1 = null;
+                        lb1 = null;
+                    }
 
-                    //Clear out the second status area if needed
-                    if (pmp && laptop)
+                    if (laptop)
                     {
                         //Status text
-                        flow2.Controls.Remove(lbl3);
-                        flow2.Controls.Remove(lbl4);
-                        flowLayoutPanel2.Controls.Remove(lb2);
-                        flowLayoutPanel2.Controls.Remove(pb2);
-                        flowLayoutPanel2.Controls.Remove(flow2);
-                        lbl3 = null;
-                        lbl4 = null;
-                        flow2 = null;
-                        pb2 = null;
-                        lb2 = null;
+                        LTflow.Controls.Remove(LTlbl1);
+                        LTflow.Controls.Remove(LTlbl2);
+                        flowLayoutPanel2.Controls.Remove(LTlb);
+                        flowLayoutPanel2.Controls.Remove(LTpb);
+                        flowLayoutPanel2.Controls.Remove(LTflow);
+                        LTlbl1 = null;
+                        LTlbl2 = null;
+                        LTflow = null;
+                        LTpb = null;
+                        LTlb = null;
                     }
                 }
             }));
@@ -532,7 +536,6 @@ namespace Chrononizer
 
             //debug code
             //PMPFound = true;
-
 
             if (PMPFound)
             {
@@ -623,7 +626,7 @@ namespace Chrononizer
                     Queue<UpdateLocation> UpdateFiles = new Queue<UpdateLocation>();
 
                     CopySize = Sync(MusicLibrary, "\\\\" + LaptopName + "\\Users\\" + LaptopUsername + "\\Music", ref UpdateFiles);
-                    //CopySize = Sync(MusicLibrary, "E:\\SynchronizationTests\\PMP", ref UpdateFiles); //debug code
+                    //CopySize = Sync(MusicLibrary, "E:\\SynchronizationTests\\Laptop", ref UpdateFiles); //debug code
 
                     Queue<UpdateLocation> CopyFiles = new Queue<UpdateLocation>();
 
@@ -631,7 +634,7 @@ namespace Chrononizer
                     while (UpdateFiles.Count > 0)
                     {
                         UpdateLocation update = UpdateFiles.Dequeue();
-                        this.BeginInvoke(new MethodInvoker(() => lb1.Items.Add(update.DestinationFile)));
+                        this.BeginInvoke(new MethodInvoker(() => LTlb.Items.Add(update.DestinationFile)));
                         CopyFiles.Enqueue(update);
                     }
 
@@ -640,8 +643,8 @@ namespace Chrononizer
                     double percent = 0;
                     this.BeginInvoke(new MethodInvoker(() =>
                     {
-                        lbl1.Text = "Copying updated files to Laptop...";
-                        lbl2.Text = "0%";
+                        LTlbl1.Text = "Copying updated files to Laptop...";
+                        LTlbl2.Text = "0%";
                     }));
 
                     //copy files to PMP here
@@ -660,16 +663,16 @@ namespace Chrononizer
                         percent = Math.Round((((double)progress) / 1000), 2);
                         this.BeginInvoke(new MethodInvoker(() =>
                         {
-                            pb1.Value = progress; //get the file's size
-                            lbl2.Text = percent.ToString() + "%";
-                            lb1.Items.Remove(destination);
+                            LTpb.Value = progress; //get the file's size
+                            LTlbl2.Text = percent.ToString() + "%";
+                            LTlb.Items.Remove(destination);
                         }));
                     }
 
                     this.BeginInvoke(new MethodInvoker(() =>
                     {
-                        pb1.Value = pb1.Maximum;
-                        lbl2.Text = "100%";
+                        LTpb.Value = LTpb.Maximum;
+                        LTlbl2.Text = "100%";
                     }));
 
                     MessageBox.Show("Done!");
