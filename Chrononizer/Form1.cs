@@ -36,6 +36,8 @@ namespace Chrononizer
         ListBox lb1, LTlb;
         FlowLayoutPanel flow1, LTflow;
 
+        DirectoryInfo PMPDrive = null;
+
         public struct UpdateLocation
         {
             public string SourceFile;
@@ -512,9 +514,9 @@ namespace Chrononizer
             }));
         }
 
-        public void PrepareSyncPMP()
+        public Boolean PrepareSyncPMP()
         {
-            DirectoryInfo PMPDrive = null;
+            PMPDrive = null;
             Boolean PMPFound = false;
             var drives = DriveInfo.GetDrives();
             foreach (var drive in drives)
@@ -545,69 +547,73 @@ namespace Chrononizer
                     System.Media.SoundPlayer aSoundPlayer = new System.Media.SoundPlayer(Chrononizer.Properties.Resources.ChronoBoost);
                     aSoundPlayer.Play();  //Plays the sound in a new thread
 
-                    ShowSyncStatus(true, true, false);
-
-                    double CopySize = 0;
-                    Queue<UpdateLocation> UpdateFiles = new Queue<UpdateLocation>();
-
-                    CopySize = SyncPMP(MusicLibrary, PMPDrive + "Music", ref UpdateFiles);
-                    //CopySize = SyncPMP(MusicLibrary, "E:\\SynchronizationTests\\PMP", ref UpdateFiles); //debug code
-
-                    Queue<UpdateLocation> CopyFiles = new Queue<UpdateLocation>();
-
-                    //populate the listbox with files that need to be copied
-                    while (UpdateFiles.Count > 0)
-                    {
-                        UpdateLocation update = UpdateFiles.Dequeue();
-                        this.BeginInvoke(new MethodInvoker(() => lb1.Items.Add(update.DestinationFile)));
-                        CopyFiles.Enqueue(update);
-                    }
-
-                    //set up the progress bar
-                    int progress = 0;
-                    double percent = 0;
-                    this.BeginInvoke(new MethodInvoker(() =>
-                    {
-                        lbl1.Text = "Copying updated files to PMP...";
-                        lbl2.Text = "0%";
-                    }));
-
-                    //copy files to PMP here
-                    while (CopyFiles.Count > 0)
-                    {
-                        UpdateLocation update = CopyFiles.Dequeue();
-                        string source = update.SourceFile;
-                        string destination = update.DestinationFile;
-                        Boolean overwrite = update.Overwrite;
-                        FileInfo info = new FileInfo(source);
-
-                        File.Copy(source, destination, overwrite); //copy the file
-
-                        //calculate progress
-                        progress += (int)(((info.Length / CopySize) * 100000));
-                        percent = Math.Round((((double)progress) / 1000), 2);
-                        this.BeginInvoke(new MethodInvoker(() =>
-                        {
-                            pb1.Value = progress; //get the file's size
-                            lbl2.Text = percent.ToString() + "%";
-                            lb1.Items.Remove(destination);
-                        }));
-                    }
-
-                    this.BeginInvoke(new MethodInvoker(() =>
-                    {
-                        pb1.Value = pb1.Maximum;
-                        lbl2.Text = "100%";
-                    }));
-
-                    MessageBox.Show("Done!");
-                    ShowSyncStatus(false, true, false);
+                    return true;
                 }
             }
             else MessageBox.Show("PMP could not be found! Make sure that it is connected!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+            return false;
         }
 
-        public void PrepareSyncLaptop()
+        public void SetupSyncPMP()
+        {
+            double CopySize = 0;
+            Queue<UpdateLocation> UpdateFiles = new Queue<UpdateLocation>();
+
+            CopySize = SyncPMP(MusicLibrary, PMPDrive + "Music", ref UpdateFiles);
+            //CopySize = SyncPMP(MusicLibrary, "E:\\SynchronizationTests\\PMP", ref UpdateFiles); //debug code
+
+            Queue<UpdateLocation> CopyFiles = new Queue<UpdateLocation>();
+
+            //populate the listbox with files that need to be copied
+            while (UpdateFiles.Count > 0)
+            {
+                UpdateLocation update = UpdateFiles.Dequeue();
+                this.BeginInvoke(new MethodInvoker(() => lb1.Items.Add(update.DestinationFile)));
+                CopyFiles.Enqueue(update);
+            }
+
+            //set up the progress bar
+            int progress = 0;
+            double percent = 0;
+            this.BeginInvoke(new MethodInvoker(() =>
+            {
+                lbl1.Text = "Copying updated files to PMP...";
+                lbl2.Text = "0%";
+            }));
+
+            //copy files to PMP here
+            while (CopyFiles.Count > 0)
+            {
+                UpdateLocation update = CopyFiles.Dequeue();
+                string source = update.SourceFile;
+                string destination = update.DestinationFile;
+                Boolean overwrite = update.Overwrite;
+                FileInfo info = new FileInfo(source);
+
+                File.Copy(source, destination, overwrite); //copy the file
+
+                //calculate progress
+                progress += (int)(((info.Length / CopySize) * 100000));
+                percent = Math.Round((((double)progress) / 1000), 2);
+                this.BeginInvoke(new MethodInvoker(() =>
+                {
+                    pb1.Value = progress; //get the file's size
+                    lbl2.Text = percent.ToString() + "%";
+                    lb1.Items.Remove(destination);
+                }));
+            }
+
+            this.BeginInvoke(new MethodInvoker(() =>
+            {
+                pb1.Value = pb1.Maximum;
+                lbl2.Text = "100%";
+            }));
+
+            MessageBox.Show("Done!");
+        }
+
+        public Boolean PrepareSyncLaptop()
         {
             string LaptopName = "SUPERMOBILEROB";
             string LaptopUsername = "Cord";
@@ -620,66 +626,73 @@ namespace Chrononizer
                     System.Media.SoundPlayer aSoundPlayer = new System.Media.SoundPlayer(Chrononizer.Properties.Resources.ChronoBoost);
                     aSoundPlayer.Play();  //Plays the sound in a new thread
 
-                    ShowSyncStatus(true, false, true);
-
-                    double CopySize = 0;
-                    Queue<UpdateLocation> UpdateFiles = new Queue<UpdateLocation>();
-
-                    CopySize = Sync(MusicLibrary, "\\\\" + LaptopName + "\\Users\\" + LaptopUsername + "\\Music", ref UpdateFiles);
-                    //CopySize = Sync(MusicLibrary, "E:\\SynchronizationTests\\Laptop", ref UpdateFiles); //debug code
-
-                    Queue<UpdateLocation> CopyFiles = new Queue<UpdateLocation>();
-
-                    //populate the listbox with files that need to be copied
-                    while (UpdateFiles.Count > 0)
-                    {
-                        UpdateLocation update = UpdateFiles.Dequeue();
-                        this.BeginInvoke(new MethodInvoker(() => LTlb.Items.Add(update.DestinationFile)));
-                        CopyFiles.Enqueue(update);
-                    }
-
-                    //set up the progress bar
-                    int progress = 0;
-                    double percent = 0;
-                    this.BeginInvoke(new MethodInvoker(() =>
-                    {
-                        LTlbl1.Text = "Copying updated files to Laptop...";
-                        LTlbl2.Text = "0%";
-                    }));
-
-                    //copy files to PMP here
-                    while (CopyFiles.Count > 0)
-                    {
-                        UpdateLocation update = CopyFiles.Dequeue();
-                        string source = update.SourceFile;
-                        string destination = update.DestinationFile;
-                        Boolean overwrite = update.Overwrite;
-                        FileInfo info = new FileInfo(source);
-
-                        File.Copy(source, destination, overwrite); //copy the file
-
-                        //calculate progress
-                        progress += (int)(((info.Length / CopySize) * 100000));
-                        percent = Math.Round((((double)progress) / 1000), 2);
-                        this.BeginInvoke(new MethodInvoker(() =>
-                        {
-                            LTpb.Value = progress; //get the file's size
-                            LTlbl2.Text = percent.ToString() + "%";
-                            LTlb.Items.Remove(destination);
-                        }));
-                    }
-
-                    this.BeginInvoke(new MethodInvoker(() =>
-                    {
-                        LTpb.Value = LTpb.Maximum;
-                        LTlbl2.Text = "100%";
-                    }));
-
-                    MessageBox.Show("Done!");
-                    ShowSyncStatus(false, false, true);
+                    return true;
                 }
             }
             else MessageBox.Show("Laptop is not connected! Make sure that it is mounted properly!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+            return false;
+        }
+
+        public void SetupSyncLaptop()
+        {
+            string LaptopName = "SUPERMOBILEROB";
+            string LaptopUsername = "Cord";
+
+            double CopySize = 0;
+            Queue<UpdateLocation> UpdateFiles = new Queue<UpdateLocation>();
+
+            CopySize = Sync(MusicLibrary, "\\\\" + LaptopName + "\\Users\\" + LaptopUsername + "\\Music", ref UpdateFiles);
+            //CopySize = Sync(MusicLibrary, "E:\\SynchronizationTests\\Laptop", ref UpdateFiles); //debug code
+
+            Queue<UpdateLocation> CopyFiles = new Queue<UpdateLocation>();
+
+            //populate the listbox with files that need to be copied
+            while (UpdateFiles.Count > 0)
+            {
+                UpdateLocation update = UpdateFiles.Dequeue();
+                this.BeginInvoke(new MethodInvoker(() => LTlb.Items.Add(update.DestinationFile)));
+                CopyFiles.Enqueue(update);
+            }
+
+            //set up the progress bar
+            int progress = 0;
+            double percent = 0;
+            this.BeginInvoke(new MethodInvoker(() =>
+            {
+                LTlbl1.Text = "Copying updated files to Laptop...";
+                LTlbl2.Text = "0%";
+            }));
+
+            //copy files to PMP here
+            while (CopyFiles.Count > 0)
+            {
+                UpdateLocation update = CopyFiles.Dequeue();
+                string source = update.SourceFile;
+                string destination = update.DestinationFile;
+                Boolean overwrite = update.Overwrite;
+                FileInfo info = new FileInfo(source);
+
+                File.Copy(source, destination, overwrite); //copy the file
+
+                //calculate progress
+                progress += (int)(((info.Length / CopySize) * 100000));
+                percent = Math.Round((((double)progress) / 1000), 2);
+                this.BeginInvoke(new MethodInvoker(() =>
+                {
+                    LTpb.Value = progress; //get the file's size
+                    LTlbl2.Text = percent.ToString() + "%";
+                    LTlb.Items.Remove(destination);
+                }));
+            }
+
+            this.BeginInvoke(new MethodInvoker(() =>
+            {
+                LTpb.Value = LTpb.Maximum;
+                LTlbl2.Text = "100%";
+            }));
+
+            MessageBox.Show("Done!");
         }
 
         public double SyncPMP(string sourcePath, string destinationPath, ref Queue<UpdateLocation> UpdateFiles)
@@ -1049,7 +1062,12 @@ namespace Chrononizer
 
         private void PMPSyncBW_DoWork(object sender, DoWorkEventArgs e)
         {
-            PrepareSyncPMP();
+            if (PrepareSyncPMP())
+            {
+                ShowSyncStatus(true, true, false);
+                SetupSyncPMP();
+                ShowSyncStatus(false, true, false);
+            }
             this.BeginInvoke(new MethodInvoker(() =>
             {
                 button2.Text = "Synchronize PMP";
@@ -1107,7 +1125,12 @@ namespace Chrononizer
 
         private void LaptopSyncBW_DoWork(object sender, DoWorkEventArgs e)
         {
-            PrepareSyncLaptop();
+            if (PrepareSyncLaptop())
+            {
+                ShowSyncStatus(true, false, true);
+                SetupSyncLaptop();
+                ShowSyncStatus(false, false, true);
+            }
             this.BeginInvoke (new MethodInvoker(() => 
             {
                 button3.Text = "Synchronize Laptop";
