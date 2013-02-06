@@ -105,20 +105,18 @@ namespace Chrononizer
             RemoveUnnecessary = checkBox5.Checked;
             RemoveEmpty = checkBox6.Checked;
             EnableChiptunes = checkBox7.Checked;
-
-            //ShowSyncStatus(true, true, true); //debug code
         }
 
-        private void CheckSize_Click(object sender, EventArgs e)
+        private void btnScan_Click(object sender, EventArgs e)
         {
             if (ScanBW.IsBusy != true)
             {
-                CheckSize.Text = "Scanning...";
+                btnScan.Text = "Scanning...";
                 ScanBW.RunWorkerAsync();
             }
             else
             {
-                CheckSize.Text = "Not done yet!";
+                btnScan.Text = "Not done yet!";
             }
         }
 
@@ -359,32 +357,32 @@ namespace Chrononizer
             return;
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void btnSyncBoth_Click(object sender, EventArgs e)
         {
             if (!PMPSyncBW.IsBusy && !LaptopSyncBW.IsBusy)
             {
-                button1.Text = "Running...";
+                btnSyncBoth.Text = "Running...";
                 ShowSyncStatus(true, true, true);
                 PMPSyncTBW.RunWorkerAsync();
                 LaptopSyncTBW.RunWorkerAsync();
             }
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void btnSyncPMP_Click(object sender, EventArgs e)
         {
             if (!PMPSyncBW.IsBusy && !LaptopSyncBW.IsBusy)
             {
                 PMPSyncBW.RunWorkerAsync();
-                button2.Text = "Running...";
+                btnSyncPMP.Text = "Running...";
             }
         }
 
-        private void button3_Click(object sender, EventArgs e)
+        private void btnSyncLaptop_Click(object sender, EventArgs e)
         {
             if (!PMPSyncBW.IsBusy && !LaptopSyncBW.IsBusy)
             {
                 LaptopSyncBW.RunWorkerAsync();
-                button3.Text = "Running...";
+                btnSyncLaptop.Text = "Running...";
             }
         }
 
@@ -1071,9 +1069,9 @@ namespace Chrononizer
             }
             this.BeginInvoke(new MethodInvoker(() =>
             {
-                button2.Text = "Synchronize PMP";
+                btnSyncPMP.Text = "Synchronize PMP";
                 if (LaptopSyncBW.IsBusy == false)
-                    button1.Text = "Synchronize Both";
+                    btnSyncBoth.Text = "Synchronize Both";
             }));
         }
 
@@ -1119,7 +1117,7 @@ namespace Chrononizer
                 {
                     listBox1.Items.Add("No files need downscaling!");
                 }
-                CheckSize.Text = "Rescan Library";
+                btnScan.Text = "Rescan Library";
                 checkedFiles.Clear();
             }));
         }
@@ -1134,9 +1132,9 @@ namespace Chrononizer
             }
             this.BeginInvoke (new MethodInvoker(() => 
             {
-                button3.Text = "Synchronize Laptop";
+                btnSyncLaptop.Text = "Synchronize Laptop";
                 if (PMPSyncBW.IsBusy == false)
-                    button1.Text = "Synchronize Both";
+                    btnSyncBoth.Text = "Synchronize Both";
             }));
         }
 
@@ -1151,7 +1149,7 @@ namespace Chrononizer
                 if (LaptopSyncTBW.IsBusy == false)
                 {
                     ShowSyncStatus(false, true, true);
-                    button1.Text = "Synchronize Both";
+                    btnSyncBoth.Text = "Synchronize Both";
                 }
             }));
         }
@@ -1167,7 +1165,7 @@ namespace Chrononizer
                 if (PMPSyncTBW.IsBusy == false)
                 {
                     ShowSyncStatus(false, true, true);
-                    button1.Text = "Synchronize Both";
+                    btnSyncBoth.Text = "Synchronize Both";
                 }
             }));
         }
