@@ -81,6 +81,8 @@
             this.PMPSyncBW = new System.ComponentModel.BackgroundWorker();
             this.ScanBW = new System.ComponentModel.BackgroundWorker();
             this.LaptopSyncBW = new System.ComponentModel.BackgroundWorker();
+            this.PMPSyncTBW = new System.ComponentModel.BackgroundWorker();
+            this.LaptopSyncTBW = new System.ComponentModel.BackgroundWorker();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -630,14 +632,22 @@
             // 
             this.LaptopSyncBW.DoWork += new System.ComponentModel.DoWorkEventHandler(this.LaptopSyncBW_DoWork);
             // 
+            // PMPSyncTBW
+            // 
+            this.PMPSyncTBW.DoWork += new System.ComponentModel.DoWorkEventHandler(this.PMPSyncTBW_DoWork);
+            // 
+            // LaptopSyncTBW
+            // 
+            this.LaptopSyncTBW.DoWork += new System.ComponentModel.DoWorkEventHandler(this.LaptopSyncTBW_DoWork);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.WindowText;
             this.ClientSize = new System.Drawing.Size(782, 555);
-            this.Controls.Add(this.panel1);
             this.Controls.Add(this.tabControl1);
+            this.Controls.Add(this.panel1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "Form1";
@@ -714,6 +724,8 @@
         private System.ComponentModel.BackgroundWorker LaptopSyncBW;
         public System.ComponentModel.BackgroundWorker ScanBW;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel2;
+        private System.ComponentModel.BackgroundWorker PMPSyncTBW;
+        private System.ComponentModel.BackgroundWorker LaptopSyncTBW;
     }
 }
 

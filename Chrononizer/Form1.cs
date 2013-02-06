@@ -363,9 +363,10 @@ namespace Chrononizer
         {
             if (!PMPSyncBW.IsBusy && !LaptopSyncBW.IsBusy)
             {
-                PMPSyncBW.RunWorkerAsync();
-                LaptopSyncBW.RunWorkerAsync();
                 button1.Text = "Running...";
+                ShowSyncStatus(true, true, true);
+                PMPSyncTBW.RunWorkerAsync();
+                LaptopSyncTBW.RunWorkerAsync();
             }
         }
 
@@ -1136,6 +1137,38 @@ namespace Chrononizer
                 button3.Text = "Synchronize Laptop";
                 if (PMPSyncBW.IsBusy == false)
                     button1.Text = "Synchronize Both";
+            }));
+        }
+
+        private void PMPSyncTBW_DoWork(object sender, DoWorkEventArgs e)
+        {
+            if (PrepareSyncPMP())
+            {
+                SetupSyncPMP();
+            }
+            this.BeginInvoke(new MethodInvoker(() =>
+            {
+                if (LaptopSyncTBW.IsBusy == false)
+                {
+                    ShowSyncStatus(false, true, true);
+                    button1.Text = "Synchronize Both";
+                }
+            }));
+        }
+
+        private void LaptopSyncTBW_DoWork(object sender, DoWorkEventArgs e)
+        {
+            if (PrepareSyncLaptop())
+            {
+                SetupSyncLaptop();
+            }
+            this.BeginInvoke(new MethodInvoker(() =>
+            {
+                if (PMPSyncTBW.IsBusy == false)
+                {
+                    ShowSyncStatus(false, true, true);
+                    button1.Text = "Synchronize Both";
+                }
             }));
         }
     }
