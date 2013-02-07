@@ -37,27 +37,27 @@
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
-            this.label14 = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label15 = new System.Windows.Forms.Label();
-            this.label18 = new System.Windows.Forms.Label();
-            this.label17 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
-            this.label9 = new System.Windows.Forms.Label();
-            this.label10 = new System.Windows.Forms.Label();
-            this.label19 = new System.Windows.Forms.Label();
-            this.label11 = new System.Windows.Forms.Label();
-            this.label16 = new System.Windows.Forms.Label();
-            this.label12 = new System.Windows.Forms.Label();
-            this.label13 = new System.Windows.Forms.Label();
-            this.label20 = new System.Windows.Forms.Label();
-            this.listBox1 = new System.Windows.Forms.ListBox();
+            this.lblLibrarySize = new System.Windows.Forms.Label();
+            this.lblLibraryBytes = new System.Windows.Forms.Label();
+            this.lblDownscaledBytes = new System.Windows.Forms.Label();
+            this.lblTotalBytes = new System.Windows.Forms.Label();
+            this.lblFileBreakdown = new System.Windows.Forms.Label();
+            this.lblFLACFiles = new System.Windows.Forms.Label();
+            this.lblMP3Files = new System.Windows.Forms.Label();
+            this.lblM4AFiles = new System.Windows.Forms.Label();
+            this.lblWMAFiles = new System.Windows.Forms.Label();
+            this.lblOGGFiles = new System.Windows.Forms.Label();
+            this.lblWAVFiles = new System.Windows.Forms.Label();
+            this.lblXMFiles = new System.Windows.Forms.Label();
+            this.lblMODFiles = new System.Windows.Forms.Label();
+            this.lblNSFFiles = new System.Windows.Forms.Label();
+            this.lblSongCount = new System.Windows.Forms.Label();
+            this.lblLibraryFiles = new System.Windows.Forms.Label();
+            this.lblDownscaledFiles = new System.Windows.Forms.Label();
+            this.lblChiptunesFiles = new System.Windows.Forms.Label();
+            this.lblTotalFiles = new System.Windows.Forms.Label();
+            this.lblNotDownscaled = new System.Windows.Forms.Label();
+            this.lbNotDownscaled = new System.Windows.Forms.ListBox();
             this.btnScan = new System.Windows.Forms.Button();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.checkBox7 = new System.Windows.Forms.CheckBox();
@@ -171,231 +171,231 @@
             // 
             // splitContainer1.Panel2
             // 
-            this.splitContainer1.Panel2.Controls.Add(this.label20);
-            this.splitContainer1.Panel2.Controls.Add(this.listBox1);
+            this.splitContainer1.Panel2.Controls.Add(this.lblNotDownscaled);
+            this.splitContainer1.Panel2.Controls.Add(this.lbNotDownscaled);
             this.splitContainer1.Size = new System.Drawing.Size(757, 391);
             this.splitContainer1.SplitterDistance = 340;
             this.splitContainer1.TabIndex = 4;
             // 
             // flowLayoutPanel1
             // 
-            this.flowLayoutPanel1.Controls.Add(this.label14);
-            this.flowLayoutPanel1.Controls.Add(this.label1);
-            this.flowLayoutPanel1.Controls.Add(this.label15);
-            this.flowLayoutPanel1.Controls.Add(this.label18);
-            this.flowLayoutPanel1.Controls.Add(this.label17);
-            this.flowLayoutPanel1.Controls.Add(this.label2);
-            this.flowLayoutPanel1.Controls.Add(this.label3);
-            this.flowLayoutPanel1.Controls.Add(this.label5);
-            this.flowLayoutPanel1.Controls.Add(this.label4);
-            this.flowLayoutPanel1.Controls.Add(this.label6);
-            this.flowLayoutPanel1.Controls.Add(this.label7);
-            this.flowLayoutPanel1.Controls.Add(this.label8);
-            this.flowLayoutPanel1.Controls.Add(this.label9);
-            this.flowLayoutPanel1.Controls.Add(this.label10);
-            this.flowLayoutPanel1.Controls.Add(this.label19);
-            this.flowLayoutPanel1.Controls.Add(this.label11);
-            this.flowLayoutPanel1.Controls.Add(this.label16);
-            this.flowLayoutPanel1.Controls.Add(this.label12);
-            this.flowLayoutPanel1.Controls.Add(this.label13);
+            this.flowLayoutPanel1.Controls.Add(this.lblLibrarySize);
+            this.flowLayoutPanel1.Controls.Add(this.lblLibraryBytes);
+            this.flowLayoutPanel1.Controls.Add(this.lblDownscaledBytes);
+            this.flowLayoutPanel1.Controls.Add(this.lblTotalBytes);
+            this.flowLayoutPanel1.Controls.Add(this.lblFileBreakdown);
+            this.flowLayoutPanel1.Controls.Add(this.lblFLACFiles);
+            this.flowLayoutPanel1.Controls.Add(this.lblMP3Files);
+            this.flowLayoutPanel1.Controls.Add(this.lblM4AFiles);
+            this.flowLayoutPanel1.Controls.Add(this.lblWMAFiles);
+            this.flowLayoutPanel1.Controls.Add(this.lblOGGFiles);
+            this.flowLayoutPanel1.Controls.Add(this.lblWAVFiles);
+            this.flowLayoutPanel1.Controls.Add(this.lblXMFiles);
+            this.flowLayoutPanel1.Controls.Add(this.lblMODFiles);
+            this.flowLayoutPanel1.Controls.Add(this.lblNSFFiles);
+            this.flowLayoutPanel1.Controls.Add(this.lblSongCount);
+            this.flowLayoutPanel1.Controls.Add(this.lblLibraryFiles);
+            this.flowLayoutPanel1.Controls.Add(this.lblDownscaledFiles);
+            this.flowLayoutPanel1.Controls.Add(this.lblChiptunesFiles);
+            this.flowLayoutPanel1.Controls.Add(this.lblTotalFiles);
             this.flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.flowLayoutPanel1.Location = new System.Drawing.Point(3, 3);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
             this.flowLayoutPanel1.Size = new System.Drawing.Size(334, 385);
             this.flowLayoutPanel1.TabIndex = 4;
             // 
-            // label14
+            // lblLibrarySize
             // 
-            this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(3, 0);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(87, 17);
-            this.label14.TabIndex = 21;
-            this.label14.Text = "Library Size:";
+            this.lblLibrarySize.AutoSize = true;
+            this.lblLibrarySize.Location = new System.Drawing.Point(3, 0);
+            this.lblLibrarySize.Name = "lblLibrarySize";
+            this.lblLibrarySize.Size = new System.Drawing.Size(87, 17);
+            this.lblLibrarySize.TabIndex = 21;
+            this.lblLibrarySize.Text = "Library Size:";
             // 
-            // label1
+            // lblLibraryBytes
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(3, 17);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(106, 17);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Library: 0 bytes";
+            this.lblLibraryBytes.AutoSize = true;
+            this.lblLibraryBytes.Location = new System.Drawing.Point(3, 17);
+            this.lblLibraryBytes.Name = "lblLibraryBytes";
+            this.lblLibraryBytes.Size = new System.Drawing.Size(106, 17);
+            this.lblLibraryBytes.TabIndex = 0;
+            this.lblLibraryBytes.Text = "Library: 0 bytes";
             // 
-            // label15
+            // lblDownscaledBytes
             // 
-            this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(3, 34);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(138, 17);
-            this.label15.TabIndex = 17;
-            this.label15.Text = "Downscaled: 0 bytes";
+            this.lblDownscaledBytes.AutoSize = true;
+            this.lblDownscaledBytes.Location = new System.Drawing.Point(3, 34);
+            this.lblDownscaledBytes.Name = "lblDownscaledBytes";
+            this.lblDownscaledBytes.Size = new System.Drawing.Size(138, 17);
+            this.lblDownscaledBytes.TabIndex = 17;
+            this.lblDownscaledBytes.Text = "Downscaled: 0 bytes";
             // 
-            // label18
+            // lblTotalBytes
             // 
-            this.label18.AutoSize = true;
-            this.label18.Location = new System.Drawing.Point(3, 51);
-            this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(94, 17);
-            this.label18.TabIndex = 20;
-            this.label18.Text = "Total: 0 bytes";
+            this.lblTotalBytes.AutoSize = true;
+            this.lblTotalBytes.Location = new System.Drawing.Point(3, 51);
+            this.lblTotalBytes.Name = "lblTotalBytes";
+            this.lblTotalBytes.Size = new System.Drawing.Size(94, 17);
+            this.lblTotalBytes.TabIndex = 20;
+            this.lblTotalBytes.Text = "Total: 0 bytes";
             // 
-            // label17
+            // lblFileBreakdown
             // 
-            this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(3, 88);
-            this.label17.Margin = new System.Windows.Forms.Padding(3, 20, 3, 0);
-            this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(108, 17);
-            this.label17.TabIndex = 22;
-            this.label17.Text = "File Breakdown:";
+            this.lblFileBreakdown.AutoSize = true;
+            this.lblFileBreakdown.Location = new System.Drawing.Point(3, 88);
+            this.lblFileBreakdown.Margin = new System.Windows.Forms.Padding(3, 20, 3, 0);
+            this.lblFileBreakdown.Name = "lblFileBreakdown";
+            this.lblFileBreakdown.Size = new System.Drawing.Size(108, 17);
+            this.lblFileBreakdown.TabIndex = 22;
+            this.lblFileBreakdown.Text = "File Breakdown:";
             // 
-            // label2
+            // lblFLACFiles
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(3, 105);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(87, 17);
-            this.label2.TabIndex = 4;
-            this.label2.Text = "FLAC: 0 files";
+            this.lblFLACFiles.AutoSize = true;
+            this.lblFLACFiles.Location = new System.Drawing.Point(3, 105);
+            this.lblFLACFiles.Name = "lblFLACFiles";
+            this.lblFLACFiles.Size = new System.Drawing.Size(87, 17);
+            this.lblFLACFiles.TabIndex = 4;
+            this.lblFLACFiles.Text = "FLAC: 0 files";
             // 
-            // label3
+            // lblMP3Files
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(3, 122);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(81, 17);
-            this.label3.TabIndex = 5;
-            this.label3.Text = "MP3: 0 files";
+            this.lblMP3Files.AutoSize = true;
+            this.lblMP3Files.Location = new System.Drawing.Point(3, 122);
+            this.lblMP3Files.Name = "lblMP3Files";
+            this.lblMP3Files.Size = new System.Drawing.Size(81, 17);
+            this.lblMP3Files.TabIndex = 5;
+            this.lblMP3Files.Text = "MP3: 0 files";
             // 
-            // label5
+            // lblM4AFiles
             // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(3, 139);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(81, 17);
-            this.label5.TabIndex = 7;
-            this.label5.Text = "M4A: 0 files";
+            this.lblM4AFiles.AutoSize = true;
+            this.lblM4AFiles.Location = new System.Drawing.Point(3, 139);
+            this.lblM4AFiles.Name = "lblM4AFiles";
+            this.lblM4AFiles.Size = new System.Drawing.Size(81, 17);
+            this.lblM4AFiles.TabIndex = 7;
+            this.lblM4AFiles.Text = "M4A: 0 files";
             // 
-            // label4
+            // lblWMAFiles
             // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(3, 156);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(86, 17);
-            this.label4.TabIndex = 6;
-            this.label4.Text = "WMA: 0 files";
+            this.lblWMAFiles.AutoSize = true;
+            this.lblWMAFiles.Location = new System.Drawing.Point(3, 156);
+            this.lblWMAFiles.Name = "lblWMAFiles";
+            this.lblWMAFiles.Size = new System.Drawing.Size(86, 17);
+            this.lblWMAFiles.TabIndex = 6;
+            this.lblWMAFiles.Text = "WMA: 0 files";
             // 
-            // label6
+            // lblOGGFiles
             // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(3, 173);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(86, 17);
-            this.label6.TabIndex = 8;
-            this.label6.Text = "OGG: 0 files";
+            this.lblOGGFiles.AutoSize = true;
+            this.lblOGGFiles.Location = new System.Drawing.Point(3, 173);
+            this.lblOGGFiles.Name = "lblOGGFiles";
+            this.lblOGGFiles.Size = new System.Drawing.Size(86, 17);
+            this.lblOGGFiles.TabIndex = 8;
+            this.lblOGGFiles.Text = "OGG: 0 files";
             // 
-            // label7
+            // lblWAVFiles
             // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(3, 190);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(84, 17);
-            this.label7.TabIndex = 9;
-            this.label7.Text = "WAV: 0 files";
+            this.lblWAVFiles.AutoSize = true;
+            this.lblWAVFiles.Location = new System.Drawing.Point(3, 190);
+            this.lblWAVFiles.Name = "lblWAVFiles";
+            this.lblWAVFiles.Size = new System.Drawing.Size(84, 17);
+            this.lblWAVFiles.TabIndex = 9;
+            this.lblWAVFiles.Text = "WAV: 0 files";
             // 
-            // label8
+            // lblXMFiles
             // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(3, 207);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(73, 17);
-            this.label8.TabIndex = 10;
-            this.label8.Text = "XM: 0 files";
+            this.lblXMFiles.AutoSize = true;
+            this.lblXMFiles.Location = new System.Drawing.Point(3, 207);
+            this.lblXMFiles.Name = "lblXMFiles";
+            this.lblXMFiles.Size = new System.Drawing.Size(73, 17);
+            this.lblXMFiles.TabIndex = 10;
+            this.lblXMFiles.Text = "XM: 0 files";
             // 
-            // label9
+            // lblMODFiles
             // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(3, 224);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(85, 17);
-            this.label9.TabIndex = 11;
-            this.label9.Text = "MOD: 0 files";
+            this.lblMODFiles.AutoSize = true;
+            this.lblMODFiles.Location = new System.Drawing.Point(3, 224);
+            this.lblMODFiles.Name = "lblMODFiles";
+            this.lblMODFiles.Size = new System.Drawing.Size(85, 17);
+            this.lblMODFiles.TabIndex = 11;
+            this.lblMODFiles.Text = "MOD: 0 files";
             // 
-            // label10
+            // lblNSFFiles
             // 
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(3, 241);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(80, 17);
-            this.label10.TabIndex = 12;
-            this.label10.Text = "NSF: 0 files";
+            this.lblNSFFiles.AutoSize = true;
+            this.lblNSFFiles.Location = new System.Drawing.Point(3, 241);
+            this.lblNSFFiles.Name = "lblNSFFiles";
+            this.lblNSFFiles.Size = new System.Drawing.Size(80, 17);
+            this.lblNSFFiles.TabIndex = 12;
+            this.lblNSFFiles.Text = "NSF: 0 files";
             // 
-            // label19
+            // lblSongCount
             // 
-            this.label19.AutoSize = true;
-            this.label19.Location = new System.Drawing.Point(3, 278);
-            this.label19.Margin = new System.Windows.Forms.Padding(3, 20, 3, 0);
-            this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(86, 17);
-            this.label19.TabIndex = 23;
-            this.label19.Text = "Song Count:";
+            this.lblSongCount.AutoSize = true;
+            this.lblSongCount.Location = new System.Drawing.Point(3, 278);
+            this.lblSongCount.Margin = new System.Windows.Forms.Padding(3, 20, 3, 0);
+            this.lblSongCount.Name = "lblSongCount";
+            this.lblSongCount.Size = new System.Drawing.Size(86, 17);
+            this.lblSongCount.TabIndex = 23;
+            this.lblSongCount.Text = "Song Count:";
             // 
-            // label11
+            // lblLibraryFiles
             // 
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(3, 295);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(110, 17);
-            this.label11.TabIndex = 13;
-            this.label11.Text = "Library: 0 songs";
+            this.lblLibraryFiles.AutoSize = true;
+            this.lblLibraryFiles.Location = new System.Drawing.Point(3, 295);
+            this.lblLibraryFiles.Name = "lblLibraryFiles";
+            this.lblLibraryFiles.Size = new System.Drawing.Size(110, 17);
+            this.lblLibraryFiles.TabIndex = 13;
+            this.lblLibraryFiles.Text = "Library: 0 songs";
             // 
-            // label16
+            // lblDownscaledFiles
             // 
-            this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(3, 312);
-            this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(129, 17);
-            this.label16.TabIndex = 18;
-            this.label16.Text = "Downscaled: 0 files";
+            this.lblDownscaledFiles.AutoSize = true;
+            this.lblDownscaledFiles.Location = new System.Drawing.Point(3, 312);
+            this.lblDownscaledFiles.Name = "lblDownscaledFiles";
+            this.lblDownscaledFiles.Size = new System.Drawing.Size(129, 17);
+            this.lblDownscaledFiles.TabIndex = 18;
+            this.lblDownscaledFiles.Text = "Downscaled: 0 files";
             // 
-            // label12
+            // lblChiptunesFiles
             // 
-            this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(3, 329);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(129, 17);
-            this.label12.TabIndex = 14;
-            this.label12.Text = "Chiptunes: 0 songs";
+            this.lblChiptunesFiles.AutoSize = true;
+            this.lblChiptunesFiles.Location = new System.Drawing.Point(3, 329);
+            this.lblChiptunesFiles.Name = "lblChiptunesFiles";
+            this.lblChiptunesFiles.Size = new System.Drawing.Size(129, 17);
+            this.lblChiptunesFiles.TabIndex = 14;
+            this.lblChiptunesFiles.Text = "Chiptunes: 0 songs";
             // 
-            // label13
+            // lblTotalFiles
             // 
-            this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(3, 346);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(234, 17);
-            this.label13.TabIndex = 15;
-            this.label13.Text = "Total (without downscaled): 0 songs";
+            this.lblTotalFiles.AutoSize = true;
+            this.lblTotalFiles.Location = new System.Drawing.Point(3, 346);
+            this.lblTotalFiles.Name = "lblTotalFiles";
+            this.lblTotalFiles.Size = new System.Drawing.Size(234, 17);
+            this.lblTotalFiles.TabIndex = 15;
+            this.lblTotalFiles.Text = "Total (without downscaled): 0 songs";
             // 
-            // label20
+            // lblNotDownscaled
             // 
-            this.label20.AutoSize = true;
-            this.label20.Location = new System.Drawing.Point(4, 4);
-            this.label20.Name = "label20";
-            this.label20.Size = new System.Drawing.Size(186, 17);
-            this.label20.TabIndex = 1;
-            this.label20.Text = "Files that need downscaling:";
+            this.lblNotDownscaled.AutoSize = true;
+            this.lblNotDownscaled.Location = new System.Drawing.Point(4, 4);
+            this.lblNotDownscaled.Name = "lblNotDownscaled";
+            this.lblNotDownscaled.Size = new System.Drawing.Size(186, 17);
+            this.lblNotDownscaled.TabIndex = 1;
+            this.lblNotDownscaled.Text = "Files that need downscaling:";
             // 
-            // listBox1
+            // lbNotDownscaled
             // 
-            this.listBox1.FormattingEnabled = true;
-            this.listBox1.HorizontalScrollbar = true;
-            this.listBox1.ItemHeight = 16;
-            this.listBox1.Location = new System.Drawing.Point(3, 24);
-            this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(406, 356);
-            this.listBox1.TabIndex = 0;
-            this.listBox1.DoubleClick += new System.EventHandler(this.listBox1_DoubleClick);
+            this.lbNotDownscaled.FormattingEnabled = true;
+            this.lbNotDownscaled.HorizontalScrollbar = true;
+            this.lbNotDownscaled.ItemHeight = 16;
+            this.lbNotDownscaled.Location = new System.Drawing.Point(3, 24);
+            this.lbNotDownscaled.Name = "lbNotDownscaled";
+            this.lbNotDownscaled.Size = new System.Drawing.Size(406, 356);
+            this.lbNotDownscaled.TabIndex = 0;
+            this.lbNotDownscaled.DoubleClick += new System.EventHandler(this.listBox1_DoubleClick);
             // 
             // btnScan
             // 
@@ -682,27 +682,27 @@
         private System.Windows.Forms.Button btnScan;
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
-        private System.Windows.Forms.Label label14;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label15;
-        private System.Windows.Forms.Label label18;
-        private System.Windows.Forms.Label label17;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.Label label19;
-        private System.Windows.Forms.Label label11;
-        private System.Windows.Forms.Label label16;
-        private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.Label label13;
-        private System.Windows.Forms.ListBox listBox1;
-        private System.Windows.Forms.Label label20;
+        private System.Windows.Forms.Label lblLibrarySize;
+        private System.Windows.Forms.Label lblLibraryBytes;
+        private System.Windows.Forms.Label lblDownscaledBytes;
+        private System.Windows.Forms.Label lblTotalBytes;
+        private System.Windows.Forms.Label lblFileBreakdown;
+        private System.Windows.Forms.Label lblFLACFiles;
+        private System.Windows.Forms.Label lblMP3Files;
+        private System.Windows.Forms.Label lblWMAFiles;
+        private System.Windows.Forms.Label lblM4AFiles;
+        private System.Windows.Forms.Label lblOGGFiles;
+        private System.Windows.Forms.Label lblWAVFiles;
+        private System.Windows.Forms.Label lblXMFiles;
+        private System.Windows.Forms.Label lblMODFiles;
+        private System.Windows.Forms.Label lblNSFFiles;
+        private System.Windows.Forms.Label lblSongCount;
+        private System.Windows.Forms.Label lblLibraryFiles;
+        private System.Windows.Forms.Label lblDownscaledFiles;
+        private System.Windows.Forms.Label lblChiptunesFiles;
+        private System.Windows.Forms.Label lblTotalFiles;
+        private System.Windows.Forms.ListBox lbNotDownscaled;
+        private System.Windows.Forms.Label lblNotDownscaled;
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.Label label21;
         private System.Windows.Forms.TextBox textBox1;
