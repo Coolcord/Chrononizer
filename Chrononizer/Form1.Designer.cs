@@ -29,14 +29,14 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
-            this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.tabControl = new System.Windows.Forms.TabControl();
+            this.SyncTab = new System.Windows.Forms.TabPage();
             this.btnSyncLaptop = new System.Windows.Forms.Button();
             this.btnSyncPMP = new System.Windows.Forms.Button();
             this.btnSyncBoth = new System.Windows.Forms.Button();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
+            this.InfoTab = new System.Windows.Forms.TabPage();
+            this.splitContainer = new System.Windows.Forms.SplitContainer();
+            this.flpLibraryInfo = new System.Windows.Forms.FlowLayoutPanel();
             this.lblLibrarySize = new System.Windows.Forms.Label();
             this.lblLibraryBytes = new System.Windows.Forms.Label();
             this.lblDownscaledBytes = new System.Windows.Forms.Label();
@@ -59,23 +59,23 @@
             this.lblNotDownscaled = new System.Windows.Forms.Label();
             this.lbNotDownscaled = new System.Windows.Forms.ListBox();
             this.btnScan = new System.Windows.Forms.Button();
-            this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.checkBox7 = new System.Windows.Forms.CheckBox();
-            this.button6 = new System.Windows.Forms.Button();
-            this.label23 = new System.Windows.Forms.Label();
-            this.textBox3 = new System.Windows.Forms.TextBox();
-            this.checkBox6 = new System.Windows.Forms.CheckBox();
-            this.checkBox5 = new System.Windows.Forms.CheckBox();
-            this.checkBox4 = new System.Windows.Forms.CheckBox();
-            this.checkBox3 = new System.Windows.Forms.CheckBox();
-            this.checkBox2 = new System.Windows.Forms.CheckBox();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
-            this.button5 = new System.Windows.Forms.Button();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.label22 = new System.Windows.Forms.Label();
-            this.button4 = new System.Windows.Forms.Button();
-            this.label21 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.PreferencesTab = new System.Windows.Forms.TabPage();
+            this.cbChiptunesLibrary = new System.Windows.Forms.CheckBox();
+            this.btnChiptunesLocation = new System.Windows.Forms.Button();
+            this.lblChiptunesLocation = new System.Windows.Forms.Label();
+            this.tbChiptunesLocation = new System.Windows.Forms.TextBox();
+            this.cbRemoveEmpty = new System.Windows.Forms.CheckBox();
+            this.cbRemoveUnnecessary = new System.Windows.Forms.CheckBox();
+            this.cbRemoveUnsupported = new System.Windows.Forms.CheckBox();
+            this.cbShowImproper = new System.Windows.Forms.CheckBox();
+            this.cbAutoHandle = new System.Windows.Forms.CheckBox();
+            this.cbRemoveImproper = new System.Windows.Forms.CheckBox();
+            this.btnDownscaledLocation = new System.Windows.Forms.Button();
+            this.tbDownscaledLocation = new System.Windows.Forms.TextBox();
+            this.lblDownscaledLocation = new System.Windows.Forms.Label();
+            this.btnLibraryLocation = new System.Windows.Forms.Button();
+            this.lblLibraryLocation = new System.Windows.Forms.Label();
+            this.tbLibraryLocation = new System.Windows.Forms.TextBox();
             this.panel1 = new System.Windows.Forms.Panel();
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
             this.PMPSyncBW = new System.ComponentModel.BackgroundWorker();
@@ -83,41 +83,41 @@
             this.LaptopSyncBW = new System.ComponentModel.BackgroundWorker();
             this.PMPSyncTBW = new System.ComponentModel.BackgroundWorker();
             this.LaptopSyncTBW = new System.ComponentModel.BackgroundWorker();
-            this.tabControl1.SuspendLayout();
-            this.tabPage1.SuspendLayout();
-            this.tabPage2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
-            this.splitContainer1.Panel1.SuspendLayout();
-            this.splitContainer1.Panel2.SuspendLayout();
-            this.splitContainer1.SuspendLayout();
-            this.flowLayoutPanel1.SuspendLayout();
-            this.tabPage3.SuspendLayout();
+            this.tabControl.SuspendLayout();
+            this.SyncTab.SuspendLayout();
+            this.InfoTab.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).BeginInit();
+            this.splitContainer.Panel1.SuspendLayout();
+            this.splitContainer.Panel2.SuspendLayout();
+            this.splitContainer.SuspendLayout();
+            this.flpLibraryInfo.SuspendLayout();
+            this.PreferencesTab.SuspendLayout();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
-            // tabControl1
+            // tabControl
             // 
-            this.tabControl1.Controls.Add(this.tabPage1);
-            this.tabControl1.Controls.Add(this.tabPage2);
-            this.tabControl1.Controls.Add(this.tabPage3);
-            this.tabControl1.Location = new System.Drawing.Point(-1, 0);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(785, 556);
-            this.tabControl1.TabIndex = 8;
+            this.tabControl.Controls.Add(this.SyncTab);
+            this.tabControl.Controls.Add(this.InfoTab);
+            this.tabControl.Controls.Add(this.PreferencesTab);
+            this.tabControl.Location = new System.Drawing.Point(-1, 0);
+            this.tabControl.Name = "tabControl";
+            this.tabControl.SelectedIndex = 0;
+            this.tabControl.Size = new System.Drawing.Size(785, 556);
+            this.tabControl.TabIndex = 8;
             // 
-            // tabPage1
+            // SyncTab
             // 
-            this.tabPage1.Controls.Add(this.btnSyncLaptop);
-            this.tabPage1.Controls.Add(this.btnSyncPMP);
-            this.tabPage1.Controls.Add(this.btnSyncBoth);
-            this.tabPage1.Location = new System.Drawing.Point(4, 25);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(777, 527);
-            this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "Synchronize";
-            this.tabPage1.UseVisualStyleBackColor = true;
+            this.SyncTab.Controls.Add(this.btnSyncLaptop);
+            this.SyncTab.Controls.Add(this.btnSyncPMP);
+            this.SyncTab.Controls.Add(this.btnSyncBoth);
+            this.SyncTab.Location = new System.Drawing.Point(4, 25);
+            this.SyncTab.Name = "SyncTab";
+            this.SyncTab.Padding = new System.Windows.Forms.Padding(3);
+            this.SyncTab.Size = new System.Drawing.Size(777, 527);
+            this.SyncTab.TabIndex = 0;
+            this.SyncTab.Text = "Synchronize";
+            this.SyncTab.UseVisualStyleBackColor = true;
             // 
             // btnSyncLaptop
             // 
@@ -149,60 +149,60 @@
             this.btnSyncBoth.UseVisualStyleBackColor = true;
             this.btnSyncBoth.Click += new System.EventHandler(this.btnSyncBoth_Click);
             // 
-            // tabPage2
+            // InfoTab
             // 
-            this.tabPage2.Controls.Add(this.splitContainer1);
-            this.tabPage2.Controls.Add(this.btnScan);
-            this.tabPage2.Location = new System.Drawing.Point(4, 25);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Size = new System.Drawing.Size(777, 527);
-            this.tabPage2.TabIndex = 2;
-            this.tabPage2.Text = "Library Info";
-            this.tabPage2.UseVisualStyleBackColor = true;
+            this.InfoTab.Controls.Add(this.splitContainer);
+            this.InfoTab.Controls.Add(this.btnScan);
+            this.InfoTab.Location = new System.Drawing.Point(4, 25);
+            this.InfoTab.Name = "InfoTab";
+            this.InfoTab.Size = new System.Drawing.Size(777, 527);
+            this.InfoTab.TabIndex = 2;
+            this.InfoTab.Text = "Library Info";
+            this.InfoTab.UseVisualStyleBackColor = true;
             // 
-            // splitContainer1
+            // splitContainer
             // 
-            this.splitContainer1.Location = new System.Drawing.Point(12, 4);
-            this.splitContainer1.Name = "splitContainer1";
+            this.splitContainer.Location = new System.Drawing.Point(12, 4);
+            this.splitContainer.Name = "splitContainer";
             // 
-            // splitContainer1.Panel1
+            // splitContainer.Panel1
             // 
-            this.splitContainer1.Panel1.Controls.Add(this.flowLayoutPanel1);
+            this.splitContainer.Panel1.Controls.Add(this.flpLibraryInfo);
             // 
-            // splitContainer1.Panel2
+            // splitContainer.Panel2
             // 
-            this.splitContainer1.Panel2.Controls.Add(this.lblNotDownscaled);
-            this.splitContainer1.Panel2.Controls.Add(this.lbNotDownscaled);
-            this.splitContainer1.Size = new System.Drawing.Size(757, 391);
-            this.splitContainer1.SplitterDistance = 340;
-            this.splitContainer1.TabIndex = 4;
+            this.splitContainer.Panel2.Controls.Add(this.lblNotDownscaled);
+            this.splitContainer.Panel2.Controls.Add(this.lbNotDownscaled);
+            this.splitContainer.Size = new System.Drawing.Size(757, 391);
+            this.splitContainer.SplitterDistance = 340;
+            this.splitContainer.TabIndex = 4;
             // 
-            // flowLayoutPanel1
+            // flpLibraryInfo
             // 
-            this.flowLayoutPanel1.Controls.Add(this.lblLibrarySize);
-            this.flowLayoutPanel1.Controls.Add(this.lblLibraryBytes);
-            this.flowLayoutPanel1.Controls.Add(this.lblDownscaledBytes);
-            this.flowLayoutPanel1.Controls.Add(this.lblTotalBytes);
-            this.flowLayoutPanel1.Controls.Add(this.lblFileBreakdown);
-            this.flowLayoutPanel1.Controls.Add(this.lblFLACFiles);
-            this.flowLayoutPanel1.Controls.Add(this.lblMP3Files);
-            this.flowLayoutPanel1.Controls.Add(this.lblM4AFiles);
-            this.flowLayoutPanel1.Controls.Add(this.lblWMAFiles);
-            this.flowLayoutPanel1.Controls.Add(this.lblOGGFiles);
-            this.flowLayoutPanel1.Controls.Add(this.lblWAVFiles);
-            this.flowLayoutPanel1.Controls.Add(this.lblXMFiles);
-            this.flowLayoutPanel1.Controls.Add(this.lblMODFiles);
-            this.flowLayoutPanel1.Controls.Add(this.lblNSFFiles);
-            this.flowLayoutPanel1.Controls.Add(this.lblSongCount);
-            this.flowLayoutPanel1.Controls.Add(this.lblLibraryFiles);
-            this.flowLayoutPanel1.Controls.Add(this.lblDownscaledFiles);
-            this.flowLayoutPanel1.Controls.Add(this.lblChiptunesFiles);
-            this.flowLayoutPanel1.Controls.Add(this.lblTotalFiles);
-            this.flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(3, 3);
-            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(334, 385);
-            this.flowLayoutPanel1.TabIndex = 4;
+            this.flpLibraryInfo.Controls.Add(this.lblLibrarySize);
+            this.flpLibraryInfo.Controls.Add(this.lblLibraryBytes);
+            this.flpLibraryInfo.Controls.Add(this.lblDownscaledBytes);
+            this.flpLibraryInfo.Controls.Add(this.lblTotalBytes);
+            this.flpLibraryInfo.Controls.Add(this.lblFileBreakdown);
+            this.flpLibraryInfo.Controls.Add(this.lblFLACFiles);
+            this.flpLibraryInfo.Controls.Add(this.lblMP3Files);
+            this.flpLibraryInfo.Controls.Add(this.lblM4AFiles);
+            this.flpLibraryInfo.Controls.Add(this.lblWMAFiles);
+            this.flpLibraryInfo.Controls.Add(this.lblOGGFiles);
+            this.flpLibraryInfo.Controls.Add(this.lblWAVFiles);
+            this.flpLibraryInfo.Controls.Add(this.lblXMFiles);
+            this.flpLibraryInfo.Controls.Add(this.lblMODFiles);
+            this.flpLibraryInfo.Controls.Add(this.lblNSFFiles);
+            this.flpLibraryInfo.Controls.Add(this.lblSongCount);
+            this.flpLibraryInfo.Controls.Add(this.lblLibraryFiles);
+            this.flpLibraryInfo.Controls.Add(this.lblDownscaledFiles);
+            this.flpLibraryInfo.Controls.Add(this.lblChiptunesFiles);
+            this.flpLibraryInfo.Controls.Add(this.lblTotalFiles);
+            this.flpLibraryInfo.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+            this.flpLibraryInfo.Location = new System.Drawing.Point(3, 3);
+            this.flpLibraryInfo.Name = "flpLibraryInfo";
+            this.flpLibraryInfo.Size = new System.Drawing.Size(334, 385);
+            this.flpLibraryInfo.TabIndex = 4;
             // 
             // lblLibrarySize
             // 
@@ -395,7 +395,7 @@
             this.lbNotDownscaled.Name = "lbNotDownscaled";
             this.lbNotDownscaled.Size = new System.Drawing.Size(406, 356);
             this.lbNotDownscaled.TabIndex = 0;
-            this.lbNotDownscaled.DoubleClick += new System.EventHandler(this.listBox1_DoubleClick);
+            this.lbNotDownscaled.DoubleClick += new System.EventHandler(this.lbNotDownscaled_DoubleClick);
             // 
             // btnScan
             // 
@@ -407,200 +407,200 @@
             this.btnScan.UseVisualStyleBackColor = true;
             this.btnScan.Click += new System.EventHandler(this.btnScan_Click);
             // 
-            // tabPage3
+            // PreferencesTab
             // 
-            this.tabPage3.Controls.Add(this.checkBox7);
-            this.tabPage3.Controls.Add(this.button6);
-            this.tabPage3.Controls.Add(this.label23);
-            this.tabPage3.Controls.Add(this.textBox3);
-            this.tabPage3.Controls.Add(this.checkBox6);
-            this.tabPage3.Controls.Add(this.checkBox5);
-            this.tabPage3.Controls.Add(this.checkBox4);
-            this.tabPage3.Controls.Add(this.checkBox3);
-            this.tabPage3.Controls.Add(this.checkBox2);
-            this.tabPage3.Controls.Add(this.checkBox1);
-            this.tabPage3.Controls.Add(this.button5);
-            this.tabPage3.Controls.Add(this.textBox2);
-            this.tabPage3.Controls.Add(this.label22);
-            this.tabPage3.Controls.Add(this.button4);
-            this.tabPage3.Controls.Add(this.label21);
-            this.tabPage3.Controls.Add(this.textBox1);
-            this.tabPage3.Location = new System.Drawing.Point(4, 25);
-            this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Size = new System.Drawing.Size(777, 527);
-            this.tabPage3.TabIndex = 3;
-            this.tabPage3.Text = "Preferences";
-            this.tabPage3.UseVisualStyleBackColor = true;
+            this.PreferencesTab.Controls.Add(this.cbChiptunesLibrary);
+            this.PreferencesTab.Controls.Add(this.btnChiptunesLocation);
+            this.PreferencesTab.Controls.Add(this.lblChiptunesLocation);
+            this.PreferencesTab.Controls.Add(this.tbChiptunesLocation);
+            this.PreferencesTab.Controls.Add(this.cbRemoveEmpty);
+            this.PreferencesTab.Controls.Add(this.cbRemoveUnnecessary);
+            this.PreferencesTab.Controls.Add(this.cbRemoveUnsupported);
+            this.PreferencesTab.Controls.Add(this.cbShowImproper);
+            this.PreferencesTab.Controls.Add(this.cbAutoHandle);
+            this.PreferencesTab.Controls.Add(this.cbRemoveImproper);
+            this.PreferencesTab.Controls.Add(this.btnDownscaledLocation);
+            this.PreferencesTab.Controls.Add(this.tbDownscaledLocation);
+            this.PreferencesTab.Controls.Add(this.lblDownscaledLocation);
+            this.PreferencesTab.Controls.Add(this.btnLibraryLocation);
+            this.PreferencesTab.Controls.Add(this.lblLibraryLocation);
+            this.PreferencesTab.Controls.Add(this.tbLibraryLocation);
+            this.PreferencesTab.Location = new System.Drawing.Point(4, 25);
+            this.PreferencesTab.Name = "PreferencesTab";
+            this.PreferencesTab.Size = new System.Drawing.Size(777, 527);
+            this.PreferencesTab.TabIndex = 3;
+            this.PreferencesTab.Text = "Preferences";
+            this.PreferencesTab.UseVisualStyleBackColor = true;
             // 
-            // checkBox7
+            // cbChiptunesLibrary
             // 
-            this.checkBox7.AutoSize = true;
-            this.checkBox7.Location = new System.Drawing.Point(11, 59);
-            this.checkBox7.Name = "checkBox7";
-            this.checkBox7.Size = new System.Drawing.Size(163, 21);
-            this.checkBox7.TabIndex = 15;
-            this.checkBox7.Text = "Use chiptunes library";
-            this.checkBox7.UseVisualStyleBackColor = true;
-            this.checkBox7.CheckedChanged += new System.EventHandler(this.checkBox7_CheckedChanged);
+            this.cbChiptunesLibrary.AutoSize = true;
+            this.cbChiptunesLibrary.Location = new System.Drawing.Point(11, 59);
+            this.cbChiptunesLibrary.Name = "cbChiptunesLibrary";
+            this.cbChiptunesLibrary.Size = new System.Drawing.Size(163, 21);
+            this.cbChiptunesLibrary.TabIndex = 15;
+            this.cbChiptunesLibrary.Text = "Use chiptunes library";
+            this.cbChiptunesLibrary.UseVisualStyleBackColor = true;
+            this.cbChiptunesLibrary.CheckedChanged += new System.EventHandler(this.checkBox7_CheckedChanged);
             // 
-            // button6
+            // btnChiptunesLocation
             // 
-            this.button6.Enabled = false;
-            this.button6.Location = new System.Drawing.Point(301, 103);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(31, 23);
-            this.button6.TabIndex = 14;
-            this.button6.Text = "...";
-            this.button6.UseVisualStyleBackColor = true;
-            this.button6.Click += new System.EventHandler(this.button6_Click);
+            this.btnChiptunesLocation.Enabled = false;
+            this.btnChiptunesLocation.Location = new System.Drawing.Point(301, 103);
+            this.btnChiptunesLocation.Name = "btnChiptunesLocation";
+            this.btnChiptunesLocation.Size = new System.Drawing.Size(31, 23);
+            this.btnChiptunesLocation.TabIndex = 14;
+            this.btnChiptunesLocation.Text = "...";
+            this.btnChiptunesLocation.UseVisualStyleBackColor = true;
+            this.btnChiptunesLocation.Click += new System.EventHandler(this.button6_Click);
             // 
-            // label23
+            // lblChiptunesLocation
             // 
-            this.label23.AutoSize = true;
-            this.label23.Enabled = false;
-            this.label23.Location = new System.Drawing.Point(8, 83);
-            this.label23.Name = "label23";
-            this.label23.Size = new System.Drawing.Size(181, 17);
-            this.label23.TabIndex = 13;
-            this.label23.Text = "Chiptunes Library Location:";
+            this.lblChiptunesLocation.AutoSize = true;
+            this.lblChiptunesLocation.Enabled = false;
+            this.lblChiptunesLocation.Location = new System.Drawing.Point(8, 83);
+            this.lblChiptunesLocation.Name = "lblChiptunesLocation";
+            this.lblChiptunesLocation.Size = new System.Drawing.Size(181, 17);
+            this.lblChiptunesLocation.TabIndex = 13;
+            this.lblChiptunesLocation.Text = "Chiptunes Library Location:";
             // 
-            // textBox3
+            // tbChiptunesLocation
             // 
-            this.textBox3.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.textBox3.Enabled = false;
-            this.textBox3.Location = new System.Drawing.Point(11, 103);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.ReadOnly = true;
-            this.textBox3.Size = new System.Drawing.Size(284, 22);
-            this.textBox3.TabIndex = 12;
-            this.textBox3.Click += new System.EventHandler(this.textBox3_Click);
-            this.textBox3.TextChanged += new System.EventHandler(this.textBox3_TextChanged);
+            this.tbChiptunesLocation.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.tbChiptunesLocation.Enabled = false;
+            this.tbChiptunesLocation.Location = new System.Drawing.Point(11, 103);
+            this.tbChiptunesLocation.Name = "tbChiptunesLocation";
+            this.tbChiptunesLocation.ReadOnly = true;
+            this.tbChiptunesLocation.Size = new System.Drawing.Size(284, 22);
+            this.tbChiptunesLocation.TabIndex = 12;
+            this.tbChiptunesLocation.Click += new System.EventHandler(this.textBox3_Click);
+            this.tbChiptunesLocation.TextChanged += new System.EventHandler(this.tbChiptunesLocation_TextChanged);
             // 
-            // checkBox6
+            // cbRemoveEmpty
             // 
-            this.checkBox6.AutoSize = true;
-            this.checkBox6.Location = new System.Drawing.Point(11, 203);
-            this.checkBox6.Name = "checkBox6";
-            this.checkBox6.Size = new System.Drawing.Size(347, 21);
-            this.checkBox6.TabIndex = 11;
-            this.checkBox6.Text = "Remove empty directories from downscaled library";
-            this.checkBox6.UseVisualStyleBackColor = true;
-            this.checkBox6.CheckedChanged += new System.EventHandler(this.checkBox6_CheckedChanged);
+            this.cbRemoveEmpty.AutoSize = true;
+            this.cbRemoveEmpty.Location = new System.Drawing.Point(11, 203);
+            this.cbRemoveEmpty.Name = "cbRemoveEmpty";
+            this.cbRemoveEmpty.Size = new System.Drawing.Size(347, 21);
+            this.cbRemoveEmpty.TabIndex = 11;
+            this.cbRemoveEmpty.Text = "Remove empty directories from downscaled library";
+            this.cbRemoveEmpty.UseVisualStyleBackColor = true;
+            this.cbRemoveEmpty.CheckedChanged += new System.EventHandler(this.checkBox6_CheckedChanged);
             // 
-            // checkBox5
+            // cbRemoveUnnecessary
             // 
-            this.checkBox5.AutoSize = true;
-            this.checkBox5.Location = new System.Drawing.Point(11, 258);
-            this.checkBox5.Name = "checkBox5";
-            this.checkBox5.Size = new System.Drawing.Size(427, 21);
-            this.checkBox5.TabIndex = 10;
-            this.checkBox5.Text = "Remove unnecessary downscaled files from downscaled library";
-            this.checkBox5.UseVisualStyleBackColor = true;
-            this.checkBox5.CheckedChanged += new System.EventHandler(this.checkBox5_CheckedChanged);
+            this.cbRemoveUnnecessary.AutoSize = true;
+            this.cbRemoveUnnecessary.Location = new System.Drawing.Point(11, 258);
+            this.cbRemoveUnnecessary.Name = "cbRemoveUnnecessary";
+            this.cbRemoveUnnecessary.Size = new System.Drawing.Size(427, 21);
+            this.cbRemoveUnnecessary.TabIndex = 10;
+            this.cbRemoveUnnecessary.Text = "Remove unnecessary downscaled files from downscaled library";
+            this.cbRemoveUnnecessary.UseVisualStyleBackColor = true;
+            this.cbRemoveUnnecessary.CheckedChanged += new System.EventHandler(this.checkBox5_CheckedChanged);
             // 
-            // checkBox4
+            // cbRemoveUnsupported
             // 
-            this.checkBox4.AutoSize = true;
-            this.checkBox4.Location = new System.Drawing.Point(11, 230);
-            this.checkBox4.Name = "checkBox4";
-            this.checkBox4.Size = new System.Drawing.Size(433, 21);
-            this.checkBox4.TabIndex = 9;
-            this.checkBox4.Text = "Remove non-audio or unsupported files from downscaled library";
-            this.checkBox4.UseVisualStyleBackColor = true;
-            this.checkBox4.CheckedChanged += new System.EventHandler(this.checkBox4_CheckedChanged);
+            this.cbRemoveUnsupported.AutoSize = true;
+            this.cbRemoveUnsupported.Location = new System.Drawing.Point(11, 230);
+            this.cbRemoveUnsupported.Name = "cbRemoveUnsupported";
+            this.cbRemoveUnsupported.Size = new System.Drawing.Size(433, 21);
+            this.cbRemoveUnsupported.TabIndex = 9;
+            this.cbRemoveUnsupported.Text = "Remove non-audio or unsupported files from downscaled library";
+            this.cbRemoveUnsupported.UseVisualStyleBackColor = true;
+            this.cbRemoveUnsupported.CheckedChanged += new System.EventHandler(this.checkBox4_CheckedChanged);
             // 
-            // checkBox3
+            // cbShowImproper
             // 
-            this.checkBox3.AutoSize = true;
-            this.checkBox3.Location = new System.Drawing.Point(11, 312);
-            this.checkBox3.Name = "checkBox3";
-            this.checkBox3.Size = new System.Drawing.Size(430, 21);
-            this.checkBox3.TabIndex = 8;
-            this.checkBox3.Text = "Show files in downscaled library that are improperly downscaled";
-            this.checkBox3.UseVisualStyleBackColor = true;
-            this.checkBox3.CheckedChanged += new System.EventHandler(this.checkBox3_CheckedChanged);
+            this.cbShowImproper.AutoSize = true;
+            this.cbShowImproper.Location = new System.Drawing.Point(11, 312);
+            this.cbShowImproper.Name = "cbShowImproper";
+            this.cbShowImproper.Size = new System.Drawing.Size(430, 21);
+            this.cbShowImproper.TabIndex = 8;
+            this.cbShowImproper.Text = "Show files in downscaled library that are improperly downscaled";
+            this.cbShowImproper.UseVisualStyleBackColor = true;
+            this.cbShowImproper.CheckedChanged += new System.EventHandler(this.checkBox3_CheckedChanged);
             // 
-            // checkBox2
+            // cbAutoHandle
             // 
-            this.checkBox2.AutoSize = true;
-            this.checkBox2.Location = new System.Drawing.Point(11, 131);
-            this.checkBox2.Name = "checkBox2";
-            this.checkBox2.Size = new System.Drawing.Size(281, 21);
-            this.checkBox2.TabIndex = 7;
-            this.checkBox2.Text = "Automatically handle downscaled library";
-            this.checkBox2.UseVisualStyleBackColor = true;
-            this.checkBox2.CheckedChanged += new System.EventHandler(this.checkBox2_CheckedChanged);
+            this.cbAutoHandle.AutoSize = true;
+            this.cbAutoHandle.Location = new System.Drawing.Point(11, 131);
+            this.cbAutoHandle.Name = "cbAutoHandle";
+            this.cbAutoHandle.Size = new System.Drawing.Size(281, 21);
+            this.cbAutoHandle.TabIndex = 7;
+            this.cbAutoHandle.Text = "Automatically handle downscaled library";
+            this.cbAutoHandle.UseVisualStyleBackColor = true;
+            this.cbAutoHandle.CheckedChanged += new System.EventHandler(this.checkBox2_CheckedChanged);
             // 
-            // checkBox1
+            // cbRemoveImproper
             // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(11, 285);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(412, 21);
-            this.checkBox1.TabIndex = 6;
-            this.checkBox1.Text = "Remove improperly downscaled files from downscaled library";
-            this.checkBox1.UseVisualStyleBackColor = true;
-            this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
+            this.cbRemoveImproper.AutoSize = true;
+            this.cbRemoveImproper.Location = new System.Drawing.Point(11, 285);
+            this.cbRemoveImproper.Name = "cbRemoveImproper";
+            this.cbRemoveImproper.Size = new System.Drawing.Size(412, 21);
+            this.cbRemoveImproper.TabIndex = 6;
+            this.cbRemoveImproper.Text = "Remove improperly downscaled files from downscaled library";
+            this.cbRemoveImproper.UseVisualStyleBackColor = true;
+            this.cbRemoveImproper.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
             // 
-            // button5
+            // btnDownscaledLocation
             // 
-            this.button5.Location = new System.Drawing.Point(301, 174);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(31, 23);
-            this.button5.TabIndex = 5;
-            this.button5.Text = "...";
-            this.button5.UseVisualStyleBackColor = true;
-            this.button5.Click += new System.EventHandler(this.button5_Click);
+            this.btnDownscaledLocation.Location = new System.Drawing.Point(301, 174);
+            this.btnDownscaledLocation.Name = "btnDownscaledLocation";
+            this.btnDownscaledLocation.Size = new System.Drawing.Size(31, 23);
+            this.btnDownscaledLocation.TabIndex = 5;
+            this.btnDownscaledLocation.Text = "...";
+            this.btnDownscaledLocation.UseVisualStyleBackColor = true;
+            this.btnDownscaledLocation.Click += new System.EventHandler(this.button5_Click);
             // 
-            // textBox2
+            // tbDownscaledLocation
             // 
-            this.textBox2.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.textBox2.Location = new System.Drawing.Point(11, 175);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.ReadOnly = true;
-            this.textBox2.Size = new System.Drawing.Size(284, 22);
-            this.textBox2.TabIndex = 4;
-            this.textBox2.Click += new System.EventHandler(this.textBox2_Click);
-            this.textBox2.TextChanged += new System.EventHandler(this.textBox2_TextChanged);
+            this.tbDownscaledLocation.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.tbDownscaledLocation.Location = new System.Drawing.Point(11, 175);
+            this.tbDownscaledLocation.Name = "tbDownscaledLocation";
+            this.tbDownscaledLocation.ReadOnly = true;
+            this.tbDownscaledLocation.Size = new System.Drawing.Size(284, 22);
+            this.tbDownscaledLocation.TabIndex = 4;
+            this.tbDownscaledLocation.Click += new System.EventHandler(this.textBox2_Click);
+            this.tbDownscaledLocation.TextChanged += new System.EventHandler(this.tbDownscaledLocation_TextChanged);
             // 
-            // label22
+            // lblDownscaledLocation
             // 
-            this.label22.AutoSize = true;
-            this.label22.Location = new System.Drawing.Point(8, 155);
-            this.label22.Name = "label22";
-            this.label22.Size = new System.Drawing.Size(194, 17);
-            this.label22.TabIndex = 3;
-            this.label22.Text = "Downscaled Library Location:";
+            this.lblDownscaledLocation.AutoSize = true;
+            this.lblDownscaledLocation.Location = new System.Drawing.Point(8, 155);
+            this.lblDownscaledLocation.Name = "lblDownscaledLocation";
+            this.lblDownscaledLocation.Size = new System.Drawing.Size(194, 17);
+            this.lblDownscaledLocation.TabIndex = 3;
+            this.lblDownscaledLocation.Text = "Downscaled Library Location:";
             // 
-            // button4
+            // btnLibraryLocation
             // 
-            this.button4.Location = new System.Drawing.Point(301, 32);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(31, 23);
-            this.button4.TabIndex = 2;
-            this.button4.Text = "...";
-            this.button4.UseVisualStyleBackColor = true;
-            this.button4.Click += new System.EventHandler(this.button4_Click);
+            this.btnLibraryLocation.Location = new System.Drawing.Point(301, 32);
+            this.btnLibraryLocation.Name = "btnLibraryLocation";
+            this.btnLibraryLocation.Size = new System.Drawing.Size(31, 23);
+            this.btnLibraryLocation.TabIndex = 2;
+            this.btnLibraryLocation.Text = "...";
+            this.btnLibraryLocation.UseVisualStyleBackColor = true;
+            this.btnLibraryLocation.Click += new System.EventHandler(this.button4_Click);
             // 
-            // label21
+            // lblLibraryLocation
             // 
-            this.label21.AutoSize = true;
-            this.label21.Location = new System.Drawing.Point(8, 11);
-            this.label21.Name = "label21";
-            this.label21.Size = new System.Drawing.Size(154, 17);
-            this.label21.TabIndex = 1;
-            this.label21.Text = "Music Library Location:";
+            this.lblLibraryLocation.AutoSize = true;
+            this.lblLibraryLocation.Location = new System.Drawing.Point(8, 11);
+            this.lblLibraryLocation.Name = "lblLibraryLocation";
+            this.lblLibraryLocation.Size = new System.Drawing.Size(154, 17);
+            this.lblLibraryLocation.TabIndex = 1;
+            this.lblLibraryLocation.Text = "Music Library Location:";
             // 
-            // textBox1
+            // tbLibraryLocation
             // 
-            this.textBox1.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.textBox1.Location = new System.Drawing.Point(11, 31);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.ReadOnly = true;
-            this.textBox1.Size = new System.Drawing.Size(284, 22);
-            this.textBox1.TabIndex = 0;
-            this.textBox1.Click += new System.EventHandler(this.textBox1_Click);
-            this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
+            this.tbLibraryLocation.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.tbLibraryLocation.Location = new System.Drawing.Point(11, 31);
+            this.tbLibraryLocation.Name = "tbLibraryLocation";
+            this.tbLibraryLocation.ReadOnly = true;
+            this.tbLibraryLocation.Size = new System.Drawing.Size(284, 22);
+            this.tbLibraryLocation.TabIndex = 0;
+            this.tbLibraryLocation.Click += new System.EventHandler(this.textBox1_Click);
+            this.tbLibraryLocation.TextChanged += new System.EventHandler(this.tbLibraryLocation_TextChanged);
             // 
             // panel1
             // 
@@ -646,25 +646,25 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.WindowText;
             this.ClientSize = new System.Drawing.Size(782, 555);
-            this.Controls.Add(this.tabControl1);
+            this.Controls.Add(this.tabControl);
             this.Controls.Add(this.panel1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "Form1";
             this.Text = "Chrononizer";
             this.Load += new System.EventHandler(this.Form1_Load);
-            this.tabControl1.ResumeLayout(false);
-            this.tabPage1.ResumeLayout(false);
-            this.tabPage2.ResumeLayout(false);
-            this.splitContainer1.Panel1.ResumeLayout(false);
-            this.splitContainer1.Panel2.ResumeLayout(false);
-            this.splitContainer1.Panel2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
-            this.splitContainer1.ResumeLayout(false);
-            this.flowLayoutPanel1.ResumeLayout(false);
-            this.flowLayoutPanel1.PerformLayout();
-            this.tabPage3.ResumeLayout(false);
-            this.tabPage3.PerformLayout();
+            this.tabControl.ResumeLayout(false);
+            this.SyncTab.ResumeLayout(false);
+            this.InfoTab.ResumeLayout(false);
+            this.splitContainer.Panel1.ResumeLayout(false);
+            this.splitContainer.Panel2.ResumeLayout(false);
+            this.splitContainer.Panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).EndInit();
+            this.splitContainer.ResumeLayout(false);
+            this.flpLibraryInfo.ResumeLayout(false);
+            this.flpLibraryInfo.PerformLayout();
+            this.PreferencesTab.ResumeLayout(false);
+            this.PreferencesTab.PerformLayout();
             this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -672,16 +672,16 @@
 
         #endregion
 
-        private System.Windows.Forms.TabControl tabControl1;
-        private System.Windows.Forms.TabPage tabPage1;
-        private System.Windows.Forms.TabPage tabPage2;
+        private System.Windows.Forms.TabControl tabControl;
+        private System.Windows.Forms.TabPage SyncTab;
+        private System.Windows.Forms.TabPage InfoTab;
         private System.Windows.Forms.Button btnSyncLaptop;
         private System.Windows.Forms.Button btnSyncPMP;
         private System.Windows.Forms.Button btnSyncBoth;
-        private System.Windows.Forms.TabPage tabPage3;
+        private System.Windows.Forms.TabPage PreferencesTab;
         private System.Windows.Forms.Button btnScan;
-        private System.Windows.Forms.SplitContainer splitContainer1;
-        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
+        private System.Windows.Forms.SplitContainer splitContainer;
+        private System.Windows.Forms.FlowLayoutPanel flpLibraryInfo;
         private System.Windows.Forms.Label lblLibrarySize;
         private System.Windows.Forms.Label lblLibraryBytes;
         private System.Windows.Forms.Label lblDownscaledBytes;
@@ -703,22 +703,22 @@
         private System.Windows.Forms.Label lblTotalFiles;
         private System.Windows.Forms.ListBox lbNotDownscaled;
         private System.Windows.Forms.Label lblNotDownscaled;
-        private System.Windows.Forms.Button button4;
-        private System.Windows.Forms.Label label21;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.Button button5;
-        private System.Windows.Forms.TextBox textBox2;
-        private System.Windows.Forms.Label label22;
-        private System.Windows.Forms.CheckBox checkBox1;
-        private System.Windows.Forms.CheckBox checkBox2;
-        private System.Windows.Forms.CheckBox checkBox3;
-        private System.Windows.Forms.CheckBox checkBox5;
-        private System.Windows.Forms.CheckBox checkBox4;
-        private System.Windows.Forms.CheckBox checkBox6;
-        private System.Windows.Forms.Button button6;
-        private System.Windows.Forms.Label label23;
-        private System.Windows.Forms.TextBox textBox3;
-        private System.Windows.Forms.CheckBox checkBox7;
+        private System.Windows.Forms.Button btnLibraryLocation;
+        private System.Windows.Forms.Label lblLibraryLocation;
+        private System.Windows.Forms.TextBox tbLibraryLocation;
+        private System.Windows.Forms.Button btnDownscaledLocation;
+        private System.Windows.Forms.TextBox tbDownscaledLocation;
+        private System.Windows.Forms.Label lblDownscaledLocation;
+        private System.Windows.Forms.CheckBox cbRemoveImproper;
+        private System.Windows.Forms.CheckBox cbAutoHandle;
+        private System.Windows.Forms.CheckBox cbShowImproper;
+        private System.Windows.Forms.CheckBox cbRemoveUnnecessary;
+        private System.Windows.Forms.CheckBox cbRemoveUnsupported;
+        private System.Windows.Forms.CheckBox cbRemoveEmpty;
+        private System.Windows.Forms.Button btnChiptunesLocation;
+        private System.Windows.Forms.Label lblChiptunesLocation;
+        private System.Windows.Forms.TextBox tbChiptunesLocation;
+        private System.Windows.Forms.CheckBox cbChiptunesLibrary;
         private System.Windows.Forms.Panel panel1;
         private System.ComponentModel.BackgroundWorker PMPSyncBW;
         private System.ComponentModel.BackgroundWorker LaptopSyncBW;

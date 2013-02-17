@@ -58,16 +58,16 @@ namespace Chrononizer
             if (!Properties.Settings.Default.FirstBoot)
             {
                 //load saved settings
-                textBox1.Text = Properties.Settings.Default.MusicLibrary;
-                textBox2.Text = Properties.Settings.Default.DownscaledLibrary;
-                textBox3.Text = Properties.Settings.Default.ChiptunesLibrary;
-                checkBox1.Checked = Properties.Settings.Default.RemoveImproper;
-                checkBox2.Checked = Properties.Settings.Default.AutoHandle;
-                checkBox3.Checked = Properties.Settings.Default.ShowFiles;
-                checkBox4.Checked = Properties.Settings.Default.RemoveUnsupported;
-                checkBox5.Checked = Properties.Settings.Default.RemoveUnnecessary;
-                checkBox6.Checked = Properties.Settings.Default.RemoveEmpty;
-                checkBox7.Checked = Properties.Settings.Default.EnableChiptunes;
+                tbLibraryLocation.Text = Properties.Settings.Default.MusicLibrary;
+                tbDownscaledLocation.Text = Properties.Settings.Default.DownscaledLibrary;
+                tbChiptunesLocation.Text = Properties.Settings.Default.ChiptunesLibrary;
+                cbRemoveImproper.Checked = Properties.Settings.Default.RemoveImproper;
+                cbAutoHandle.Checked = Properties.Settings.Default.AutoHandle;
+                cbShowImproper.Checked = Properties.Settings.Default.ShowFiles;
+                cbRemoveUnsupported.Checked = Properties.Settings.Default.RemoveUnsupported;
+                cbRemoveUnnecessary.Checked = Properties.Settings.Default.RemoveUnnecessary;
+                cbRemoveEmpty.Checked = Properties.Settings.Default.RemoveEmpty;
+                cbChiptunesLibrary.Checked = Properties.Settings.Default.EnableChiptunes;
             }
             else
             {
@@ -80,31 +80,31 @@ namespace Chrononizer
                 string username = WindowsIdentity.GetCurrent().Name.Split('\\')[1]; //get username from login
                 
                 //load default settings
-                textBox1.Text = drive + ":\\Users\\" + username + "\\Music\\";
-                textBox2.Text = drive + ":\\Users\\" + username + "\\Music\\.downscaled\\";
-                textBox3.Text = drive + ":\\Users\\" + username + "\\Music\\Chiptunes";
-                checkBox1.Checked = Properties.Settings.Default.RemoveImproper;
-                checkBox2.Checked = Properties.Settings.Default.AutoHandle;
-                checkBox3.Checked = Properties.Settings.Default.ShowFiles;
-                checkBox4.Checked = Properties.Settings.Default.RemoveUnsupported;
-                checkBox5.Checked = Properties.Settings.Default.RemoveUnnecessary;
-                checkBox6.Checked = Properties.Settings.Default.RemoveEmpty;
-                checkBox7.Checked = Properties.Settings.Default.EnableChiptunes;
+                tbLibraryLocation.Text = drive + ":\\Users\\" + username + "\\Music\\";
+                tbDownscaledLocation.Text = drive + ":\\Users\\" + username + "\\Music\\.downscaled\\";
+                tbChiptunesLocation.Text = drive + ":\\Users\\" + username + "\\Music\\Chiptunes";
+                cbRemoveImproper.Checked = Properties.Settings.Default.RemoveImproper;
+                cbAutoHandle.Checked = Properties.Settings.Default.AutoHandle;
+                cbShowImproper.Checked = Properties.Settings.Default.ShowFiles;
+                cbRemoveUnsupported.Checked = Properties.Settings.Default.RemoveUnsupported;
+                cbRemoveUnnecessary.Checked = Properties.Settings.Default.RemoveUnnecessary;
+                cbRemoveEmpty.Checked = Properties.Settings.Default.RemoveEmpty;
+                cbChiptunesLibrary.Checked = Properties.Settings.Default.EnableChiptunes;
 
                 Properties.Settings.Default.Save();
             }
 
             //store the values
-            MusicLibrary = textBox1.Text;
-            DownscaledLibrary = textBox2.Text;
-            ChiptunesLibrary = textBox3.Text;
-            AutoHandle = checkBox2.Checked;
-            RemoveImproper = checkBox1.Checked;
-            ShowFiles = checkBox3.Checked;
-            RemoveUnsupported = checkBox4.Checked;
-            RemoveUnnecessary = checkBox5.Checked;
-            RemoveEmpty = checkBox6.Checked;
-            EnableChiptunes = checkBox7.Checked;
+            MusicLibrary = tbLibraryLocation.Text;
+            DownscaledLibrary = tbDownscaledLocation.Text;
+            ChiptunesLibrary = tbChiptunesLocation.Text;
+            AutoHandle = cbAutoHandle.Checked;
+            RemoveImproper = cbRemoveImproper.Checked;
+            ShowFiles = cbShowImproper.Checked;
+            RemoveUnsupported = cbRemoveUnsupported.Checked;
+            RemoveUnnecessary = cbRemoveUnnecessary.Checked;
+            RemoveEmpty = cbRemoveEmpty.Checked;
+            EnableChiptunes = cbChiptunesLibrary.Checked;
         }
 
         private void btnScan_Click(object sender, EventArgs e)
@@ -201,12 +201,14 @@ namespace Chrononizer
                             flacTag = new FlacTagger(downscaledFile);
                             if (flacTag.BitsPerSample > 16 || flacTag.SampleRate > 48000)
                             {
-                                this.BeginInvoke (new MethodInvoker(() => lbNotDownscaled.Items.Add(name))); //if it does not meet the minimum requirements, it needs to be downscaled
+
+                                this.Invoke(new MethodInvoker(() => lbNotDownscaled.Items.Add(name))); //if it does not meet the minimum requirements, it needs to be downscaled
                                 checkedFiles.Add(downscaledFile, false); //mark that it has been checked and is not proper
                             }
                             else checkedFiles.Add(downscaledFile, true); //mark that it has been checked and is proper
                         }
-                        else this.BeginInvoke (new MethodInvoker(() => lbNotDownscaled.Items.Add(name))); //no downscaled file exists
+                        else
+                            this.Invoke(new MethodInvoker(() => lbNotDownscaled.Items.Add(name))); //no downscaled file exists
                     }
                     else checkedFiles.Add(name, true); //mark that it has been checked and is not proper
                     flacTag = null; //make sure it is not accessed again
@@ -259,7 +261,7 @@ namespace Chrononizer
                             File.Delete(name); //downscaled flac not necessary
                         else
                         {
-                            if (ShowFiles) this.BeginInvoke (new MethodInvoker(() => lbNotDownscaled.Items.Add(name))); //show the file in the list
+                            if (ShowFiles) this.Invoke (new MethodInvoker(() => lbNotDownscaled.Items.Add(name))); //show the file in the list
                             num += info.Length; //add to the size
                             flac++;
                         }
@@ -299,7 +301,7 @@ namespace Chrononizer
                                     File.Delete(name); //downscaled flac not necessary
                                 else
                                 {
-                                    if (ShowFiles) this.BeginInvoke (new MethodInvoker(() => lbNotDownscaled.Items.Add(name))); //show the file in the list
+                                    if (ShowFiles) this.Invoke (new MethodInvoker(() => lbNotDownscaled.Items.Add(name))); //show the file in the list
                                     num += info.Length; //add to the size
                                     flac++;
                                 }
@@ -388,12 +390,12 @@ namespace Chrononizer
 
         public void ShowSyncStatus(Boolean visible, Boolean pmp, Boolean laptop)
         {
-            this.BeginInvoke(new MethodInvoker(() =>
+            this.Invoke(new MethodInvoker(() =>
             {
                 if (visible)
                 {
                     panel1.Visible = true;
-                    tabControl1.Visible = false;
+                    tabControl.Visible = false;
 
                     if (!pmp && !laptop) return; //nothing to make
 
@@ -475,7 +477,7 @@ namespace Chrononizer
                 }
                 else
                 {
-                    tabControl1.Visible = true;
+                    tabControl.Visible = true;
                     panel1.Visible = false;
 
                     if (!pmp && !laptop) return; //nothing to make
@@ -568,14 +570,14 @@ namespace Chrononizer
             while (UpdateFiles.Count > 0)
             {
                 UpdateLocation update = UpdateFiles.Dequeue();
-                this.BeginInvoke(new MethodInvoker(() => lb1.Items.Add(update.DestinationFile)));
+                this.Invoke(new MethodInvoker(() => lb1.Items.Add(update.DestinationFile)));
                 CopyFiles.Enqueue(update);
             }
 
             //set up the progress bar
             int progress = 0;
             double percent = 0;
-            this.BeginInvoke(new MethodInvoker(() =>
+            this.Invoke(new MethodInvoker(() =>
             {
                 lbl1.Text = "Copying updated files to PMP...";
                 lbl2.Text = "0%";
@@ -595,7 +597,7 @@ namespace Chrononizer
                 //calculate progress
                 progress += (int)(((info.Length / CopySize) * 100000));
                 percent = Math.Round((((double)progress) / 1000), 2);
-                this.BeginInvoke(new MethodInvoker(() =>
+                this.Invoke(new MethodInvoker(() =>
                 {
                     pb1.Value = progress; //get the file's size
                     lbl2.Text = percent.ToString() + "%";
@@ -603,7 +605,7 @@ namespace Chrononizer
                 }));
             }
 
-            this.BeginInvoke(new MethodInvoker(() =>
+            this.Invoke(new MethodInvoker(() =>
             {
                 pb1.Value = pb1.Maximum;
                 lbl2.Text = "100%";
@@ -650,14 +652,14 @@ namespace Chrononizer
             while (UpdateFiles.Count > 0)
             {
                 UpdateLocation update = UpdateFiles.Dequeue();
-                this.BeginInvoke(new MethodInvoker(() => LTlb.Items.Add(update.DestinationFile)));
+                this.Invoke(new MethodInvoker(() => LTlb.Items.Add(update.DestinationFile)));
                 CopyFiles.Enqueue(update);
             }
 
             //set up the progress bar
             int progress = 0;
             double percent = 0;
-            this.BeginInvoke(new MethodInvoker(() =>
+            this.Invoke(new MethodInvoker(() =>
             {
                 LTlbl1.Text = "Copying updated files to Laptop...";
                 LTlbl2.Text = "0%";
@@ -677,7 +679,7 @@ namespace Chrononizer
                 //calculate progress
                 progress += (int)(((info.Length / CopySize) * 100000));
                 percent = Math.Round((((double)progress) / 1000), 2);
-                this.BeginInvoke(new MethodInvoker(() =>
+                this.Invoke(new MethodInvoker(() =>
                 {
                     LTpb.Value = progress; //get the file's size
                     LTlbl2.Text = percent.ToString() + "%";
@@ -685,7 +687,7 @@ namespace Chrononizer
                 }));
             }
 
-            this.BeginInvoke(new MethodInvoker(() =>
+            this.Invoke(new MethodInvoker(() =>
             {
                 LTpb.Value = LTpb.Maximum;
                 LTlbl2.Text = "100%";
@@ -881,7 +883,7 @@ namespace Chrononizer
             return i.Name;
         }
 
-        private void listBox1_DoubleClick(object sender, EventArgs e)
+        private void lbNotDownscaled_DoubleClick(object sender, EventArgs e)
         {
             int index = lbNotDownscaled.SelectedIndex; //determine what is selected
             if (index < 0) return;
@@ -934,128 +936,128 @@ namespace Chrononizer
             //set the path accordingly
             if (TextBox == 1)
             {
-                textBox1.Text = open.SelectedPath + "\\";
-                if (checkBox2.Checked) textBox2.Text = textBox1.Text + ".downscaled\\";
+                tbLibraryLocation.Text = open.SelectedPath + "\\";
+                if (cbAutoHandle.Checked) tbDownscaledLocation.Text = tbLibraryLocation.Text + ".downscaled\\";
             }
-            else if (TextBox == 2) textBox2.Text = open.SelectedPath + "\\";
-            else if (TextBox == 3) textBox3.Text = open.SelectedPath + "\\";
+            else if (TextBox == 2) tbDownscaledLocation.Text = open.SelectedPath + "\\";
+            else if (TextBox == 3) tbChiptunesLocation.Text = open.SelectedPath + "\\";
         }
 
         private void checkBox2_CheckedChanged(object sender, EventArgs e)
         {
-            if (checkBox2.Checked)
+            if (cbAutoHandle.Checked)
             {
-                label22.Enabled = false;
-                textBox2.Enabled = false;
-                button5.Enabled = false;
-                checkBox1.Enabled = false;
-                checkBox1.Checked = true;
-                checkBox3.Enabled = false;
-                checkBox3.Checked = false;
-                checkBox4.Enabled = false;
-                checkBox4.Checked = true;
-                checkBox5.Enabled = false;
-                checkBox5.Checked = true;
-                checkBox6.Enabled = false;
-                checkBox6.Checked = true;
-                textBox2.Text = textBox1.Text + ".downscaled\\";
+                lblDownscaledLocation.Enabled = false;
+                tbDownscaledLocation.Enabled = false;
+                btnDownscaledLocation.Enabled = false;
+                cbRemoveImproper.Enabled = false;
+                cbRemoveImproper.Checked = true;
+                cbShowImproper.Enabled = false;
+                cbShowImproper.Checked = false;
+                cbRemoveUnsupported.Enabled = false;
+                cbRemoveUnsupported.Checked = true;
+                cbRemoveUnnecessary.Enabled = false;
+                cbRemoveUnnecessary.Checked = true;
+                cbRemoveEmpty.Enabled = false;
+                cbRemoveEmpty.Checked = true;
+                tbDownscaledLocation.Text = tbLibraryLocation.Text + ".downscaled\\";
             }
             else
             {
-                label22.Enabled = true;
-                textBox2.Enabled = true;
-                button5.Enabled = true;
-                checkBox1.Enabled = true;
-                checkBox4.Enabled = true;
-                checkBox5.Enabled = true;
-                checkBox6.Enabled = true;
+                lblDownscaledLocation.Enabled = true;
+                tbDownscaledLocation.Enabled = true;
+                btnDownscaledLocation.Enabled = true;
+                cbRemoveImproper.Enabled = true;
+                cbRemoveUnsupported.Enabled = true;
+                cbRemoveUnnecessary.Enabled = true;
+                cbRemoveEmpty.Enabled = true;
             }
-            AutoHandle = checkBox2.Checked;
-            Properties.Settings.Default.AutoHandle = checkBox2.Checked;
+            AutoHandle = cbAutoHandle.Checked;
+            Properties.Settings.Default.AutoHandle = cbAutoHandle.Checked;
             Properties.Settings.Default.Save();
         }
 
-        private void textBox1_TextChanged(object sender, EventArgs e)
+        private void tbLibraryLocation_TextChanged(object sender, EventArgs e)
         {
-            MusicLibrary = textBox1.Text;
-            Properties.Settings.Default.MusicLibrary = textBox1.Text;
+            MusicLibrary = tbLibraryLocation.Text;
+            Properties.Settings.Default.MusicLibrary = tbLibraryLocation.Text;
             Properties.Settings.Default.Save();
         }
 
-        private void textBox2_TextChanged(object sender, EventArgs e)
+        private void tbDownscaledLocation_TextChanged(object sender, EventArgs e)
         {
-            DownscaledLibrary = textBox2.Text;
-            Properties.Settings.Default.DownscaledLibrary = textBox2.Text;
+            DownscaledLibrary = tbDownscaledLocation.Text;
+            Properties.Settings.Default.DownscaledLibrary = tbDownscaledLocation.Text;
             Properties.Settings.Default.Save();
         }
 
-        private void textBox3_TextChanged(object sender, EventArgs e)
+        private void tbChiptunesLocation_TextChanged(object sender, EventArgs e)
         {
-            ChiptunesLibrary = textBox3.Text;
-            Properties.Settings.Default.ChiptunesLibrary = textBox3.Text;
+            ChiptunesLibrary = tbChiptunesLocation.Text;
+            Properties.Settings.Default.ChiptunesLibrary = tbChiptunesLocation.Text;
             Properties.Settings.Default.Save();
         }
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
-            if (checkBox1.Checked)
+            if (cbRemoveImproper.Checked)
             {
-                checkBox3.Enabled = false;
-                checkBox3.Checked = false;
+                cbShowImproper.Enabled = false;
+                cbShowImproper.Checked = false;
             }
             else
             {
-                checkBox3.Enabled = true;
+                cbShowImproper.Enabled = true;
             }
-            RemoveImproper = checkBox1.Checked;
-            Properties.Settings.Default.RemoveImproper = checkBox1.Checked;
+            RemoveImproper = cbRemoveImproper.Checked;
+            Properties.Settings.Default.RemoveImproper = cbRemoveImproper.Checked;
             Properties.Settings.Default.Save();
         }
 
         private void checkBox3_CheckedChanged(object sender, EventArgs e)
         {
-            ShowFiles = checkBox3.Checked;
-            Properties.Settings.Default.ShowFiles = checkBox3.Checked;
+            ShowFiles = cbShowImproper.Checked;
+            Properties.Settings.Default.ShowFiles = cbShowImproper.Checked;
             Properties.Settings.Default.Save();
         }
 
         private void checkBox4_CheckedChanged(object sender, EventArgs e)
         {
-            RemoveUnsupported = checkBox4.Checked;
-            Properties.Settings.Default.RemoveUnsupported = checkBox4.Checked;
+            RemoveUnsupported = cbRemoveUnsupported.Checked;
+            Properties.Settings.Default.RemoveUnsupported = cbRemoveUnsupported.Checked;
             Properties.Settings.Default.Save();
         }
 
         private void checkBox5_CheckedChanged(object sender, EventArgs e)
         {
-            RemoveUnnecessary = checkBox5.Checked;
-            Properties.Settings.Default.RemoveUnnecessary = checkBox5.Checked;
+            RemoveUnnecessary = cbRemoveUnnecessary.Checked;
+            Properties.Settings.Default.RemoveUnnecessary = cbRemoveUnnecessary.Checked;
             Properties.Settings.Default.Save();
         }
 
         private void checkBox6_CheckedChanged(object sender, EventArgs e)
         {
-            RemoveEmpty = checkBox6.Checked;
-            Properties.Settings.Default.RemoveEmpty = checkBox6.Checked;
+            RemoveEmpty = cbRemoveEmpty.Checked;
+            Properties.Settings.Default.RemoveEmpty = cbRemoveEmpty.Checked;
             Properties.Settings.Default.Save();
         }
 
         private void checkBox7_CheckedChanged(object sender, EventArgs e)
         {
-            if (checkBox7.Checked)
+            if (cbChiptunesLibrary.Checked)
             {
-                label23.Enabled = true;
-                textBox3.Enabled = true;
-                button6.Enabled = true;
+                lblChiptunesLocation.Enabled = true;
+                tbChiptunesLocation.Enabled = true;
+                btnChiptunesLocation.Enabled = true;
             }
             else
             {
-                label23.Enabled = false;
-                textBox3.Enabled = false;
-                button6.Enabled = false;
+                lblChiptunesLocation.Enabled = false;
+                tbChiptunesLocation.Enabled = false;
+                btnChiptunesLocation.Enabled = false;
             }
-            EnableChiptunes = checkBox7.Checked;
-            Properties.Settings.Default.EnableChiptunes = checkBox7.Checked;
+            EnableChiptunes = cbChiptunesLibrary.Checked;
+            Properties.Settings.Default.EnableChiptunes = cbChiptunesLibrary.Checked;
             Properties.Settings.Default.Save();
         }
 
@@ -1067,7 +1069,7 @@ namespace Chrononizer
                 SetupSyncPMP();
                 ShowSyncStatus(false, true, false);
             }
-            this.BeginInvoke(new MethodInvoker(() =>
+            this.Invoke(new MethodInvoker(() =>
             {
                 btnSyncPMP.Text = "Synchronize PMP";
                 if (LaptopSyncBW.IsBusy == false)
@@ -1080,7 +1082,7 @@ namespace Chrononizer
             System.Media.SoundPlayer aSoundPlayer = new System.Media.SoundPlayer(Chrononizer.Properties.Resources.ScannerSweep);
             aSoundPlayer.Play();  //Plays the sound in a new thread
 
-            this.BeginInvoke (new MethodInvoker(() => lbNotDownscaled.Items.Clear())); //clear out previous items
+            this.Invoke (new MethodInvoker(() => lbNotDownscaled.Items.Clear())); //clear out previous items
 
             long flac, mp3, wma, m4a, ogg, wav, xm, mod, nsf, audioTotal, chiptunesTotal, total, dFlac;
             flac = mp3 = wma = m4a = ogg = wav = xm = mod = nsf = audioTotal = chiptunesTotal = total = dFlac = 0;
@@ -1095,7 +1097,7 @@ namespace Chrononizer
             chiptunesTotal = xm + mod + nsf;
             total = audioTotal + chiptunesTotal;
             allSize = s1 + dSize;
-            this.BeginInvoke(new MethodInvoker(() =>
+            this.Invoke(new MethodInvoker(() =>
             {
                 lblLibraryBytes.Text = "Library: " + BytesToSize(s1); //display the size
                 lblFLACFiles.Text = "FLAC: " + Plural(flac, "file"); //display the number of flac songs
@@ -1130,7 +1132,7 @@ namespace Chrononizer
                 SetupSyncLaptop();
                 ShowSyncStatus(false, false, true);
             }
-            this.BeginInvoke (new MethodInvoker(() => 
+            this.Invoke (new MethodInvoker(() => 
             {
                 btnSyncLaptop.Text = "Synchronize Laptop";
                 if (PMPSyncBW.IsBusy == false)
@@ -1144,7 +1146,7 @@ namespace Chrononizer
             {
                 SetupSyncPMP();
             }
-            this.BeginInvoke(new MethodInvoker(() =>
+            this.Invoke(new MethodInvoker(() =>
             {
                 if (LaptopSyncTBW.IsBusy == false)
                 {
@@ -1160,7 +1162,7 @@ namespace Chrononizer
             {
                 SetupSyncLaptop();
             }
-            this.BeginInvoke(new MethodInvoker(() =>
+            this.Invoke(new MethodInvoker(() =>
             {
                 if (PMPSyncTBW.IsBusy == false)
                 {
