@@ -60,6 +60,22 @@
             this.lbNotDownscaled = new System.Windows.Forms.ListBox();
             this.btnScan = new System.Windows.Forms.Button();
             this.PreferencesTab = new System.Windows.Forms.TabPage();
+            this.btnLaptopLocation = new System.Windows.Forms.Button();
+            this.btnPMPLocation = new System.Windows.Forms.Button();
+            this.cbOverrideLaptopPath = new System.Windows.Forms.CheckBox();
+            this.cbOverridePMPPath = new System.Windows.Forms.CheckBox();
+            this.tbLaptopLocation = new System.Windows.Forms.TextBox();
+            this.lblLaptopLocation = new System.Windows.Forms.Label();
+            this.tbPMPLocation = new System.Windows.Forms.TextBox();
+            this.lblPMPLocation = new System.Windows.Forms.Label();
+            this.tbPMPVolumeLabel = new System.Windows.Forms.TextBox();
+            this.lblPMPVolumeLabel = new System.Windows.Forms.Label();
+            this.tbLaptopUsername = new System.Windows.Forms.TextBox();
+            this.lblLaptopUsername = new System.Windows.Forms.Label();
+            this.tbLaptopHostname = new System.Windows.Forms.TextBox();
+            this.lblLaptopHostname = new System.Windows.Forms.Label();
+            this.cbCheckPMPSystem = new System.Windows.Forms.CheckBox();
+            this.cbAskSync = new System.Windows.Forms.CheckBox();
             this.cbPreventSynchingUpscaled = new System.Windows.Forms.CheckBox();
             this.cbChiptunesLibrary = new System.Windows.Forms.CheckBox();
             this.btnChiptunesLocation = new System.Windows.Forms.Button();
@@ -84,22 +100,6 @@
             this.LaptopSyncBW = new System.ComponentModel.BackgroundWorker();
             this.PMPSyncTBW = new System.ComponentModel.BackgroundWorker();
             this.LaptopSyncTBW = new System.ComponentModel.BackgroundWorker();
-            this.cbAskSync = new System.Windows.Forms.CheckBox();
-            this.cbCheckPMPSystem = new System.Windows.Forms.CheckBox();
-            this.lblLaptopHostname = new System.Windows.Forms.Label();
-            this.tbLaptopHostname = new System.Windows.Forms.TextBox();
-            this.lblLaptopUsername = new System.Windows.Forms.Label();
-            this.tbLaptopUsername = new System.Windows.Forms.TextBox();
-            this.lblPMPVolumeLabel = new System.Windows.Forms.Label();
-            this.tbPMPVolumeLabel = new System.Windows.Forms.TextBox();
-            this.tbLaptopLocation = new System.Windows.Forms.TextBox();
-            this.lblLaptopLocation = new System.Windows.Forms.Label();
-            this.tbPMPLocation = new System.Windows.Forms.TextBox();
-            this.lblPMPLocation = new System.Windows.Forms.Label();
-            this.cbOverridePMPPath = new System.Windows.Forms.CheckBox();
-            this.cbOverrideLaptopPath = new System.Windows.Forms.CheckBox();
-            this.btnPMPLocation = new System.Windows.Forms.Button();
-            this.btnLaptopLocation = new System.Windows.Forms.Button();
             this.tabControl.SuspendLayout();
             this.SyncTab.SuspendLayout();
             this.InfoTab.SuspendLayout();
@@ -465,7 +465,170 @@
             this.PreferencesTab.TabIndex = 3;
             this.PreferencesTab.Text = "Preferences";
             this.PreferencesTab.UseVisualStyleBackColor = true;
-            this.PreferencesTab.Click += new System.EventHandler(this.PreferencesTab_Click);
+            // 
+            // btnLaptopLocation
+            // 
+            this.btnLaptopLocation.Enabled = false;
+            this.btnLaptopLocation.Location = new System.Drawing.Point(736, 266);
+            this.btnLaptopLocation.Name = "btnLaptopLocation";
+            this.btnLaptopLocation.Size = new System.Drawing.Size(31, 23);
+            this.btnLaptopLocation.TabIndex = 34;
+            this.btnLaptopLocation.Text = "...";
+            this.btnLaptopLocation.UseVisualStyleBackColor = true;
+            this.btnLaptopLocation.Click += new System.EventHandler(this.btnLaptopLocation_Click);
+            // 
+            // btnPMPLocation
+            // 
+            this.btnPMPLocation.Enabled = false;
+            this.btnPMPLocation.Location = new System.Drawing.Point(736, 194);
+            this.btnPMPLocation.Name = "btnPMPLocation";
+            this.btnPMPLocation.Size = new System.Drawing.Size(31, 23);
+            this.btnPMPLocation.TabIndex = 33;
+            this.btnPMPLocation.Text = "...";
+            this.btnPMPLocation.UseVisualStyleBackColor = true;
+            this.btnPMPLocation.Click += new System.EventHandler(this.btnPMPLocation_Click);
+            // 
+            // cbOverrideLaptopPath
+            // 
+            this.cbOverrideLaptopPath.AutoSize = true;
+            this.cbOverrideLaptopPath.Location = new System.Drawing.Point(450, 222);
+            this.cbOverrideLaptopPath.Name = "cbOverrideLaptopPath";
+            this.cbOverrideLaptopPath.Size = new System.Drawing.Size(166, 21);
+            this.cbOverrideLaptopPath.TabIndex = 32;
+            this.cbOverrideLaptopPath.Text = "Override Laptop Path";
+            this.cbOverrideLaptopPath.UseVisualStyleBackColor = true;
+            this.cbOverrideLaptopPath.CheckedChanged += new System.EventHandler(this.cbOverrideLaptopPath_CheckedChanged);
+            // 
+            // cbOverridePMPPath
+            // 
+            this.cbOverridePMPPath.AutoSize = true;
+            this.cbOverridePMPPath.Location = new System.Drawing.Point(450, 150);
+            this.cbOverridePMPPath.Name = "cbOverridePMPPath";
+            this.cbOverridePMPPath.Size = new System.Drawing.Size(151, 21);
+            this.cbOverridePMPPath.TabIndex = 31;
+            this.cbOverridePMPPath.Text = "Override PMP Path";
+            this.cbOverridePMPPath.UseVisualStyleBackColor = true;
+            this.cbOverridePMPPath.CheckedChanged += new System.EventHandler(this.cbOverridePMPPath_CheckedChanged);
+            // 
+            // tbLaptopLocation
+            // 
+            this.tbLaptopLocation.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.tbLaptopLocation.Enabled = false;
+            this.tbLaptopLocation.Location = new System.Drawing.Point(450, 267);
+            this.tbLaptopLocation.Name = "tbLaptopLocation";
+            this.tbLaptopLocation.ReadOnly = true;
+            this.tbLaptopLocation.Size = new System.Drawing.Size(284, 22);
+            this.tbLaptopLocation.TabIndex = 28;
+            this.tbLaptopLocation.Click += new System.EventHandler(this.tbLaptopLocation_Click);
+            this.tbLaptopLocation.TextChanged += new System.EventHandler(this.tbLaptopLocation_TextChanged);
+            // 
+            // lblLaptopLocation
+            // 
+            this.lblLaptopLocation.AutoSize = true;
+            this.lblLaptopLocation.Enabled = false;
+            this.lblLaptopLocation.Location = new System.Drawing.Point(447, 246);
+            this.lblLaptopLocation.Name = "lblLaptopLocation";
+            this.lblLaptopLocation.Size = new System.Drawing.Size(114, 17);
+            this.lblLaptopLocation.TabIndex = 27;
+            this.lblLaptopLocation.Text = "Laptop Location:";
+            // 
+            // tbPMPLocation
+            // 
+            this.tbPMPLocation.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.tbPMPLocation.Enabled = false;
+            this.tbPMPLocation.Location = new System.Drawing.Point(450, 194);
+            this.tbPMPLocation.Name = "tbPMPLocation";
+            this.tbPMPLocation.ReadOnly = true;
+            this.tbPMPLocation.Size = new System.Drawing.Size(284, 22);
+            this.tbPMPLocation.TabIndex = 26;
+            this.tbPMPLocation.Click += new System.EventHandler(this.tbPMPLocation_Click);
+            this.tbPMPLocation.TextChanged += new System.EventHandler(this.tbPMPLocation_TextChanged);
+            // 
+            // lblPMPLocation
+            // 
+            this.lblPMPLocation.AutoSize = true;
+            this.lblPMPLocation.Enabled = false;
+            this.lblPMPLocation.Location = new System.Drawing.Point(447, 174);
+            this.lblPMPLocation.Name = "lblPMPLocation";
+            this.lblPMPLocation.Size = new System.Drawing.Size(99, 17);
+            this.lblPMPLocation.TabIndex = 25;
+            this.lblPMPLocation.Text = "PMP Location:";
+            // 
+            // tbPMPVolumeLabel
+            // 
+            this.tbPMPVolumeLabel.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.tbPMPVolumeLabel.Location = new System.Drawing.Point(450, 123);
+            this.tbPMPVolumeLabel.Name = "tbPMPVolumeLabel";
+            this.tbPMPVolumeLabel.Size = new System.Drawing.Size(284, 22);
+            this.tbPMPVolumeLabel.TabIndex = 24;
+            this.tbPMPVolumeLabel.TextChanged += new System.EventHandler(this.tbPMPVolumeLabel_TextChanged);
+            // 
+            // lblPMPVolumeLabel
+            // 
+            this.lblPMPVolumeLabel.AutoSize = true;
+            this.lblPMPVolumeLabel.Location = new System.Drawing.Point(447, 103);
+            this.lblPMPVolumeLabel.Name = "lblPMPVolumeLabel";
+            this.lblPMPVolumeLabel.Size = new System.Drawing.Size(131, 17);
+            this.lblPMPVolumeLabel.TabIndex = 23;
+            this.lblPMPVolumeLabel.Text = "PMP Volume Label:";
+            // 
+            // tbLaptopUsername
+            // 
+            this.tbLaptopUsername.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.tbLaptopUsername.Location = new System.Drawing.Point(450, 78);
+            this.tbLaptopUsername.Name = "tbLaptopUsername";
+            this.tbLaptopUsername.Size = new System.Drawing.Size(284, 22);
+            this.tbLaptopUsername.TabIndex = 22;
+            this.tbLaptopUsername.TextChanged += new System.EventHandler(this.tbLaptopUsername_TextChanged);
+            // 
+            // lblLaptopUsername
+            // 
+            this.lblLaptopUsername.AutoSize = true;
+            this.lblLaptopUsername.Location = new System.Drawing.Point(447, 58);
+            this.lblLaptopUsername.Name = "lblLaptopUsername";
+            this.lblLaptopUsername.Size = new System.Drawing.Size(125, 17);
+            this.lblLaptopUsername.TabIndex = 21;
+            this.lblLaptopUsername.Text = "Laptop Username:";
+            // 
+            // tbLaptopHostname
+            // 
+            this.tbLaptopHostname.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.tbLaptopHostname.Location = new System.Drawing.Point(450, 33);
+            this.tbLaptopHostname.Name = "tbLaptopHostname";
+            this.tbLaptopHostname.Size = new System.Drawing.Size(284, 22);
+            this.tbLaptopHostname.TabIndex = 20;
+            this.tbLaptopHostname.TextChanged += new System.EventHandler(this.tbLaptopHostname_TextChanged);
+            // 
+            // lblLaptopHostname
+            // 
+            this.lblLaptopHostname.AutoSize = true;
+            this.lblLaptopHostname.Location = new System.Drawing.Point(447, 11);
+            this.lblLaptopHostname.Name = "lblLaptopHostname";
+            this.lblLaptopHostname.Size = new System.Drawing.Size(124, 17);
+            this.lblLaptopHostname.TabIndex = 19;
+            this.lblLaptopHostname.Text = "Laptop Hostname:";
+            // 
+            // cbCheckPMPSystem
+            // 
+            this.cbCheckPMPSystem.AutoSize = true;
+            this.cbCheckPMPSystem.Location = new System.Drawing.Point(11, 393);
+            this.cbCheckPMPSystem.Name = "cbCheckPMPSystem";
+            this.cbCheckPMPSystem.Size = new System.Drawing.Size(200, 21);
+            this.cbCheckPMPSystem.TabIndex = 18;
+            this.cbCheckPMPSystem.Text = "Check PMP for system files";
+            this.cbCheckPMPSystem.UseVisualStyleBackColor = true;
+            this.cbCheckPMPSystem.CheckedChanged += new System.EventHandler(this.cbCheckPMPSystem_CheckedChanged);
+            // 
+            // cbAskSync
+            // 
+            this.cbAskSync.AutoSize = true;
+            this.cbAskSync.Location = new System.Drawing.Point(11, 366);
+            this.cbAskSync.Name = "cbAskSync";
+            this.cbAskSync.Size = new System.Drawing.Size(204, 21);
+            this.cbAskSync.TabIndex = 17;
+            this.cbAskSync.Text = "Always ask before synching";
+            this.cbAskSync.UseVisualStyleBackColor = true;
+            this.cbAskSync.CheckedChanged += new System.EventHandler(this.cbAskSync_CheckedChanged);
             // 
             // cbPreventSynchingUpscaled
             // 
@@ -685,154 +848,6 @@
             // LaptopSyncTBW
             // 
             this.LaptopSyncTBW.DoWork += new System.ComponentModel.DoWorkEventHandler(this.LaptopSyncTBW_DoWork);
-            // 
-            // cbAskSync
-            // 
-            this.cbAskSync.AutoSize = true;
-            this.cbAskSync.Location = new System.Drawing.Point(11, 366);
-            this.cbAskSync.Name = "cbAskSync";
-            this.cbAskSync.Size = new System.Drawing.Size(204, 21);
-            this.cbAskSync.TabIndex = 17;
-            this.cbAskSync.Text = "Always ask before synching";
-            this.cbAskSync.UseVisualStyleBackColor = true;
-            // 
-            // cbCheckPMPSystem
-            // 
-            this.cbCheckPMPSystem.AutoSize = true;
-            this.cbCheckPMPSystem.Location = new System.Drawing.Point(11, 393);
-            this.cbCheckPMPSystem.Name = "cbCheckPMPSystem";
-            this.cbCheckPMPSystem.Size = new System.Drawing.Size(200, 21);
-            this.cbCheckPMPSystem.TabIndex = 18;
-            this.cbCheckPMPSystem.Text = "Check PMP for system files";
-            this.cbCheckPMPSystem.UseVisualStyleBackColor = true;
-            // 
-            // lblLaptopHostname
-            // 
-            this.lblLaptopHostname.AutoSize = true;
-            this.lblLaptopHostname.Location = new System.Drawing.Point(447, 11);
-            this.lblLaptopHostname.Name = "lblLaptopHostname";
-            this.lblLaptopHostname.Size = new System.Drawing.Size(124, 17);
-            this.lblLaptopHostname.TabIndex = 19;
-            this.lblLaptopHostname.Text = "Laptop Hostname:";
-            // 
-            // tbLaptopHostname
-            // 
-            this.tbLaptopHostname.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.tbLaptopHostname.Location = new System.Drawing.Point(450, 33);
-            this.tbLaptopHostname.Name = "tbLaptopHostname";
-            this.tbLaptopHostname.ReadOnly = true;
-            this.tbLaptopHostname.Size = new System.Drawing.Size(284, 22);
-            this.tbLaptopHostname.TabIndex = 20;
-            // 
-            // lblLaptopUsername
-            // 
-            this.lblLaptopUsername.AutoSize = true;
-            this.lblLaptopUsername.Location = new System.Drawing.Point(447, 58);
-            this.lblLaptopUsername.Name = "lblLaptopUsername";
-            this.lblLaptopUsername.Size = new System.Drawing.Size(125, 17);
-            this.lblLaptopUsername.TabIndex = 21;
-            this.lblLaptopUsername.Text = "Laptop Username:";
-            // 
-            // tbLaptopUsername
-            // 
-            this.tbLaptopUsername.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.tbLaptopUsername.Location = new System.Drawing.Point(450, 78);
-            this.tbLaptopUsername.Name = "tbLaptopUsername";
-            this.tbLaptopUsername.ReadOnly = true;
-            this.tbLaptopUsername.Size = new System.Drawing.Size(284, 22);
-            this.tbLaptopUsername.TabIndex = 22;
-            // 
-            // lblPMPVolumeLabel
-            // 
-            this.lblPMPVolumeLabel.AutoSize = true;
-            this.lblPMPVolumeLabel.Location = new System.Drawing.Point(447, 103);
-            this.lblPMPVolumeLabel.Name = "lblPMPVolumeLabel";
-            this.lblPMPVolumeLabel.Size = new System.Drawing.Size(131, 17);
-            this.lblPMPVolumeLabel.TabIndex = 23;
-            this.lblPMPVolumeLabel.Text = "PMP Volume Label:";
-            // 
-            // tbPMPVolumeLabel
-            // 
-            this.tbPMPVolumeLabel.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.tbPMPVolumeLabel.Location = new System.Drawing.Point(450, 123);
-            this.tbPMPVolumeLabel.Name = "tbPMPVolumeLabel";
-            this.tbPMPVolumeLabel.ReadOnly = true;
-            this.tbPMPVolumeLabel.Size = new System.Drawing.Size(284, 22);
-            this.tbPMPVolumeLabel.TabIndex = 24;
-            // 
-            // tbLaptopLocation
-            // 
-            this.tbLaptopLocation.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.tbLaptopLocation.Location = new System.Drawing.Point(450, 267);
-            this.tbLaptopLocation.Name = "tbLaptopLocation";
-            this.tbLaptopLocation.ReadOnly = true;
-            this.tbLaptopLocation.Size = new System.Drawing.Size(284, 22);
-            this.tbLaptopLocation.TabIndex = 28;
-            // 
-            // lblLaptopLocation
-            // 
-            this.lblLaptopLocation.AutoSize = true;
-            this.lblLaptopLocation.Location = new System.Drawing.Point(447, 246);
-            this.lblLaptopLocation.Name = "lblLaptopLocation";
-            this.lblLaptopLocation.Size = new System.Drawing.Size(114, 17);
-            this.lblLaptopLocation.TabIndex = 27;
-            this.lblLaptopLocation.Text = "Laptop Location:";
-            // 
-            // tbPMPLocation
-            // 
-            this.tbPMPLocation.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.tbPMPLocation.Location = new System.Drawing.Point(450, 194);
-            this.tbPMPLocation.Name = "tbPMPLocation";
-            this.tbPMPLocation.ReadOnly = true;
-            this.tbPMPLocation.Size = new System.Drawing.Size(284, 22);
-            this.tbPMPLocation.TabIndex = 26;
-            // 
-            // lblPMPLocation
-            // 
-            this.lblPMPLocation.AutoSize = true;
-            this.lblPMPLocation.Location = new System.Drawing.Point(447, 174);
-            this.lblPMPLocation.Name = "lblPMPLocation";
-            this.lblPMPLocation.Size = new System.Drawing.Size(99, 17);
-            this.lblPMPLocation.TabIndex = 25;
-            this.lblPMPLocation.Text = "PMP Location:";
-            // 
-            // cbOverridePMPPath
-            // 
-            this.cbOverridePMPPath.AutoSize = true;
-            this.cbOverridePMPPath.Location = new System.Drawing.Point(450, 150);
-            this.cbOverridePMPPath.Name = "cbOverridePMPPath";
-            this.cbOverridePMPPath.Size = new System.Drawing.Size(151, 21);
-            this.cbOverridePMPPath.TabIndex = 31;
-            this.cbOverridePMPPath.Text = "Override PMP Path";
-            this.cbOverridePMPPath.UseVisualStyleBackColor = true;
-            // 
-            // cbOverrideLaptopPath
-            // 
-            this.cbOverrideLaptopPath.AutoSize = true;
-            this.cbOverrideLaptopPath.Location = new System.Drawing.Point(450, 222);
-            this.cbOverrideLaptopPath.Name = "cbOverrideLaptopPath";
-            this.cbOverrideLaptopPath.Size = new System.Drawing.Size(166, 21);
-            this.cbOverrideLaptopPath.TabIndex = 32;
-            this.cbOverrideLaptopPath.Text = "Override Laptop Path";
-            this.cbOverrideLaptopPath.UseVisualStyleBackColor = true;
-            // 
-            // btnPMPLocation
-            // 
-            this.btnPMPLocation.Location = new System.Drawing.Point(736, 194);
-            this.btnPMPLocation.Name = "btnPMPLocation";
-            this.btnPMPLocation.Size = new System.Drawing.Size(31, 23);
-            this.btnPMPLocation.TabIndex = 33;
-            this.btnPMPLocation.Text = "...";
-            this.btnPMPLocation.UseVisualStyleBackColor = true;
-            // 
-            // btnLaptopLocation
-            // 
-            this.btnLaptopLocation.Location = new System.Drawing.Point(736, 266);
-            this.btnLaptopLocation.Name = "btnLaptopLocation";
-            this.btnLaptopLocation.Size = new System.Drawing.Size(31, 23);
-            this.btnLaptopLocation.TabIndex = 34;
-            this.btnLaptopLocation.Text = "...";
-            this.btnLaptopLocation.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 

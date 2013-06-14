@@ -166,5 +166,113 @@ namespace Chrononizer.Properties {
                 this["PreventSynchingUpscaled"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool AskSync {
+            get {
+                return ((bool)(this["AskSync"]));
+            }
+            set {
+                this["AskSync"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool CheckPMPSystem {
+            get {
+                return ((bool)(this["CheckPMPSystem"]));
+            }
+            set {
+                this["CheckPMPSystem"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool OverridePMPPath {
+            get {
+                return ((bool)(this["OverridePMPPath"]));
+            }
+            set {
+                this["OverridePMPPath"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool OverrideLaptopPath {
+            get {
+                return ((bool)(this["OverrideLaptopPath"]));
+            }
+            set {
+                this["OverrideLaptopPath"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string LaptopHostname {
+            get {
+                return ((string)(this["LaptopHostname"]));
+            }
+            set {
+                this["LaptopHostname"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string LaptopUsername {
+            get {
+                return ((string)(this["LaptopUsername"]));
+            }
+            set {
+                this["LaptopUsername"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string PMPVolumeLabel {
+            get {
+                return ((string)(this["PMPVolumeLabel"]));
+            }
+            set {
+                this["PMPVolumeLabel"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string PMPLocation {
+            get {
+                return ((string)(this["PMPLocation"]));
+            }
+            set {
+                this["PMPLocation"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string LaptopLocation {
+            get {
+                return ((string)(this["LaptopLocation"]));
+            }
+            set {
+                this["LaptopLocation"] = value;
+            }
+        }
     }
 }

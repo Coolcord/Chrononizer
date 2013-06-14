@@ -22,6 +22,11 @@ namespace Chrononizer
         private string MusicLibrary = " ";
         private string DownscaledLibrary = " ";
         private string ChiptunesLibrary = " ";
+        private string LaptopHostname = " ";
+        private string LaptopUsername = " ";
+        private string PMPVolumeLabel = " ";
+        private string PMPLocation = " ";
+        private string LaptopLocation = " ";
         Boolean EnableChiptunes = true;
         Boolean AutoHandle = true;
         Boolean RemoveImproper = true;
@@ -30,6 +35,11 @@ namespace Chrononizer
         Boolean RemoveUnnecessary = true;
         Boolean RemoveEmpty = true;
         Boolean PreventSynchingUpscaled = true;
+        Boolean AskSync = true;
+        Boolean CheckPMPSystem = true;
+        Boolean OverridePMPPath = false;
+        Boolean OverrideLaptopPath = false;
+
         Dictionary<string, Boolean> checkedFiles = new Dictionary<string, Boolean>();
 
         ProgressBar pb1, LTpb;
@@ -61,6 +71,11 @@ namespace Chrononizer
                 tbLibraryLocation.Text = Properties.Settings.Default.MusicLibrary;
                 tbDownscaledLocation.Text = Properties.Settings.Default.DownscaledLibrary;
                 tbChiptunesLocation.Text = Properties.Settings.Default.ChiptunesLibrary;
+                tbLaptopHostname.Text = Properties.Settings.Default.LaptopHostname;
+                tbLaptopUsername.Text = Properties.Settings.Default.LaptopUsername;
+                tbPMPVolumeLabel.Text = Properties.Settings.Default.PMPVolumeLabel;
+                tbPMPLocation.Text = Properties.Settings.Default.PMPLocation;
+                tbLaptopLocation.Text = Properties.Settings.Default.LaptopLocation;
                 cbRemoveImproper.Checked = Properties.Settings.Default.RemoveImproper;
                 cbAutoHandle.Checked = Properties.Settings.Default.AutoHandle;
                 cbShowImproper.Checked = Properties.Settings.Default.ShowFiles;
@@ -69,6 +84,11 @@ namespace Chrononizer
                 cbRemoveEmpty.Checked = Properties.Settings.Default.RemoveEmpty;
                 cbPreventSynchingUpscaled.Checked = Properties.Settings.Default.PreventSynchingUpscaled;
                 cbChiptunesLibrary.Checked = Properties.Settings.Default.EnableChiptunes;
+                cbPreventSynchingUpscaled.Checked = Properties.Settings.Default.PreventSynchingUpscaled;
+                cbAskSync.Checked = Properties.Settings.Default.AskSync;
+                cbCheckPMPSystem.Checked = Properties.Settings.Default.CheckPMPSystem;
+                cbOverridePMPPath.Checked = Properties.Settings.Default.OverridePMPPath;
+                cbOverrideLaptopPath.Checked = Properties.Settings.Default.OverrideLaptopPath;
             }
             else
             {
@@ -84,6 +104,11 @@ namespace Chrononizer
                 tbLibraryLocation.Text = drive + ":\\Users\\" + username + "\\Music\\";
                 tbDownscaledLocation.Text = drive + ":\\Users\\" + username + "\\Music\\.downscaled\\";
                 tbChiptunesLocation.Text = drive + ":\\Users\\" + username + "\\Music\\Chiptunes";
+                tbLaptopHostname.Text = "Laptop";
+                tbLaptopUsername.Text = Environment.UserName; //assume that the laptop's username is the same as the user running the app
+                tbPMPVolumeLabel.Text = "X7 HDD";
+                tbPMPLocation.Text = " ";
+                tbLaptopLocation.Text = " ";
                 cbRemoveImproper.Checked = Properties.Settings.Default.RemoveImproper;
                 cbAutoHandle.Checked = Properties.Settings.Default.AutoHandle;
                 cbShowImproper.Checked = Properties.Settings.Default.ShowFiles;
@@ -91,6 +116,11 @@ namespace Chrononizer
                 cbRemoveUnnecessary.Checked = Properties.Settings.Default.RemoveUnnecessary;
                 cbRemoveEmpty.Checked = Properties.Settings.Default.RemoveEmpty;
                 cbChiptunesLibrary.Checked = Properties.Settings.Default.EnableChiptunes;
+                cbPreventSynchingUpscaled.Checked = Properties.Settings.Default.PreventSynchingUpscaled;
+                cbAskSync.Checked = Properties.Settings.Default.AskSync;
+                cbCheckPMPSystem.Checked = Properties.Settings.Default.CheckPMPSystem;
+                cbOverridePMPPath.Checked = Properties.Settings.Default.OverridePMPPath;
+                cbOverrideLaptopPath.Checked = Properties.Settings.Default.OverrideLaptopPath;
 
                 Properties.Settings.Default.Save();
             }
@@ -107,6 +137,10 @@ namespace Chrononizer
             RemoveEmpty = cbRemoveEmpty.Checked;
             PreventSynchingUpscaled = cbPreventSynchingUpscaled.Checked;
             EnableChiptunes = cbChiptunesLibrary.Checked;
+            AskSync = cbAskSync.Checked;
+            CheckPMPSystem = cbCheckPMPSystem.Checked;
+            OverridePMPPath = cbOverrideLaptopPath.Checked;
+            OverrideLaptopPath = cbOverrideLaptopPath.Checked;
         }
 
         private void btnScan_Click(object sender, EventArgs e)
@@ -925,6 +959,26 @@ namespace Chrononizer
             OpenFolderDialog(3);
         }
 
+        private void tbPMPLocation_Click(object sender, EventArgs e)
+        {
+            OpenFolderDialog(4);
+        }
+
+        private void btnPMPLocation_Click(object sender, EventArgs e)
+        {
+            OpenFolderDialog(4);
+        }
+
+        private void tbLaptopLocation_Click(object sender, EventArgs e)
+        {
+            OpenFolderDialog(5);
+        }
+
+        private void btnLaptopLocation_Click(object sender, EventArgs e)
+        {
+            OpenFolderDialog(5);
+        }
+
         private void OpenFolderDialog(int TextBox)
         {
             FolderBrowserDialog open = new FolderBrowserDialog();
@@ -937,6 +991,8 @@ namespace Chrononizer
             }
             else if (TextBox == 2) tbDownscaledLocation.Text = open.SelectedPath + "\\";
             else if (TextBox == 3) tbChiptunesLocation.Text = open.SelectedPath + "\\";
+            else if (TextBox == 4) tbPMPLocation.Text = open.SelectedPath + "\\";
+            else if (TextBox == 5) tbLaptopLocation.Text = open.SelectedPath + "\\";
         }
 
         private void checkBox2_CheckedChanged(object sender, EventArgs e)
@@ -1064,6 +1120,95 @@ namespace Chrononizer
             Properties.Settings.Default.Save();
         }
 
+        private void cbAskSync_CheckedChanged(object sender, EventArgs e)
+        {
+            AskSync = cbAskSync.Checked;
+            Properties.Settings.Default.AskSync = cbAskSync.Checked;
+            Properties.Settings.Default.Save();
+        }
+
+        private void cbCheckPMPSystem_CheckedChanged(object sender, EventArgs e)
+        {
+            CheckPMPSystem = cbCheckPMPSystem.Checked;
+            Properties.Settings.Default.CheckPMPSystem = cbCheckPMPSystem.Checked;
+            Properties.Settings.Default.Save();
+        }
+
+        private void cbOverridePMPPath_CheckedChanged(object sender, EventArgs e)
+        {
+            if (cbOverridePMPPath.Checked)
+            {
+                lblPMPLocation.Enabled = true;
+                tbPMPLocation.Enabled = true;
+                btnPMPLocation.Enabled = true;
+            }
+            else
+            {
+                lblPMPLocation.Enabled = false;
+                tbPMPLocation.Enabled = false;
+                btnPMPLocation.Enabled = false;
+                tbPMPLocation.Text = " ";
+            }
+            OverridePMPPath = cbOverridePMPPath.Checked;
+            Properties.Settings.Default.OverridePMPPath = cbOverridePMPPath.Checked;
+            Properties.Settings.Default.Save();
+        }
+
+        private void cbOverrideLaptopPath_CheckedChanged(object sender, EventArgs e)
+        {
+            if (cbOverrideLaptopPath.Checked)
+            {
+                lblLaptopLocation.Enabled = true;
+                tbLaptopLocation.Enabled = true;
+                btnLaptopLocation.Enabled = true;
+            }
+            else
+            {
+                lblLaptopLocation.Enabled = false;
+                tbLaptopLocation.Enabled = false;
+                btnLaptopLocation.Enabled = false;
+                tbLaptopLocation.Text = " ";
+            }
+            OverrideLaptopPath = cbOverrideLaptopPath.Checked;
+            Properties.Settings.Default.OverrideLaptopPath = cbOverrideLaptopPath.Checked;
+            Properties.Settings.Default.Save();
+        }
+
+        private void tbLaptopHostname_TextChanged(object sender, EventArgs e)
+        {
+            LaptopHostname = tbLaptopHostname.Text;
+            Properties.Settings.Default.LaptopHostname = tbLaptopHostname.Text;
+            Properties.Settings.Default.Save();
+        }
+
+        private void tbLaptopUsername_TextChanged(object sender, EventArgs e)
+        {
+            LaptopUsername = tbLaptopUsername.Text;
+            Properties.Settings.Default.LaptopUsername = tbLaptopUsername.Text;
+            Properties.Settings.Default.Save();
+        }
+
+        private void tbPMPVolumeLabel_TextChanged(object sender, EventArgs e)
+        {
+            PMPVolumeLabel = tbPMPVolumeLabel.Text;
+            Properties.Settings.Default.PMPVolumeLabel = tbPMPVolumeLabel.Text;
+            Properties.Settings.Default.Save();
+        }
+
+        private void tbPMPLocation_TextChanged(object sender, EventArgs e)
+        {
+            PMPLocation = tbPMPLocation.Text;
+            Properties.Settings.Default.PMPLocation = tbPMPLocation.Text;
+            Properties.Settings.Default.Save();
+        }
+
+        private void tbLaptopLocation_TextChanged(object sender, EventArgs e)
+        {
+            LaptopLocation = tbLaptopLocation.Text;
+            Properties.Settings.Default.LaptopLocation = tbLaptopLocation.Text;
+            Properties.Settings.Default.Save();
+        }
+
         private void PMPSyncBW_DoWork(object sender, DoWorkEventArgs e)
         {
             if (PrepareSyncPMP())
@@ -1173,11 +1318,6 @@ namespace Chrononizer
                     btnSyncBoth.Text = "Synchronize Both";
                 }
             }));
-        }
-
-        private void PreferencesTab_Click(object sender, EventArgs e)
-        {
-
         }
     }
 }
