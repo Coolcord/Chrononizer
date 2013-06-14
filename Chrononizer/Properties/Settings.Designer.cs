@@ -154,5 +154,17 @@ namespace Chrononizer.Properties {
                 this["EnableChiptunes"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool PreventSynchingUpscaled {
+            get {
+                return ((bool)(this["PreventSynchingUpscaled"]));
+            }
+            set {
+                this["PreventSynchingUpscaled"] = value;
+            }
+        }
     }
 }

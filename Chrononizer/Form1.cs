@@ -29,6 +29,7 @@ namespace Chrononizer
         Boolean RemoveUnsupported = true;
         Boolean RemoveUnnecessary = true;
         Boolean RemoveEmpty = true;
+        Boolean PreventSynchingUpscaled = true;
         Dictionary<string, Boolean> checkedFiles = new Dictionary<string, Boolean>();
 
         ProgressBar pb1, LTpb;
@@ -66,6 +67,7 @@ namespace Chrononizer
                 cbRemoveUnsupported.Checked = Properties.Settings.Default.RemoveUnsupported;
                 cbRemoveUnnecessary.Checked = Properties.Settings.Default.RemoveUnnecessary;
                 cbRemoveEmpty.Checked = Properties.Settings.Default.RemoveEmpty;
+                cbPreventSynchingUpscaled.Checked = Properties.Settings.Default.PreventSynchingUpscaled;
                 cbChiptunesLibrary.Checked = Properties.Settings.Default.EnableChiptunes;
             }
             else
@@ -103,6 +105,7 @@ namespace Chrononizer
             RemoveUnsupported = cbRemoveUnsupported.Checked;
             RemoveUnnecessary = cbRemoveUnnecessary.Checked;
             RemoveEmpty = cbRemoveEmpty.Checked;
+            PreventSynchingUpscaled = cbPreventSynchingUpscaled.Checked;
             EnableChiptunes = cbChiptunesLibrary.Checked;
         }
 
@@ -1054,6 +1057,13 @@ namespace Chrononizer
             Properties.Settings.Default.Save();
         }
 
+        private void cbPreventSynchingUpscaled_CheckedChanged(object sender, EventArgs e)
+        {
+            PreventSynchingUpscaled = cbPreventSynchingUpscaled.Checked;
+            Properties.Settings.Default.PreventSynchingUpscaled = cbPreventSynchingUpscaled.Checked;
+            Properties.Settings.Default.Save();
+        }
+
         private void PMPSyncBW_DoWork(object sender, DoWorkEventArgs e)
         {
             if (PrepareSyncPMP())
@@ -1163,6 +1173,11 @@ namespace Chrononizer
                     btnSyncBoth.Text = "Synchronize Both";
                 }
             }));
+        }
+
+        private void PreferencesTab_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
