@@ -560,13 +560,23 @@ namespace Chrononizer
             {
                 try
                 {
-                    if (drive.VolumeLabel == "X7 HDD")
+                    if (drive.VolumeLabel == PMPVolumeLabel)
                     {
                         PMPDrive = drive.RootDirectory;
-                        if (!Directory.Exists(PMPDrive + "System\\") || !Directory.Exists(PMPDrive + "Music\\") || !File.Exists(PMPDrive + "DID.bin") || !File.Exists(PMPDrive + "nonce.bin"))
-                            PMPFound = false; //PMP is missing some core system files
+                        if (CheckPMPSystem)
+                        {
+                            if (!Directory.Exists(PMPDrive + "System\\") || !Directory.Exists(PMPDrive + "Music\\") || !File.Exists(PMPDrive + "DID.bin") || !File.Exists(PMPDrive + "nonce.bin"))
+                                PMPFound = false; //PMP is missing some core system files
+                            else
+                                PMPFound = true; //PMP found
+                        }
                         else
-                            PMPFound = true; //PMP found
+                        {
+                            if (!Directory.Exists(PMPDrive + "Music\\"))
+                                PMPFound = false; //PMP not found
+                            else
+                                PMPFound = true; //PMP found
+                        }
                         break;
                     }
                 }
@@ -578,7 +588,9 @@ namespace Chrononizer
 
             if (PMPFound)
             {
-                DialogResult result = MessageBox.Show("PMP found on " + PMPDrive + "\nWould you like to sync to this device?", "Device Found!", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                DialogResult result = DialogResult.Yes;
+                if (AskSync)
+                    result = MessageBox.Show("PMP found on " + PMPDrive + "\nWould you like to sync to this device?", "Device Found!", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (result == DialogResult.Yes)
                 {
                     System.Media.SoundPlayer aSoundPlayer = new System.Media.SoundPlayer(Chrononizer.Properties.Resources.ChronoBoost);
@@ -651,12 +663,11 @@ namespace Chrononizer
 
         public Boolean PrepareSyncLaptop()
         {
-            string LaptopName = "SUPERMOBILEROB";
-            string LaptopUsername = "Cord";
-
-            if (Directory.Exists("\\\\" + LaptopName + "\\Users\\" + LaptopUsername + "\\Music"))
+            if (Directory.Exists("\\\\" + LaptopHostname + "\\Users\\" + LaptopUsername + "\\Music"))
             {
-                DialogResult result = MessageBox.Show(LaptopName + " logged in as " + LaptopUsername + " is mounted.\nWould you like to sync to this device?", "Device Found!", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                DialogResult result = DialogResult.Yes;
+                if (AskSync)
+                    result = MessageBox.Show(LaptopHostname + " logged in as " + LaptopUsername + " is mounted.\nWould you like to sync to this device?", "Device Found!", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (result == DialogResult.Yes)
                 {
                     System.Media.SoundPlayer aSoundPlayer = new System.Media.SoundPlayer(Chrononizer.Properties.Resources.ChronoBoost);
@@ -672,13 +683,10 @@ namespace Chrononizer
 
         public void SetupSyncLaptop()
         {
-            string LaptopName = "SUPERMOBILEROB";
-            string LaptopUsername = "Cord";
-
             double CopySize = 0;
             Queue<UpdateLocation> UpdateFiles = new Queue<UpdateLocation>();
 
-            CopySize = Sync(MusicLibrary, "\\\\" + LaptopName + "\\Users\\" + LaptopUsername + "\\Music", ref UpdateFiles);
+            CopySize = Sync(MusicLibrary, "\\\\" + LaptopHostname + "\\Users\\" + LaptopUsername + "\\Music", ref UpdateFiles);
             //CopySize = Sync(MusicLibrary, "E:\\SynchronizationTests\\Laptop", ref UpdateFiles); //debug code
 
             Queue<UpdateLocation> CopyFiles = new Queue<UpdateLocation>();
@@ -748,6 +756,8 @@ namespace Chrononizer
                     {
                         if (File.Exists(DownscaledLibrary + sourceFile.Substring(MusicLibrary.Length)))
                             correctFile = DownscaledLibrary + sourceFile.Substring(MusicLibrary.Length); //redirect to downscaled file
+                        else if (PreventSynchingUpscaled)
+                            continue;
                     }
                 }
 
