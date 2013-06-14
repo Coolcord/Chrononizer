@@ -42,7 +42,6 @@ namespace Chrononizer
         {
             public string SourceFile;
             public string DestinationFile;
-            public Boolean Overwrite;
         }
 
         public Form1()
@@ -589,10 +588,9 @@ namespace Chrononizer
                 UpdateLocation update = CopyFiles.Dequeue();
                 string source = update.SourceFile;
                 string destination = update.DestinationFile;
-                Boolean overwrite = update.Overwrite;
                 FileInfo info = new FileInfo(source);
 
-                File.Copy(source, destination, overwrite); //copy the file
+                File.Copy(source, destination, true); //copy the file
 
                 //calculate progress
                 progress += (int)(((info.Length / CopySize) * 100000));
@@ -671,10 +669,9 @@ namespace Chrononizer
                 UpdateLocation update = CopyFiles.Dequeue();
                 string source = update.SourceFile;
                 string destination = update.DestinationFile;
-                Boolean overwrite = update.Overwrite;
                 FileInfo info = new FileInfo(source);
 
-                File.Copy(source, destination, overwrite); //copy the file
+                File.Copy(source, destination, true); //copy the file
 
                 //calculate progress
                 progress += (int)(((info.Length / CopySize) * 100000));
@@ -728,7 +725,6 @@ namespace Chrononizer
                         UpdateLocation update = new UpdateLocation();
                         update.SourceFile = correctFile;
                         update.DestinationFile = Path.Combine(destinationPath, sourceInfo.Name);
-                        update.Overwrite = true;
                         UpdateFiles.Enqueue(update);
                         FileInfo info = new FileInfo(correctFile);
                         num += info.Length; //get the file's size
@@ -740,7 +736,6 @@ namespace Chrononizer
                     UpdateLocation update = new UpdateLocation();
                     update.SourceFile = correctFile;
                     update.DestinationFile = Path.Combine(destinationPath, sourceInfo.Name);
-                    update.Overwrite = false;
                     UpdateFiles.Enqueue(update);
                     FileInfo info = new FileInfo(correctFile);
                     num += info.Length; //get the file's size
@@ -786,7 +781,6 @@ namespace Chrononizer
                         UpdateLocation update = new UpdateLocation();
                         update.SourceFile = sourceFile;
                         update.DestinationFile = Path.Combine(destinationPath, sourceInfo.Name);
-                        update.Overwrite = true;
                         UpdateFiles.Enqueue(update);
                         FileInfo info = new FileInfo(sourceFile);
                         num += info.Length; //get the file's size
@@ -798,7 +792,6 @@ namespace Chrononizer
                     UpdateLocation update = new UpdateLocation();
                     update.SourceFile = sourceFile;
                     update.DestinationFile = Path.Combine(destinationPath, sourceInfo.Name);
-                    update.Overwrite = false;
                     UpdateFiles.Enqueue(update);
                     FileInfo info = new FileInfo(sourceFile);
                     num += info.Length; //get the file's size
