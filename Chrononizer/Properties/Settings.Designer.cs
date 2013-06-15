@@ -274,5 +274,17 @@ namespace Chrononizer.Properties {
                 this["LaptopLocation"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool HideMediaArtLocal {
+            get {
+                return ((bool)(this["HideMediaArtLocal"]));
+            }
+            set {
+                this["HideMediaArtLocal"] = value;
+            }
+        }
     }
 }

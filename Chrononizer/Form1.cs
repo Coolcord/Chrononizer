@@ -39,7 +39,7 @@ namespace Chrononizer
         Boolean CheckPMPSystem = true;
         Boolean OverridePMPPath = false;
         Boolean OverrideLaptopPath = false;
-        Boolean LockTabs = false;
+        Boolean HideMediaArtLocal = true;
 
         Dictionary<string, Boolean> checkedFiles = new Dictionary<string, Boolean>();
 
@@ -90,6 +90,7 @@ namespace Chrononizer
                 cbCheckPMPSystem.Checked = Properties.Settings.Default.CheckPMPSystem;
                 cbOverridePMPPath.Checked = Properties.Settings.Default.OverridePMPPath;
                 cbOverrideLaptopPath.Checked = Properties.Settings.Default.OverrideLaptopPath;
+                cbHideMediaArtLocal.Checked = Properties.Settings.Default.HideMediaArtLocal;
             }
             else
             {
@@ -122,6 +123,7 @@ namespace Chrononizer
                 cbCheckPMPSystem.Checked = Properties.Settings.Default.CheckPMPSystem;
                 cbOverridePMPPath.Checked = Properties.Settings.Default.OverridePMPPath;
                 cbOverrideLaptopPath.Checked = Properties.Settings.Default.OverrideLaptopPath;
+                cbHideMediaArtLocal.Checked = Properties.Settings.Default.HideMediaArtLocal;
 
                 Properties.Settings.Default.Save();
             }
@@ -144,6 +146,7 @@ namespace Chrononizer
             CheckPMPSystem = cbCheckPMPSystem.Checked;
             OverridePMPPath = cbOverrideLaptopPath.Checked;
             OverrideLaptopPath = cbOverrideLaptopPath.Checked;
+            HideMediaArtLocal = cbHideMediaArtLocal.Checked;
         }
 
         private void btnScan_Click(object sender, EventArgs e)
@@ -236,7 +239,6 @@ namespace Chrononizer
                             flacTag = new FlacTagger(downscaledFile);
                             if (flacTag.BitsPerSample > 16 || flacTag.SampleRate > 48000)
                             {
-
                                 this.Invoke(new MethodInvoker(() => lbNotDownscaled.Items.Add(name))); //if it does not meet the minimum requirements, it needs to be downscaled
                                 checkedFiles.Add(downscaledFile, false); //mark that it has been checked and is not proper
                             }
@@ -260,6 +262,9 @@ namespace Chrononizer
             foreach (string name in folders)
             {
                 if (Path.GetFullPath(name) == DownscaledLibrary.Substring(0, DownscaledLibrary.Length - 1)) continue; //don't scan through the downscaled files
+                //hide all .mediaartlocal folders
+                else if (HideMediaArtLocal && Path.GetFileName(name) == ".mediaartlocal") File.SetAttributes(Path.GetFullPath(name), FileAttributes.Hidden | FileAttributes.System);
+
                 num = GetDirectorySize(name, num, ref flac, ref mp3, ref wma, ref m4a, ref ogg, ref wav, ref xm, ref mod, ref nsf); //recurse through the folders
             }
             return num;
@@ -1156,6 +1161,13 @@ namespace Chrononizer
             Properties.Settings.Default.Save();
         }
 
+        private void cbHideMediaArtLocal_CheckedChanged(object sender, EventArgs e)
+        {
+            HideMediaArtLocal = cbHideMediaArtLocal.Checked;
+            Properties.Settings.Default.HideMediaArtLocal = cbHideMediaArtLocal.Checked;
+            Properties.Settings.Default.Save();
+        }
+
         private void cbOverridePMPPath_CheckedChanged(object sender, EventArgs e)
         {
             if (cbOverridePMPPath.Checked)
@@ -1267,8 +1279,7 @@ namespace Chrononizer
 
         private void ScanBW_DoWork(object sender, DoWorkEventArgs e)
         {
-            //disable the preferences tab to prevent the user from changing settings during an operation
-            this.Invoke(new MethodInvoker(() => PreferencesTab.Enabled = false));
+            this.Invoke(new MethodInvoker(() => PreferencesTab.Enabled = false)); //disallow changes to preferences
 
             System.Media.SoundPlayer aSoundPlayer = new System.Media.SoundPlayer(Chrononizer.Properties.Resources.ScannerSweep);
             aSoundPlayer.Play();  //Plays the sound in a new thread
@@ -1372,11 +1383,6 @@ namespace Chrononizer
                 return true;
             else
                 return false;
-        }
-
-        private void tabControl_Selecting(object sender, TabControlCancelEventArgs e)
-        {
-            e.Cancel = LockTabs; //don't allow the user to change tabs when the app is locked
         }
     }
 }

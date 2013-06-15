@@ -60,6 +60,7 @@
             this.lbNotDownscaled = new System.Windows.Forms.ListBox();
             this.btnScan = new System.Windows.Forms.Button();
             this.PreferencesTab = new System.Windows.Forms.TabPage();
+            this.cbHideMediaArtLocal = new System.Windows.Forms.CheckBox();
             this.btnLaptopLocation = new System.Windows.Forms.Button();
             this.btnPMPLocation = new System.Windows.Forms.Button();
             this.cbOverrideLaptopPath = new System.Windows.Forms.CheckBox();
@@ -122,7 +123,6 @@
             this.tabControl.SelectedIndex = 0;
             this.tabControl.Size = new System.Drawing.Size(785, 556);
             this.tabControl.TabIndex = 8;
-            this.tabControl.Selecting += new System.Windows.Forms.TabControlCancelEventHandler(this.tabControl_Selecting);
             // 
             // SyncTab
             // 
@@ -427,6 +427,7 @@
             // 
             // PreferencesTab
             // 
+            this.PreferencesTab.Controls.Add(this.cbHideMediaArtLocal);
             this.PreferencesTab.Controls.Add(this.btnLaptopLocation);
             this.PreferencesTab.Controls.Add(this.btnPMPLocation);
             this.PreferencesTab.Controls.Add(this.cbOverrideLaptopPath);
@@ -466,6 +467,17 @@
             this.PreferencesTab.TabIndex = 3;
             this.PreferencesTab.Text = "Preferences";
             this.PreferencesTab.UseVisualStyleBackColor = true;
+            // 
+            // cbHideMediaArtLocal
+            // 
+            this.cbHideMediaArtLocal.AutoSize = true;
+            this.cbHideMediaArtLocal.Location = new System.Drawing.Point(12, 414);
+            this.cbHideMediaArtLocal.Name = "cbHideMediaArtLocal";
+            this.cbHideMediaArtLocal.Size = new System.Drawing.Size(485, 21);
+            this.cbHideMediaArtLocal.TabIndex = 35;
+            this.cbHideMediaArtLocal.Text = "Add hidden attributes .mediaartlocal folders when scanning music library";
+            this.cbHideMediaArtLocal.UseVisualStyleBackColor = true;
+            this.cbHideMediaArtLocal.CheckedChanged += new System.EventHandler(this.cbHideMediaArtLocal_CheckedChanged);
             // 
             // btnLaptopLocation
             // 
@@ -623,7 +635,7 @@
             // cbAskSync
             // 
             this.cbAskSync.AutoSize = true;
-            this.cbAskSync.Location = new System.Drawing.Point(12, 414);
+            this.cbAskSync.Location = new System.Drawing.Point(12, 441);
             this.cbAskSync.Name = "cbAskSync";
             this.cbAskSync.Size = new System.Drawing.Size(204, 21);
             this.cbAskSync.TabIndex = 17;
@@ -953,6 +965,7 @@
         private System.Windows.Forms.CheckBox cbOverridePMPPath;
         private System.Windows.Forms.Button btnLaptopLocation;
         private System.Windows.Forms.Button btnPMPLocation;
+        private System.Windows.Forms.CheckBox cbHideMediaArtLocal;
     }
 }
 
