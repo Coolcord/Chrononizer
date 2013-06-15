@@ -679,8 +679,6 @@ namespace Chrononizer
                 pb1.Value = pb1.Maximum;
                 lbl2.Text = "100%";
             }));
-
-            MessageBox.Show("Synchronization Complete!");
         }
 
         public Boolean PrepareSyncLaptop()
@@ -757,8 +755,6 @@ namespace Chrononizer
                 LTpb.Value = LTpb.Maximum;
                 LTlbl2.Text = "100%";
             }));
-
-            MessageBox.Show("Synchronization Complete!");
         }
 
         public double SyncPMP(string sourcePath, string destinationPath, ref Queue<UpdateLocation> UpdateFiles)
@@ -1360,6 +1356,7 @@ namespace Chrononizer
             {
                 if (LaptopSyncTBW.IsBusy == false)
                 {
+                    MessageBox.Show("Synchronization Complete!"); //show that the operations completed
                     ShowSyncStatus(false, true, true);
                     btnSyncBoth.Text = "Synchronize Both";
                     PreferencesTab.Enabled = true; //allow changes to preferences
@@ -1377,6 +1374,7 @@ namespace Chrononizer
             {
                 if (PMPSyncTBW.IsBusy == false)
                 {
+                    MessageBox.Show("Synchronization Complete!"); //show that the operations completed
                     ShowSyncStatus(false, true, true);
                     btnSyncBoth.Text = "Synchronize Both";
                     PreferencesTab.Enabled = true; //allow changes to preferences
