@@ -126,6 +126,9 @@ namespace Chrononizer
                 cbHideMediaArtLocal.Checked = Properties.Settings.Default.HideMediaArtLocal;
 
                 Properties.Settings.Default.Save();
+
+                DialogResult result = MessageBox.Show("It is highly recommended that you check and configure your preferences before you synchronize any devices.\n\nWould you like to do so now?", "Welcome to Chrononizer!", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (result == DialogResult.Yes) tabControl.SelectedTab = PreferencesTab; //show the preferences tab
             }
 
             //store the values
