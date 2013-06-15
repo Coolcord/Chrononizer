@@ -107,8 +107,8 @@ namespace Chrononizer
                 tbLaptopHostname.Text = "Laptop";
                 tbLaptopUsername.Text = Environment.UserName; //assume that the laptop's username is the same as the user running the app
                 tbPMPVolumeLabel.Text = "X7 HDD";
-                tbPMPLocation.Text = " ";
-                tbLaptopLocation.Text = " ";
+                tbPMPLocation.Text = "*:\\Music\\";
+                tbLaptopLocation.Text = "\\\\" + LaptopHostname + "\\Users\\" + LaptopUsername + "\\Music\\";
                 cbRemoveImproper.Checked = Properties.Settings.Default.RemoveImproper;
                 cbAutoHandle.Checked = Properties.Settings.Default.AutoHandle;
                 cbShowImproper.Checked = Properties.Settings.Default.ShowFiles;
@@ -1151,13 +1151,14 @@ namespace Chrononizer
                 lblPMPLocation.Enabled = true;
                 tbPMPLocation.Enabled = true;
                 btnPMPLocation.Enabled = true;
+                tbPMPLocation.Text = " ";
             }
             else
             {
                 lblPMPLocation.Enabled = false;
                 tbPMPLocation.Enabled = false;
                 btnPMPLocation.Enabled = false;
-                tbPMPLocation.Text = " ";
+                tbPMPLocation.Text = "*:\\Music\\";
             }
             OverridePMPPath = cbOverridePMPPath.Checked;
             Properties.Settings.Default.OverridePMPPath = cbOverridePMPPath.Checked;
@@ -1177,7 +1178,7 @@ namespace Chrononizer
                 lblLaptopLocation.Enabled = false;
                 tbLaptopLocation.Enabled = false;
                 btnLaptopLocation.Enabled = false;
-                tbLaptopLocation.Text = " ";
+                tbLaptopLocation.Text = "\\\\" + LaptopHostname + "\\Users\\" + LaptopUsername + "\\Music\\";
             }
             OverrideLaptopPath = cbOverrideLaptopPath.Checked;
             Properties.Settings.Default.OverrideLaptopPath = cbOverrideLaptopPath.Checked;
@@ -1187,6 +1188,8 @@ namespace Chrononizer
         private void tbLaptopHostname_TextChanged(object sender, EventArgs e)
         {
             LaptopHostname = tbLaptopHostname.Text;
+            if (!OverrideLaptopPath)
+                tbLaptopLocation.Text = "\\\\" + LaptopHostname + "\\Users\\" + LaptopUsername + "\\Music\\";
             Properties.Settings.Default.LaptopHostname = tbLaptopHostname.Text;
             Properties.Settings.Default.Save();
         }
@@ -1194,6 +1197,8 @@ namespace Chrononizer
         private void tbLaptopUsername_TextChanged(object sender, EventArgs e)
         {
             LaptopUsername = tbLaptopUsername.Text;
+            if (!OverrideLaptopPath)
+                tbLaptopLocation.Text = "\\\\" + LaptopHostname + "\\Users\\" + LaptopUsername + "\\Music\\";
             Properties.Settings.Default.LaptopUsername = tbLaptopUsername.Text;
             Properties.Settings.Default.Save();
         }

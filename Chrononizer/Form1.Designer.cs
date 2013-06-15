@@ -480,7 +480,7 @@
             // btnPMPLocation
             // 
             this.btnPMPLocation.Enabled = false;
-            this.btnPMPLocation.Location = new System.Drawing.Point(736, 194);
+            this.btnPMPLocation.Location = new System.Drawing.Point(736, 102);
             this.btnPMPLocation.Name = "btnPMPLocation";
             this.btnPMPLocation.Size = new System.Drawing.Size(31, 23);
             this.btnPMPLocation.TabIndex = 33;
@@ -502,7 +502,7 @@
             // cbOverridePMPPath
             // 
             this.cbOverridePMPPath.AutoSize = true;
-            this.cbOverridePMPPath.Location = new System.Drawing.Point(450, 150);
+            this.cbOverridePMPPath.Location = new System.Drawing.Point(450, 58);
             this.cbOverridePMPPath.Name = "cbOverridePMPPath";
             this.cbOverridePMPPath.Size = new System.Drawing.Size(151, 21);
             this.cbOverridePMPPath.TabIndex = 31;
@@ -536,7 +536,7 @@
             // 
             this.tbPMPLocation.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.tbPMPLocation.Enabled = false;
-            this.tbPMPLocation.Location = new System.Drawing.Point(450, 194);
+            this.tbPMPLocation.Location = new System.Drawing.Point(450, 102);
             this.tbPMPLocation.Name = "tbPMPLocation";
             this.tbPMPLocation.ReadOnly = true;
             this.tbPMPLocation.Size = new System.Drawing.Size(284, 22);
@@ -548,7 +548,7 @@
             // 
             this.lblPMPLocation.AutoSize = true;
             this.lblPMPLocation.Enabled = false;
-            this.lblPMPLocation.Location = new System.Drawing.Point(447, 174);
+            this.lblPMPLocation.Location = new System.Drawing.Point(447, 82);
             this.lblPMPLocation.Name = "lblPMPLocation";
             this.lblPMPLocation.Size = new System.Drawing.Size(99, 17);
             this.lblPMPLocation.TabIndex = 25;
@@ -557,7 +557,7 @@
             // tbPMPVolumeLabel
             // 
             this.tbPMPVolumeLabel.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.tbPMPVolumeLabel.Location = new System.Drawing.Point(450, 123);
+            this.tbPMPVolumeLabel.Location = new System.Drawing.Point(450, 31);
             this.tbPMPVolumeLabel.Name = "tbPMPVolumeLabel";
             this.tbPMPVolumeLabel.Size = new System.Drawing.Size(284, 22);
             this.tbPMPVolumeLabel.TabIndex = 24;
@@ -566,7 +566,7 @@
             // lblPMPVolumeLabel
             // 
             this.lblPMPVolumeLabel.AutoSize = true;
-            this.lblPMPVolumeLabel.Location = new System.Drawing.Point(447, 103);
+            this.lblPMPVolumeLabel.Location = new System.Drawing.Point(447, 11);
             this.lblPMPVolumeLabel.Name = "lblPMPVolumeLabel";
             this.lblPMPVolumeLabel.Size = new System.Drawing.Size(131, 17);
             this.lblPMPVolumeLabel.TabIndex = 23;
@@ -575,7 +575,7 @@
             // tbLaptopUsername
             // 
             this.tbLaptopUsername.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.tbLaptopUsername.Location = new System.Drawing.Point(450, 78);
+            this.tbLaptopUsername.Location = new System.Drawing.Point(450, 194);
             this.tbLaptopUsername.Name = "tbLaptopUsername";
             this.tbLaptopUsername.Size = new System.Drawing.Size(284, 22);
             this.tbLaptopUsername.TabIndex = 22;
@@ -584,7 +584,7 @@
             // lblLaptopUsername
             // 
             this.lblLaptopUsername.AutoSize = true;
-            this.lblLaptopUsername.Location = new System.Drawing.Point(447, 58);
+            this.lblLaptopUsername.Location = new System.Drawing.Point(447, 174);
             this.lblLaptopUsername.Name = "lblLaptopUsername";
             this.lblLaptopUsername.Size = new System.Drawing.Size(125, 17);
             this.lblLaptopUsername.TabIndex = 21;
@@ -593,7 +593,7 @@
             // tbLaptopHostname
             // 
             this.tbLaptopHostname.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.tbLaptopHostname.Location = new System.Drawing.Point(450, 33);
+            this.tbLaptopHostname.Location = new System.Drawing.Point(450, 149);
             this.tbLaptopHostname.Name = "tbLaptopHostname";
             this.tbLaptopHostname.Size = new System.Drawing.Size(284, 22);
             this.tbLaptopHostname.TabIndex = 20;
@@ -602,7 +602,7 @@
             // lblLaptopHostname
             // 
             this.lblLaptopHostname.AutoSize = true;
-            this.lblLaptopHostname.Location = new System.Drawing.Point(447, 11);
+            this.lblLaptopHostname.Location = new System.Drawing.Point(447, 127);
             this.lblLaptopHostname.Name = "lblLaptopHostname";
             this.lblLaptopHostname.Size = new System.Drawing.Size(124, 17);
             this.lblLaptopHostname.TabIndex = 19;
