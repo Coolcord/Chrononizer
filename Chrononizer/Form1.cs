@@ -39,6 +39,7 @@ namespace Chrononizer
         Boolean CheckPMPSystem = true;
         Boolean OverridePMPPath = false;
         Boolean OverrideLaptopPath = false;
+        Boolean LockTabs = false;
 
         Dictionary<string, Boolean> checkedFiles = new Dictionary<string, Boolean>();
 
@@ -395,6 +396,7 @@ namespace Chrononizer
 
         private void btnSyncBoth_Click(object sender, EventArgs e)
         {
+            this.Invoke(new MethodInvoker(() => PreferencesTab.Enabled = false)); //disallow changes to preferences
             if (!are_background_workers_running())
             {
                 btnSyncBoth.Text = "Running...";
@@ -406,6 +408,7 @@ namespace Chrononizer
 
         private void btnSyncPMP_Click(object sender, EventArgs e)
         {
+            this.Invoke(new MethodInvoker(() => PreferencesTab.Enabled = false)); //disallow changes to preferences
             if (!are_background_workers_running())
             {
                 PMPSyncBW.RunWorkerAsync();
@@ -415,6 +418,7 @@ namespace Chrononizer
 
         private void btnSyncLaptop_Click(object sender, EventArgs e)
         {
+            this.Invoke(new MethodInvoker(() => PreferencesTab.Enabled = false)); //disallow changes to preferences
             if (!are_background_workers_running())
             {
                 LaptopSyncBW.RunWorkerAsync();
@@ -1257,13 +1261,15 @@ namespace Chrononizer
             this.Invoke(new MethodInvoker(() =>
             {
                 btnSyncPMP.Text = "Synchronize PMP";
-                if (LaptopSyncBW.IsBusy == false)
-                    btnSyncBoth.Text = "Synchronize Both";
+                PreferencesTab.Enabled = true; //allow changes to preferences
             }));
         }
 
         private void ScanBW_DoWork(object sender, DoWorkEventArgs e)
         {
+            //disable the preferences tab to prevent the user from changing settings during an operation
+            this.Invoke(new MethodInvoker(() => PreferencesTab.Enabled = false));
+
             System.Media.SoundPlayer aSoundPlayer = new System.Media.SoundPlayer(Chrononizer.Properties.Resources.ScannerSweep);
             aSoundPlayer.Play();  //Plays the sound in a new thread
 
@@ -1307,6 +1313,8 @@ namespace Chrononizer
                 btnScan.Text = "Rescan Library";
                 checkedFiles.Clear();
             }));
+
+            this.Invoke(new MethodInvoker(() => PreferencesTab.Enabled = true)); //allow changes to preferences
         }
 
         private void LaptopSyncBW_DoWork(object sender, DoWorkEventArgs e)
@@ -1320,8 +1328,7 @@ namespace Chrononizer
             this.Invoke (new MethodInvoker(() => 
             {
                 btnSyncLaptop.Text = "Synchronize Laptop";
-                if (PMPSyncBW.IsBusy == false)
-                    btnSyncBoth.Text = "Synchronize Both";
+                PreferencesTab.Enabled = true; //allow changes to preferences
             }));
         }
 
@@ -1337,6 +1344,7 @@ namespace Chrononizer
                 {
                     ShowSyncStatus(false, true, true);
                     btnSyncBoth.Text = "Synchronize Both";
+                    PreferencesTab.Enabled = true; //allow changes to preferences
                 }
             }));
         }
@@ -1353,6 +1361,7 @@ namespace Chrononizer
                 {
                     ShowSyncStatus(false, true, true);
                     btnSyncBoth.Text = "Synchronize Both";
+                    PreferencesTab.Enabled = true; //allow changes to preferences
                 }
             }));
         }
@@ -1363,6 +1372,11 @@ namespace Chrononizer
                 return true;
             else
                 return false;
+        }
+
+        private void tabControl_Selecting(object sender, TabControlCancelEventArgs e)
+        {
+            e.Cancel = LockTabs; //don't allow the user to change tabs when the app is locked
         }
     }
 }
