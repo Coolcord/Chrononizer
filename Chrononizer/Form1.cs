@@ -147,14 +147,10 @@ namespace Chrononizer
 
         private void btnScan_Click(object sender, EventArgs e)
         {
-            if (ScanBW.IsBusy != true)
+            if (!are_background_workers_running())
             {
                 btnScan.Text = "Scanning...";
                 ScanBW.RunWorkerAsync();
-            }
-            else
-            {
-                btnScan.Text = "Not done yet!";
             }
         }
 
@@ -399,7 +395,7 @@ namespace Chrononizer
 
         private void btnSyncBoth_Click(object sender, EventArgs e)
         {
-            if (!PMPSyncBW.IsBusy && !LaptopSyncBW.IsBusy)
+            if (!are_background_workers_running())
             {
                 btnSyncBoth.Text = "Running...";
                 ShowSyncStatus(true, true, true);
@@ -410,7 +406,7 @@ namespace Chrononizer
 
         private void btnSyncPMP_Click(object sender, EventArgs e)
         {
-            if (!PMPSyncBW.IsBusy && !LaptopSyncBW.IsBusy)
+            if (!are_background_workers_running())
             {
                 PMPSyncBW.RunWorkerAsync();
                 btnSyncPMP.Text = "Running...";
@@ -419,7 +415,7 @@ namespace Chrononizer
 
         private void btnSyncLaptop_Click(object sender, EventArgs e)
         {
-            if (!PMPSyncBW.IsBusy && !LaptopSyncBW.IsBusy)
+            if (!are_background_workers_running())
             {
                 LaptopSyncBW.RunWorkerAsync();
                 btnSyncLaptop.Text = "Running...";
@@ -811,6 +807,7 @@ namespace Chrononizer
                     continue; //skip downscaled folder
                 if (EnableChiptunes && dir == ChiptunesLibrary.Substring(0, ChiptunesLibrary.Length - 1))
                     continue; //skip chiptunes folder
+
                 DirectoryInfo dirInfo = new DirectoryInfo(dir);
                 //recursive do the directories
                 num += SyncPMP(dir, Path.Combine(destinationPath, dirInfo.Name), ref UpdateFiles);
@@ -1358,6 +1355,14 @@ namespace Chrononizer
                     btnSyncBoth.Text = "Synchronize Both";
                 }
             }));
+        }
+
+        private Boolean are_background_workers_running()
+        {
+            if (PMPSyncBW.IsBusy || PMPSyncTBW.IsBusy || LaptopSyncBW.IsBusy || LaptopSyncTBW.IsBusy || ScanBW.IsBusy)
+                return true;
+            else
+                return false;
         }
     }
 }
