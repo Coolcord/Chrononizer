@@ -129,6 +129,8 @@ namespace Chrononizer
             MusicLibrary = tbLibraryLocation.Text;
             DownscaledLibrary = tbDownscaledLocation.Text;
             ChiptunesLibrary = tbChiptunesLocation.Text;
+            PMPLocation = tbPMPLocation.Text;
+            LaptopLocation = tbLaptopLocation.Text;
             AutoHandle = cbAutoHandle.Checked;
             RemoveImproper = cbRemoveImproper.Checked;
             ShowFiles = cbShowImproper.Checked;
@@ -556,41 +558,50 @@ namespace Chrononizer
             PMPDrive = null;
             Boolean PMPFound = false;
             var drives = DriveInfo.GetDrives();
-            foreach (var drive in drives)
+
+            if (!OverridePMPPath)
             {
-                try
+                foreach (var drive in drives)
                 {
-                    if (drive.VolumeLabel == PMPVolumeLabel)
+                    try
                     {
-                        PMPDrive = drive.RootDirectory;
-                        if (CheckPMPSystem)
+                        if (drive.VolumeLabel == PMPVolumeLabel)
                         {
-                            if (!Directory.Exists(PMPDrive + "System\\") || !Directory.Exists(PMPDrive + "Music\\") || !File.Exists(PMPDrive + "DID.bin") || !File.Exists(PMPDrive + "nonce.bin"))
-                                PMPFound = false; //PMP is missing some core system files
+                            PMPDrive = drive.RootDirectory;
+                            if (CheckPMPSystem)
+                            {
+                                if (!Directory.Exists(PMPDrive + "System\\") || !Directory.Exists(PMPDrive + "Music\\") || !File.Exists(PMPDrive + "DID.bin") || !File.Exists(PMPDrive + "nonce.bin"))
+                                    PMPFound = false; //PMP is missing some core system files
+                                else
+                                {
+                                    PMPFound = true; //PMP found
+                                    PMPLocation = PMPDrive + "Music\\";
+                                }
+                            }
                             else
-                                PMPFound = true; //PMP found
+                            {
+                                if (!Directory.Exists(PMPDrive + "Music\\"))
+                                    PMPFound = false; //PMP not found
+                                else
+                                {
+                                    PMPFound = true; //PMP found
+                                    PMPLocation = PMPDrive + "Music\\";
+                                }
+                            }
+                            break;
                         }
-                        else
-                        {
-                            if (!Directory.Exists(PMPDrive + "Music\\"))
-                                PMPFound = false; //PMP not found
-                            else
-                                PMPFound = true; //PMP found
-                        }
-                        break;
                     }
+                    catch (Exception) { }
                 }
-                catch (Exception) { }
             }
 
-            //debug code
-            //PMPFound = true;
-
-            if (PMPFound)
+            if (PMPFound || (OverridePMPPath && Directory.Exists(PMPLocation)))
             {
                 DialogResult result = DialogResult.Yes;
-                if (AskSync)
+                if (!OverridePMPPath && AskSync)
                     result = MessageBox.Show("PMP found on " + PMPDrive + "\nWould you like to sync to this device?", "Device Found!", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                else if (OverridePMPPath && AskSync)
+                    result = MessageBox.Show("PMP found at the following location:\n" + PMPLocation + "\nWould you like to sync to this device?", "Device Found!", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (result == DialogResult.Yes)
                 {
                     System.Media.SoundPlayer aSoundPlayer = new System.Media.SoundPlayer(Chrononizer.Properties.Resources.ChronoBoost);
@@ -609,8 +620,7 @@ namespace Chrononizer
             double CopySize = 0;
             Queue<UpdateLocation> UpdateFiles = new Queue<UpdateLocation>();
 
-            CopySize = SyncPMP(MusicLibrary, PMPDrive + "Music", ref UpdateFiles);
-            //CopySize = SyncPMP(MusicLibrary, "E:\\SynchronizationTests\\PMP", ref UpdateFiles); //debug code
+            CopySize = SyncPMP(MusicLibrary, PMPLocation, ref UpdateFiles);
 
             Queue<UpdateLocation> CopyFiles = new Queue<UpdateLocation>();
 
@@ -663,11 +673,13 @@ namespace Chrononizer
 
         public Boolean PrepareSyncLaptop()
         {
-            if (Directory.Exists("\\\\" + LaptopHostname + "\\Users\\" + LaptopUsername + "\\Music"))
+            if (Directory.Exists(LaptopLocation))
             {
                 DialogResult result = DialogResult.Yes;
-                if (AskSync)
+                if (!OverrideLaptopPath && AskSync)
                     result = MessageBox.Show(LaptopHostname + " logged in as " + LaptopUsername + " is mounted.\nWould you like to sync to this device?", "Device Found!", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                else if (OverrideLaptopPath && AskSync)
+                    result = MessageBox.Show("Laptop found at the following location:\n" + LaptopLocation + "\nWould you like to sync to this device?", "Device Found!", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (result == DialogResult.Yes)
                 {
                     System.Media.SoundPlayer aSoundPlayer = new System.Media.SoundPlayer(Chrononizer.Properties.Resources.ChronoBoost);
@@ -686,8 +698,7 @@ namespace Chrononizer
             double CopySize = 0;
             Queue<UpdateLocation> UpdateFiles = new Queue<UpdateLocation>();
 
-            CopySize = Sync(MusicLibrary, "\\\\" + LaptopHostname + "\\Users\\" + LaptopUsername + "\\Music", ref UpdateFiles);
-            //CopySize = Sync(MusicLibrary, "E:\\SynchronizationTests\\Laptop", ref UpdateFiles); //debug code
+            CopySize = Sync(MusicLibrary, LaptopLocation, ref UpdateFiles);
 
             Queue<UpdateLocation> CopyFiles = new Queue<UpdateLocation>();
 
@@ -1150,8 +1161,11 @@ namespace Chrononizer
             {
                 lblPMPLocation.Enabled = true;
                 tbPMPLocation.Enabled = true;
-                btnPMPLocation.Enabled = true;
                 tbPMPLocation.Text = " ";
+                btnPMPLocation.Enabled = true;
+                cbCheckPMPSystem.Enabled = false;
+                lblPMPVolumeLabel.Enabled = false;
+                tbPMPVolumeLabel.Enabled = false;
             }
             else
             {
@@ -1159,6 +1173,9 @@ namespace Chrononizer
                 tbPMPLocation.Enabled = false;
                 btnPMPLocation.Enabled = false;
                 tbPMPLocation.Text = "*:\\Music\\";
+                cbCheckPMPSystem.Enabled = true;
+                lblPMPVolumeLabel.Enabled = true;
+                tbPMPVolumeLabel.Enabled = true;
             }
             OverridePMPPath = cbOverridePMPPath.Checked;
             Properties.Settings.Default.OverridePMPPath = cbOverridePMPPath.Checked;
@@ -1172,6 +1189,10 @@ namespace Chrononizer
                 lblLaptopLocation.Enabled = true;
                 tbLaptopLocation.Enabled = true;
                 btnLaptopLocation.Enabled = true;
+                lblLaptopHostname.Enabled = false;
+                tbLaptopHostname.Enabled = false;
+                lblLaptopUsername.Enabled = false;
+                tbLaptopUsername.Enabled = false;
             }
             else
             {
@@ -1179,6 +1200,10 @@ namespace Chrononizer
                 tbLaptopLocation.Enabled = false;
                 btnLaptopLocation.Enabled = false;
                 tbLaptopLocation.Text = "\\\\" + LaptopHostname + "\\Users\\" + LaptopUsername + "\\Music\\";
+                lblLaptopHostname.Enabled = true;
+                tbLaptopHostname.Enabled = true;
+                lblLaptopUsername.Enabled = true;
+                tbLaptopUsername.Enabled = true;
             }
             OverrideLaptopPath = cbOverrideLaptopPath.Checked;
             Properties.Settings.Default.OverrideLaptopPath = cbOverrideLaptopPath.Checked;
