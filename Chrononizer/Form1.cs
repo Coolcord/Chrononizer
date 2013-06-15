@@ -156,6 +156,7 @@ namespace Chrononizer
         {
             if (!are_background_workers_running())
             {
+                if (!do_libraries_exist()) return;
                 btnScan.Text = "Scanning...";
                 ScanBW.RunWorkerAsync();
             }
@@ -404,9 +405,10 @@ namespace Chrononizer
 
         private void btnSyncBoth_Click(object sender, EventArgs e)
         {
-            this.Invoke(new MethodInvoker(() => PreferencesTab.Enabled = false)); //disallow changes to preferences
             if (!are_background_workers_running())
             {
+                if (!do_libraries_exist()) return;
+                this.Invoke(new MethodInvoker(() => PreferencesTab.Enabled = false)); //disallow changes to preferences
                 btnSyncBoth.Text = "Running...";
                 ShowSyncStatus(true, true, true);
                 PMPSyncTBW.RunWorkerAsync();
@@ -416,9 +418,10 @@ namespace Chrononizer
 
         private void btnSyncPMP_Click(object sender, EventArgs e)
         {
-            this.Invoke(new MethodInvoker(() => PreferencesTab.Enabled = false)); //disallow changes to preferences
             if (!are_background_workers_running())
             {
+                if (!do_libraries_exist()) return;
+                this.Invoke(new MethodInvoker(() => PreferencesTab.Enabled = false)); //disallow changes to preferences
                 PMPSyncBW.RunWorkerAsync();
                 btnSyncPMP.Text = "Running...";
             }
@@ -426,9 +429,10 @@ namespace Chrononizer
 
         private void btnSyncLaptop_Click(object sender, EventArgs e)
         {
-            this.Invoke(new MethodInvoker(() => PreferencesTab.Enabled = false)); //disallow changes to preferences
             if (!are_background_workers_running())
             {
+                if (!do_libraries_exist()) return;
+                this.Invoke(new MethodInvoker(() => PreferencesTab.Enabled = false)); //disallow changes to preferences
                 LaptopSyncBW.RunWorkerAsync();
                 btnSyncLaptop.Text = "Running...";
             }
@@ -676,7 +680,7 @@ namespace Chrononizer
                 lbl2.Text = "100%";
             }));
 
-            MessageBox.Show("Done!");
+            MessageBox.Show("Synchronization Complete!");
         }
 
         public Boolean PrepareSyncLaptop()
@@ -754,7 +758,7 @@ namespace Chrononizer
                 LTlbl2.Text = "100%";
             }));
 
-            MessageBox.Show("Done!");
+            MessageBox.Show("Synchronization Complete!");
         }
 
         public double SyncPMP(string sourcePath, string destinationPath, ref Queue<UpdateLocation> UpdateFiles)
@@ -1386,6 +1390,26 @@ namespace Chrononizer
                 return true;
             else
                 return false;
+        }
+
+        private Boolean do_libraries_exist()
+        {
+            if (!Directory.Exists(MusicLibrary))
+            {
+                MessageBox.Show("The music library could not be found at the following specified directory: " + MusicLibrary, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+            else if (!Directory.Exists(DownscaledLibrary))
+            {
+                MessageBox.Show("The downscaled library could not be found at the following specified directory: " + DownscaledLibrary, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+            else if (!Directory.Exists(ChiptunesLibrary))
+            {
+                MessageBox.Show("The chiptunes library could not be found at the following specified directory: " + ChiptunesLibrary, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+            return true;
         }
     }
 }
