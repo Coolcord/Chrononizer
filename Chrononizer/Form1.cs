@@ -40,6 +40,8 @@ namespace Chrononizer
         Boolean OverridePMPPath = false;
         Boolean OverrideLaptopPath = false;
         Boolean HideMediaArtLocal = true;
+        Boolean PMPSyncSuccess = true;
+        Boolean LaptopSyncSuccess = true;
 
         Dictionary<string, Boolean> checkedFiles = new Dictionary<string, Boolean>();
 
@@ -1348,7 +1350,8 @@ namespace Chrononizer
 
         private void PMPSyncTBW_DoWork(object sender, DoWorkEventArgs e)
         {
-            if (PrepareSyncPMP())
+            PMPSyncSuccess = PrepareSyncPMP();
+            if (PMPSyncSuccess)
             {
                 SetupSyncPMP();
             }
@@ -1356,7 +1359,10 @@ namespace Chrononizer
             {
                 if (LaptopSyncTBW.IsBusy == false)
                 {
-                    MessageBox.Show("Synchronization Complete!"); //show that the operations completed
+                    if (PMPSyncSuccess || LaptopSyncSuccess)
+                        MessageBox.Show("Synchronization Complete!"); //show the success window if at least one operation completed
+                    else
+                        MessageBox.Show("Synchronization Failed!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     ShowSyncStatus(false, true, true);
                     btnSyncBoth.Text = "Synchronize Both";
                     PreferencesTab.Enabled = true; //allow changes to preferences
@@ -1366,7 +1372,8 @@ namespace Chrononizer
 
         private void LaptopSyncTBW_DoWork(object sender, DoWorkEventArgs e)
         {
-            if (PrepareSyncLaptop())
+            LaptopSyncSuccess = PrepareSyncLaptop();
+            if (LaptopSyncSuccess)
             {
                 SetupSyncLaptop();
             }
@@ -1374,7 +1381,10 @@ namespace Chrononizer
             {
                 if (PMPSyncTBW.IsBusy == false)
                 {
-                    MessageBox.Show("Synchronization Complete!"); //show that the operations completed
+                    if (PMPSyncSuccess || LaptopSyncSuccess)
+                        MessageBox.Show("Synchronization Complete!"); //show the success window if at least one operation completed
+                    else
+                        MessageBox.Show("Synchronization Failed!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     ShowSyncStatus(false, true, true);
                     btnSyncBoth.Text = "Synchronize Both";
                     PreferencesTab.Enabled = true; //allow changes to preferences
