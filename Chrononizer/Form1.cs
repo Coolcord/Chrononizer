@@ -187,25 +187,25 @@ namespace Chrononizer
             return plural;
         }
 
-        static string BytesToSize(double num)
+        static string BytesToSize(double size)
         {
             int type = 0;
             string s = " ";
-            while (num > 1024)
+            while (size > 1024)
             {
-                num /= 1024;
+                size /= 1024;
                 type++;
                 if (type >= 5)
                 {
                     break; //don't calculate beyond PB
                 }
             }
-            num = Math.Round(num, 2); //round to two decimal places
-            s = num.ToString(); //put the number in a string
+            size = Math.Round(size, 2); //round to two decimal places
+            s = size.ToString(); //put the sizeber in a string
             switch (type)
             {
                 case 0:
-                    if (num == 1) s += " byte";
+                    if (size == 1) s += " byte";
                     else s += " bytes";
                     break;
                 case 1:
@@ -229,9 +229,9 @@ namespace Chrononizer
             return s;
         }
 
-        private double GetDirectorySize(string root, double num, ref long flac, ref long mp3, ref long wma, ref long m4a, ref long ogg, ref long wav, ref long xm, ref long mod, ref long nsf)
+        private double GetDirectorySize(string root, double size, ref long flac, ref long mp3, ref long wma, ref long m4a, ref long ogg, ref long wav, ref long xm, ref long mod, ref long nsf)
         {
-            if (!Directory.Exists(root)) return num; //path is invalid
+            if (!Directory.Exists(root)) return size; //path is invalid
             string[] files = Directory.GetFiles(root, "*.*"); //get array of all file names
             string[] folders = Directory.GetDirectories(root); //get array of all folder names for this directory
 
@@ -239,7 +239,7 @@ namespace Chrononizer
             {
                 FileInfo info = new FileInfo(name); //read in the file
                 String ext = Path.GetExtension(name); //get the file's extension
-                num += info.Length; //get the length
+                size += info.Length; //get the length
                 //increment count based upon file type and extension type
                 if (ext == ".flac")
                 {
@@ -279,17 +279,17 @@ namespace Chrononizer
                 if (Path.GetFullPath(name) == DownscaledLibrary.Substring(0, DownscaledLibrary.Length - 1)) continue; //don't scan through the downscaled files
                 //hide all .mediaartlocal folders
                 else if (HideMediaArtLocal && Path.GetFileName(name) == ".mediaartlocal") File.SetAttributes(Path.GetFullPath(name), FileAttributes.Hidden | FileAttributes.System);
-                num = GetDirectorySize(name, num, ref flac, ref mp3, ref wma, ref m4a, ref ogg, ref wav, ref xm, ref mod, ref nsf); //recurse through the folders
+                size = GetDirectorySize(name, size, ref flac, ref mp3, ref wma, ref m4a, ref ogg, ref wav, ref xm, ref mod, ref nsf); //recurse through the folders
             }
-            return num;
+            return size;
         }
 
-        private double GetDownscaledSize(string root, double num, ref long flac)
+        private double GetDownscaledSize(string root, double size, ref long flac)
         {
             if (!Directory.Exists(root))
             {
                 if (AutoHandle && Directory.Exists(MusicLibrary)) Directory.CreateDirectory(root); //create the directory if it doesn't exist
-                return num;
+                return size;
             }
             string[] files = Directory.GetFiles(root, "*.*"); //get array of all file names
             string[] folders = Directory.GetDirectories(root); //get array of all folder names for this directory
@@ -306,7 +306,7 @@ namespace Chrononizer
                     scanned = checkedFiles.TryGetValue(name, out valid);
                     if (scanned && valid)
                     {
-                        num += info.Length; //add to the size
+                        size += info.Length; //add to the size
                         flac++;
                     }
                     else if (scanned && !valid)
@@ -316,7 +316,7 @@ namespace Chrononizer
                         else
                         {
                             if (ShowFiles) this.Invoke (new MethodInvoker(() => lbNotDownscaled.Items.Add(name))); //show the file in the list
-                            num += info.Length; //add to the size
+                            size += info.Length; //add to the size
                             flac++;
                         }
                     }
@@ -329,7 +329,7 @@ namespace Chrononizer
                         checkedFiles.TryGetValue(defaultFile, out valid);
                         if (scanned && !valid)
                         {
-                            num += info.Length; //add to the size
+                            size += info.Length; //add to the size
                             flac++;
                         }
                         else if (scanned && valid)
@@ -345,7 +345,7 @@ namespace Chrononizer
                                     File.Delete(name); //flac's upscaled file does not exist and is unnecessary
                                 else
                                 {
-                                    num += info.Length; //add to the size
+                                    size += info.Length; //add to the size
                                     flac++;
                                 }
                             }
@@ -356,7 +356,7 @@ namespace Chrononizer
                                 else
                                 {
                                     if (ShowFiles) this.Invoke (new MethodInvoker(() => lbNotDownscaled.Items.Add(name))); //show the file in the list
-                                    num += info.Length; //add to the size
+                                    size += info.Length; //add to the size
                                     flac++;
                                 }
                             }
@@ -365,7 +365,7 @@ namespace Chrononizer
                                 flacTag = new FlacTagger(defaultFile);
                                 if (flacTag.BitsPerSample > 16 || flacTag.SampleRate > 48000)
                                 {
-                                    num += info.Length; //add to the size
+                                    size += info.Length; //add to the size
                                     flac++; //flac is ok to use
                                 }
                                 else
@@ -374,7 +374,7 @@ namespace Chrononizer
                                         File.Delete(name); //flac did not need downscaling and is unnecessary
                                     else
                                     {
-                                        num += info.Length; //add to the size
+                                        size += info.Length; //add to the size
                                         flac++;
                                     }
                                 }
@@ -387,15 +387,15 @@ namespace Chrononizer
             }
             foreach (string name in folders)
             {
-                num = GetDownscaledSize(name, num, ref flac); //recurse through the folders
+                size = GetDownscaledSize(name, size, ref flac); //recurse through the folders
             }
 
             if (RemoveEmpty && !Directory.EnumerateFileSystemEntries(root).Any() && Path.GetFullPath(root) != DownscaledLibrary)
             {
                 Directory.Delete(root); //delete empty folders
-                return num;
+                return size;
             }
-            return num;
+            return size;
         }
 
         private void RemoveEmptyDirectories(string root)
@@ -792,7 +792,7 @@ namespace Chrononizer
 
         public double SyncPMP(string sourcePath, string destinationPath, ref Queue<UpdateLocation> UpdateFiles)
         {
-            double num = 0; //size of all files in this directory that will need to be copied
+            double size = 0; //size of all files in this directory that will need to be copied
             bool dirExisted = DirExists(destinationPath);
 
             //get the source files
@@ -826,7 +826,7 @@ namespace Chrononizer
                         update.DestinationFile = Path.Combine(destinationPath, sourceInfo.Name);
                         UpdateFiles.Enqueue(update);
                         FileInfo info = new FileInfo(correctFile);
-                        num += info.Length; //get the file's size
+                        size += info.Length; //get the file's size
                     }
                 }
                 else
@@ -837,7 +837,7 @@ namespace Chrononizer
                     update.DestinationFile = Path.Combine(destinationPath, sourceInfo.Name);
                     UpdateFiles.Enqueue(update);
                     FileInfo info = new FileInfo(correctFile);
-                    num += info.Length; //get the file's size
+                    size += info.Length; //get the file's size
                 }
             }
 
@@ -855,15 +855,15 @@ namespace Chrononizer
 
                 DirectoryInfo dirInfo = new DirectoryInfo(dir);
                 //recursive do the directories
-                num += SyncPMP(dir, Path.Combine(destinationPath, dirInfo.Name), ref UpdateFiles);
+                size += SyncPMP(dir, Path.Combine(destinationPath, dirInfo.Name), ref UpdateFiles);
             }
 
-            return num;
+            return size;
         }
 
         public double Sync(string sourcePath, string destinationPath, ref Queue<UpdateLocation> UpdateFiles)
         {
-            double num = 0; //size of all files in this directory that will need to be copied
+            double size = 0; //size of all files in this directory that will need to be copied
             bool dirExisted = DirExists(destinationPath);
 
             //get the source files
@@ -883,7 +883,7 @@ namespace Chrononizer
                         update.DestinationFile = Path.Combine(destinationPath, sourceInfo.Name);
                         UpdateFiles.Enqueue(update);
                         FileInfo info = new FileInfo(sourceFile);
-                        num += info.Length; //get the file's size
+                        size += info.Length; //get the file's size
                     }
                 }
                 else
@@ -894,7 +894,7 @@ namespace Chrononizer
                     update.DestinationFile = Path.Combine(destinationPath, sourceInfo.Name);
                     UpdateFiles.Enqueue(update);
                     FileInfo info = new FileInfo(sourceFile);
-                    num += info.Length; //get the file's size
+                    size += info.Length; //get the file's size
                 }
             }
 
@@ -909,9 +909,9 @@ namespace Chrononizer
                     continue;
                 DirectoryInfo dirInfo = new DirectoryInfo(dir);
                 //recursive do the directories
-                num += Sync(dir, Path.Combine(destinationPath, dirInfo.Name), ref UpdateFiles);
+                size += Sync(dir, Path.Combine(destinationPath, dirInfo.Name), ref UpdateFiles);
             }
-            return num;
+            return size;
         }
 
         private bool DirExists(string path)
@@ -1364,29 +1364,29 @@ namespace Chrononizer
 
             long flac, mp3, wma, m4a, ogg, wav, xm, mod, nsf, audioTotal, chiptunesTotal, total, dFlac;
             flac = mp3 = wma = m4a = ogg = wav = xm = mod = nsf = audioTotal = chiptunesTotal = total = dFlac = 0;
-            double dSize, allSize, s1;
-            dSize = allSize = s1 = 0;
+            double dSize, allSize, lSize;
+            dSize = allSize = lSize = 0;
 
-            s1 = GetDirectorySize(MusicLibrary, 0, ref flac, ref mp3, ref wma, ref m4a, ref ogg, ref wav, ref xm, ref mod, ref nsf);
+            lSize = GetDirectorySize(MusicLibrary, 0, ref flac, ref mp3, ref wma, ref m4a, ref ogg, ref wav, ref xm, ref mod, ref nsf);
             dSize = GetDownscaledSize(DownscaledLibrary, dSize, ref dFlac); //recurse through the downscaled files
             if (AutoHandle && Directory.Exists(MusicLibrary) && Directory.Exists(DownscaledLibrary)) //set the file attributes if auto handling is on
                 File.SetAttributes(DownscaledLibrary, FileAttributes.Hidden | FileAttributes.System);
             audioTotal = flac + mp3 + wma + m4a + ogg + wav;
             chiptunesTotal = xm + mod + nsf;
             total = audioTotal + chiptunesTotal;
-            allSize = s1 + dSize;
+            allSize = lSize + dSize;
             this.Invoke(new MethodInvoker(() =>
             {
-                lblLibraryBytes.Text = "Library: " + BytesToSize(s1); //display the size
-                lblFLACFiles.Text = "FLAC: " + Plural(flac, "file"); //display the number of flac songs
-                lblMP3Files.Text = "MP3: " + Plural(mp3, "file"); //display the number of mp3 songs
-                lblWMAFiles.Text = "WMA: " + Plural(wma, "file"); //display the number of wma songs
-                lblM4AFiles.Text = "M4A: " + Plural(m4a, "file"); //display the number of m4a songs
-                lblOGGFiles.Text = "OGG: " + Plural(ogg, "file"); //display the number of ogg songs
-                lblWAVFiles.Text = "WAV: " + Plural(wav, "file"); //display the number of wav songs
-                lblXMFiles.Text = "XM: " + Plural(xm, "file"); //display the number of xm songs
-                lblMODFiles.Text = "MOD: " + Plural(mod, "file"); //display the number of mod songs
-                lblNSFFiles.Text = "NSF: " + Plural(nsf, "file"); //display the number of nsf songs
+                lblLibraryBytes.Text = "Library: " + BytesToSize(lSize); //display the size
+                lblFLACFiles.Text = "FLAC: " + Plural(flac, "file"); //display the sizeber of flac songs
+                lblMP3Files.Text = "MP3: " + Plural(mp3, "file"); //display the sizeber of mp3 songs
+                lblWMAFiles.Text = "WMA: " + Plural(wma, "file"); //display the sizeber of wma songs
+                lblM4AFiles.Text = "M4A: " + Plural(m4a, "file"); //display the sizeber of m4a songs
+                lblOGGFiles.Text = "OGG: " + Plural(ogg, "file"); //display the sizeber of ogg songs
+                lblWAVFiles.Text = "WAV: " + Plural(wav, "file"); //display the sizeber of wav songs
+                lblXMFiles.Text = "XM: " + Plural(xm, "file"); //display the sizeber of xm songs
+                lblMODFiles.Text = "MOD: " + Plural(mod, "file"); //display the sizeber of mod songs
+                lblNSFFiles.Text = "NSF: " + Plural(nsf, "file"); //display the sizeber of nsf songs
                 lblLibraryFiles.Text = "Library: " + Plural(audioTotal, "song");
                 lblChiptunesFiles.Text = "Chiptunes: " + Plural(chiptunesTotal, "song");
                 lblTotalFiles.Text = "Total (without downscaled): " + Plural(total, "song");
