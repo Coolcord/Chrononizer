@@ -553,13 +553,17 @@ namespace Chrononizer
         //
         //===========================================================================
 
+        //
+        // LaptopSyncBW_DoWork(object sender, DoWorkEventArgs e)
+        // Background worker for synchronizing with only the laptop
+        //
         private void LaptopSyncBW_DoWork(object sender, DoWorkEventArgs e)
         {
-            if (PrepareSyncLaptop())
+            if (FindLaptop())
             {
                 ShowSyncStatus(true, false, true);
                 this.Invoke(new MethodInvoker(() => LTlbl1.Text = "Scanning and preparing Laptop... this may take some time..."));
-                SetupSyncLaptop();
+                PerformSyncLaptop();
                 if (AutoExit)
                 {
                     System.Media.SoundPlayer sound = new System.Media.SoundPlayer(Chrononizer.Properties.Resources.AaawYeah);
@@ -583,13 +587,17 @@ namespace Chrononizer
             }));
         }
 
+        //
+        // LaptopSyncBW_DoWork(object sender, DoWorkEventArgs e)
+        // Background worker for synchronizing with the laptop while the PMP is being synchronized as well.
+        //
         private void LaptopSyncTBW_DoWork(object sender, DoWorkEventArgs e)
         {
-            LaptopSyncSuccess = PrepareSyncLaptop();
+            LaptopSyncSuccess = FindLaptop();
             if (LaptopSyncSuccess)
             {
                 this.Invoke(new MethodInvoker(() => LTlbl1.Text = "Scanning and preparing Laptop... this may take some time..."));
-                SetupSyncLaptop();
+                PerformSyncLaptop();
             }
             this.Invoke(new MethodInvoker(() =>
             {
@@ -630,13 +638,17 @@ namespace Chrononizer
             }));
         }
 
+        //
+        // PMPSyncBW_DoWork(object sender, DoWorkEventArgs e)
+        // Background worker for synchronizing with only the PMP
+        //
         private void PMPSyncBW_DoWork(object sender, DoWorkEventArgs e)
         {
-            if (PrepareSyncPMP())
+            if (FindPMP())
             {
                 ShowSyncStatus(true, true, false);
                 this.Invoke(new MethodInvoker(() => lbl1.Text = "Scanning and preparing PMP... this may take some time..."));
-                SetupSyncPMP();
+                PerformSyncPMP();
                 if (AutoExit)
                 {
                     System.Media.SoundPlayer sound = new System.Media.SoundPlayer(Chrononizer.Properties.Resources.AaawYeah);
@@ -660,13 +672,17 @@ namespace Chrononizer
             }));
         }
 
+        //
+        // PMPSyncTBW_DoWork(object sender, DoWorkEventArgs e)
+        // Background worker for synchronizing with the PMP while the laptop is being synchronized as well.
+        //
         private void PMPSyncTBW_DoWork(object sender, DoWorkEventArgs e)
         {
-            PMPSyncSuccess = PrepareSyncPMP();
+            PMPSyncSuccess = FindPMP();
             if (PMPSyncSuccess)
             {
                 this.Invoke(new MethodInvoker(() => lbl1.Text = "Scanning and preparing PMP... this may take some time..."));
-                SetupSyncPMP();
+                PerformSyncPMP();
             }
             this.Invoke(new MethodInvoker(() =>
             {
@@ -707,6 +723,10 @@ namespace Chrononizer
             }));
         }
 
+        //
+        // ScanBW_DoWork(object sender, DoWorkEventArgs e)
+        // Background worker for scanning the music library.
+        //
         private void ScanBW_DoWork(object sender, DoWorkEventArgs e)
         {
             this.Invoke(new MethodInvoker(() => PreferencesTab.Enabled = false)); //disallow changes to preferences
@@ -768,6 +788,10 @@ namespace Chrononizer
         //
         //===========================================================================
 
+        //
+        // DeleteOldDestinationDirectories(string[] sourceDirectories, string destinationPath)
+        // Removes unnecessary folders from a path
+        //
         private static void DeleteOldDestinationDirectories(string[] sourceDirectories, string destinationPath)
         {
             //get the destination files
@@ -786,6 +810,10 @@ namespace Chrononizer
             }
         }
 
+        //
+        // DeleteOldDestinationFiles(string[] sourceFiles, string destinationPath)
+        // Removes unnecessary files from a path
+        //
         private static void DeleteOldDestinationFiles(string[] sourceFiles, string destinationPath)
         {
             //get the destination files
@@ -804,7 +832,11 @@ namespace Chrononizer
             }
         }
 
-        public Boolean PrepareSyncLaptop()
+        //
+        // FindLaptop()
+        // Attempts to find the laptop
+        //
+        public Boolean FindLaptop()
         {
             if (Directory.Exists(LaptopLocation))
             {
@@ -836,7 +868,11 @@ namespace Chrononizer
             return false;
         }
 
-        public Boolean PrepareSyncPMP()
+        //
+        // FindPMP()
+        // Attempts to find the PMP
+        //
+        public Boolean FindPMP()
         {
             PMPDrive = null;
             Boolean PMPFound = false;
@@ -909,12 +945,16 @@ namespace Chrononizer
             return false;
         }
 
-        public void SetupSyncLaptop()
+        //
+        // PerformSyncLaptop()
+        // Synchronizes the laptop with the music library
+        //
+        public void PerformSyncLaptop()
         {
             double CopySize = 0;
             Queue<UpdateLocation> UpdateFiles = new Queue<UpdateLocation>();
 
-            CopySize = SyncLaptop(MusicLibrary, LaptopLocation, ref UpdateFiles);
+            CopySize = PrepareSyncLaptop(MusicLibrary, LaptopLocation, ref UpdateFiles);
 
             Queue<UpdateLocation> CopyFiles = new Queue<UpdateLocation>();
 
@@ -964,12 +1004,16 @@ namespace Chrononizer
             }));
         }
 
-        public void SetupSyncPMP()
+        //
+        // PerformSyncPMP()
+        // Synchronizes the PMP with the music library
+        //
+        public void PerformSyncPMP()
         {
             double CopySize = 0;
             Queue<UpdateLocation> UpdateFiles = new Queue<UpdateLocation>();
 
-            CopySize = SyncPMP(MusicLibrary, PMPLocation, ref UpdateFiles);
+            CopySize = PrepareSyncPMP(MusicLibrary, PMPLocation, ref UpdateFiles);
 
             Queue<UpdateLocation> CopyFiles = new Queue<UpdateLocation>();
 
@@ -1019,7 +1063,11 @@ namespace Chrononizer
             }));
         }
 
-        public double SyncLaptop(string sourcePath, string destinationPath, ref Queue<UpdateLocation> UpdateFiles)
+        //
+        // PrepareSyncLaptop(string sourcePath, string destinationPath, ref Queue<UpdateLocation> UpdateFiles)
+        // Scans the laptop, removes unnecessary files and folders, and determines what new files need to be copied.
+        //
+        public double PrepareSyncLaptop(string sourcePath, string destinationPath, ref Queue<UpdateLocation> UpdateFiles)
         {
             double size = 0; //size of all files in this directory that will need to be copied
             bool dirExisted = DirExisted(destinationPath);
@@ -1067,12 +1115,16 @@ namespace Chrononizer
                     continue;
                 DirectoryInfo dirInfo = new DirectoryInfo(dir);
                 //recursive do the directories
-                size += SyncLaptop(dir, Path.Combine(destinationPath, dirInfo.Name), ref UpdateFiles);
+                size += PrepareSyncLaptop(dir, Path.Combine(destinationPath, dirInfo.Name), ref UpdateFiles);
             }
             return size;
         }
 
-        public double SyncPMP(string sourcePath, string destinationPath, ref Queue<UpdateLocation> UpdateFiles)
+        //
+        // PrepareSyncPMP(string sourcePath, string destinationPath, ref Queue<UpdateLocation> UpdateFiles)
+        // Scans the PMP, removes unnecessary files and folders, and determines what new files need to be copied.
+        //
+        public double PrepareSyncPMP(string sourcePath, string destinationPath, ref Queue<UpdateLocation> UpdateFiles)
         {
             double size = 0; //size of all files in this directory that will need to be copied
             bool dirExisted = DirExisted(destinationPath);
@@ -1137,7 +1189,7 @@ namespace Chrononizer
 
                 DirectoryInfo dirInfo = new DirectoryInfo(dir);
                 //recursive do the directories
-                size += SyncPMP(dir, Path.Combine(destinationPath, dirInfo.Name), ref UpdateFiles);
+                size += PrepareSyncPMP(dir, Path.Combine(destinationPath, dirInfo.Name), ref UpdateFiles);
             }
 
             return size;
