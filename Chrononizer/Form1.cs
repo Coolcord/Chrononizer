@@ -19,32 +19,33 @@ namespace Chrononizer
 {
     public partial class Form1 : Form
     {
-        private string MusicLibrary = " ";
-        private string DownscaledLibrary = " ";
         private string ChiptunesLibrary = " ";
+        private string DownscaledLibrary = " ";
         private string LaptopHostname = " ";
-        private string LaptopUsername = " ";
-        private string PMPVolumeLabel = " ";
-        private string PMPLocation = " ";
         private string LaptopLocation = " ";
-        Boolean EnableChiptunes = true;
-        Boolean AutoHandle = true;
-        Boolean RemoveImproper = true;
-        Boolean ShowFiles = false;
-        Boolean RemoveUnsupported = true;
-        Boolean RemoveUnnecessary = true;
-        Boolean RemoveEmpty = true;
-        Boolean PreventSynchingUpscaled = true;
+        private string LaptopUsername = " ";
+        private string MusicLibrary = " ";
+        private string PMPLocation = " ";
+        private string PMPVolumeLabel = " ";
+        
         Boolean AskSync = true;
-        Boolean CheckPMPSystem = true;
-        Boolean OverridePMPPath = false;
-        Boolean OverrideLaptopPath = false;
-        Boolean HideMediaArtLocal = true;
         Boolean AutoExit = false;
         Boolean AutoExitOne = false;
-        Boolean PMPSyncSuccess = true;
+        Boolean AutoHandle = true;
+        Boolean CheckPMPSystem = true;
+        Boolean EnableChiptunes = true;
+        Boolean HideMediaArtLocal = true;
         Boolean LaptopSyncSuccess = true;
-
+        Boolean OverrideLaptopPath = false;
+        Boolean OverridePMPPath = false;
+        Boolean PMPSyncSuccess = true;
+        Boolean PreventSynchingUpscaled = true;
+        Boolean RemoveEmpty = true;
+        Boolean RemoveImproper = true;
+        Boolean RemoveUnnecessary = true;
+        Boolean RemoveUnsupported = true;
+        Boolean ShowFiles = false;
+        
         Dictionary<string, Boolean> checkedFiles = new Dictionary<string, Boolean>();
 
         ProgressBar pb1, LTpb;
