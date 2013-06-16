@@ -678,7 +678,7 @@
             this.cbChiptunesLibrary.TabIndex = 15;
             this.cbChiptunesLibrary.Text = "Use chiptunes library";
             this.cbChiptunesLibrary.UseVisualStyleBackColor = true;
-            this.cbChiptunesLibrary.CheckedChanged += new System.EventHandler(this.checkBox7_CheckedChanged);
+            this.cbChiptunesLibrary.CheckedChanged += new System.EventHandler(this.cbChiptunesLibrary_CheckedChanged);
             // 
             // btnChiptunesLocation
             // 
@@ -689,7 +689,7 @@
             this.btnChiptunesLocation.TabIndex = 14;
             this.btnChiptunesLocation.Text = "...";
             this.btnChiptunesLocation.UseVisualStyleBackColor = true;
-            this.btnChiptunesLocation.Click += new System.EventHandler(this.button6_Click);
+            this.btnChiptunesLocation.Click += new System.EventHandler(this.btnChiptunesLocation_Click);
             // 
             // lblChiptunesLocation
             // 
@@ -722,7 +722,7 @@
             this.cbRemoveEmpty.TabIndex = 11;
             this.cbRemoveEmpty.Text = "Remove empty directories from downscaled library";
             this.cbRemoveEmpty.UseVisualStyleBackColor = true;
-            this.cbRemoveEmpty.CheckedChanged += new System.EventHandler(this.checkBox6_CheckedChanged);
+            this.cbRemoveEmpty.CheckedChanged += new System.EventHandler(this.cbRemoveEmpty_CheckedChanged);
             // 
             // cbRemoveUnnecessary
             // 
@@ -733,7 +733,7 @@
             this.cbRemoveUnnecessary.TabIndex = 10;
             this.cbRemoveUnnecessary.Text = "Remove unnecessary downscaled files from downscaled library";
             this.cbRemoveUnnecessary.UseVisualStyleBackColor = true;
-            this.cbRemoveUnnecessary.CheckedChanged += new System.EventHandler(this.checkBox5_CheckedChanged);
+            this.cbRemoveUnnecessary.CheckedChanged += new System.EventHandler(this.cbRemoveUnnecessary_CheckedChanged);
             // 
             // cbRemoveUnsupported
             // 
@@ -744,7 +744,7 @@
             this.cbRemoveUnsupported.TabIndex = 9;
             this.cbRemoveUnsupported.Text = "Remove non-audio or unsupported files from downscaled library";
             this.cbRemoveUnsupported.UseVisualStyleBackColor = true;
-            this.cbRemoveUnsupported.CheckedChanged += new System.EventHandler(this.checkBox4_CheckedChanged);
+            this.cbRemoveUnsupported.CheckedChanged += new System.EventHandler(this.cbRemoveUnsupported_CheckedChanged);
             // 
             // cbShowImproper
             // 
@@ -755,7 +755,7 @@
             this.cbShowImproper.TabIndex = 8;
             this.cbShowImproper.Text = "Show files in downscaled library that are improperly downscaled";
             this.cbShowImproper.UseVisualStyleBackColor = true;
-            this.cbShowImproper.CheckedChanged += new System.EventHandler(this.checkBox3_CheckedChanged);
+            this.cbShowImproper.CheckedChanged += new System.EventHandler(this.cbShowImproper_CheckedChanged);
             // 
             // cbAutoHandle
             // 
@@ -766,7 +766,7 @@
             this.cbAutoHandle.TabIndex = 7;
             this.cbAutoHandle.Text = "Automatically handle downscaled library";
             this.cbAutoHandle.UseVisualStyleBackColor = true;
-            this.cbAutoHandle.CheckedChanged += new System.EventHandler(this.checkBox2_CheckedChanged);
+            this.cbAutoHandle.CheckedChanged += new System.EventHandler(this.cbAutoHandle_CheckedChanged);
             // 
             // cbRemoveImproper
             // 
@@ -777,7 +777,7 @@
             this.cbRemoveImproper.TabIndex = 6;
             this.cbRemoveImproper.Text = "Remove improperly downscaled files from downscaled library";
             this.cbRemoveImproper.UseVisualStyleBackColor = true;
-            this.cbRemoveImproper.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
+            this.cbRemoveImproper.CheckedChanged += new System.EventHandler(this.cbRemoveImproper_CheckedChanged);
             // 
             // btnDownscaledLocation
             // 
@@ -787,7 +787,7 @@
             this.btnDownscaledLocation.TabIndex = 5;
             this.btnDownscaledLocation.Text = "...";
             this.btnDownscaledLocation.UseVisualStyleBackColor = true;
-            this.btnDownscaledLocation.Click += new System.EventHandler(this.button5_Click);
+            this.btnDownscaledLocation.Click += new System.EventHandler(this.btnDownscaledLocation_Click);
             // 
             // tbDownscaledLocation
             // 
@@ -817,7 +817,7 @@
             this.btnLibraryLocation.TabIndex = 2;
             this.btnLibraryLocation.Text = "...";
             this.btnLibraryLocation.UseVisualStyleBackColor = true;
-            this.btnLibraryLocation.Click += new System.EventHandler(this.button4_Click);
+            this.btnLibraryLocation.Click += new System.EventHandler(this.btnLibraryLocation_Click);
             // 
             // lblLibraryLocation
             // 
@@ -836,7 +836,7 @@
             this.tbLibraryLocation.ReadOnly = true;
             this.tbLibraryLocation.Size = new System.Drawing.Size(284, 22);
             this.tbLibraryLocation.TabIndex = 0;
-            this.tbLibraryLocation.Click += new System.EventHandler(this.textBox1_Click);
+            this.tbLibraryLocation.Click += new System.EventHandler(this.tbLibraryLocation_Click);
             this.tbLibraryLocation.TextChanged += new System.EventHandler(this.tbLibraryLocation_TextChanged);
             // 
             // panel1

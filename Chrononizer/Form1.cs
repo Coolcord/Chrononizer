@@ -625,8 +625,8 @@ namespace Chrononizer
                     result = MessageBox.Show("PMP found at the following location:\n" + PMPLocation + "\nWould you like to sync to this device?", "Device Found!", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (result == DialogResult.Yes)
                 {
-                    System.Media.SoundPlayer aSoundPlayer = new System.Media.SoundPlayer(Chrononizer.Properties.Resources.ChronoBoost);
-                    aSoundPlayer.Play();  //Plays the sound in a new thread
+                    System.Media.SoundPlayer sound = new System.Media.SoundPlayer(Chrononizer.Properties.Resources.ChronoBoost);
+                    sound.Play();  //Plays the sound in a new thread
 
                     return true;
                 }
@@ -713,8 +713,8 @@ namespace Chrononizer
                     result = MessageBox.Show("Laptop found at the following location:\n" + LaptopLocation + "\nWould you like to sync to this device?", "Device Found!", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (result == DialogResult.Yes)
                 {
-                    System.Media.SoundPlayer aSoundPlayer = new System.Media.SoundPlayer(Chrononizer.Properties.Resources.ChronoBoost);
-                    aSoundPlayer.Play();  //Plays the sound in a new thread
+                    System.Media.SoundPlayer sound = new System.Media.SoundPlayer(Chrononizer.Properties.Resources.ChronoBoost);
+                    sound.Play();  //Plays the sound in a new thread
 
                     return true;
                 }
@@ -795,8 +795,8 @@ namespace Chrononizer
             bool dirExisted = DirExists(destinationPath);
 
             //get the source files
-            string[] srcFiles = Directory.GetFiles(sourcePath);
-            foreach (string sourceFile in srcFiles)
+            string[] sourceFiles = Directory.GetFiles(sourcePath);
+            foreach (string sourceFile in sourceFiles)
             {
                 string correctFile = sourceFile;
 
@@ -813,11 +813,11 @@ namespace Chrononizer
                 }
 
                 FileInfo sourceInfo = new FileInfo(correctFile);
-                string destFile = Path.Combine(destinationPath, sourceInfo.Name);
-                if (!dirExisted && File.Exists(destFile))
+                string destinationFile = Path.Combine(destinationPath, sourceInfo.Name);
+                if (!dirExisted && File.Exists(destinationFile))
                 {
-                    FileInfo destInfo = new FileInfo(destFile);
-                    if (sourceInfo.LastWriteTime > destInfo.LastWriteTime)
+                    FileInfo destinationInfo = new FileInfo(destinationFile);
+                    if (sourceInfo.LastWriteTime > destinationInfo.LastWriteTime)
                     {
                         //file is newer, so add it to the queue of files that need to be copied
                         UpdateLocation update = new UpdateLocation();
@@ -840,7 +840,7 @@ namespace Chrononizer
                 }
             }
 
-            DeleteOldDestinationFiles(srcFiles, destinationPath);
+            DeleteOldDestinationFiles(sourceFiles, destinationPath);
 
             //now process the directories if exist
             string[] dirs = Directory.GetDirectories(sourcePath);
@@ -866,15 +866,15 @@ namespace Chrononizer
             bool dirExisted = DirExists(destinationPath);
 
             //get the source files
-            string[] srcFiles = Directory.GetFiles(sourcePath);
-            foreach (string sourceFile in srcFiles)
+            string[] sourceFiles = Directory.GetFiles(sourcePath);
+            foreach (string sourceFile in sourceFiles)
             {
                 FileInfo sourceInfo = new FileInfo(sourceFile);
-                string destFile = Path.Combine(destinationPath, sourceInfo.Name);
-                if (!dirExisted && File.Exists(destFile))
+                string destinationFile = Path.Combine(destinationPath, sourceInfo.Name);
+                if (!dirExisted && File.Exists(destinationFile))
                 {
-                    FileInfo destInfo = new FileInfo(destFile);
-                    if (sourceInfo.LastWriteTime > destInfo.LastWriteTime)
+                    FileInfo destinationInfo = new FileInfo(destinationFile);
+                    if (sourceInfo.LastWriteTime > destinationInfo.LastWriteTime)
                     {
                         //file is newer, so add it to the queue of files that need to be copied
                         UpdateLocation update = new UpdateLocation();
@@ -897,7 +897,7 @@ namespace Chrononizer
                 }
             }
 
-            DeleteOldDestinationFiles(srcFiles, destinationPath);
+            DeleteOldDestinationFiles(sourceFiles, destinationPath);
 
             //now process the directories if exist
             string[] dirs = Directory.GetDirectories(sourcePath);
@@ -934,17 +934,17 @@ namespace Chrononizer
         private static void DeleteOldDestinationFiles(string[] sourceFiles, string destinationPath)
         {
             //get the destination files
-            string[] dstFiles = Directory.GetFiles(destinationPath);
+            string[] destinationFiles = Directory.GetFiles(destinationPath);
 
-            foreach (string dstFile in dstFiles)
+            foreach (string destinationFile in destinationFiles)
             {
-                FileInfo f = new FileInfo(dstFile);
+                FileInfo f = new FileInfo(destinationFile);
                 string[] found = Array.FindAll(sourceFiles, str => GetFileName(str).Equals(f.Name));
 
                 if (found.Length == 0)
                 {
                     //delete file if not found in destination
-                    File.Delete(dstFile);
+                    File.Delete(destinationFile);
                 }
             }
         }
@@ -952,17 +952,17 @@ namespace Chrononizer
         private static void DeleteOldDestinationDirectories(string[] sourceDirectories, string destinationPath)
         {
             //get the destination files
-            string[] dstDirectories = Directory.GetDirectories(destinationPath);
+            string[] destinationDirectories = Directory.GetDirectories(destinationPath);
 
-            foreach (string dstDirectory in dstDirectories)
+            foreach (string destinationDirectory in destinationDirectories)
             {
-                FileInfo f = new FileInfo(dstDirectory);
+                FileInfo f = new FileInfo(destinationDirectory);
                 string[] found = Array.FindAll(sourceDirectories, str => GetDirectoryName(str).Equals(f.Name));
 
                 if (found.Length == 0)
                 {
                     //delete file if not found in destination
-                    Directory.Delete(dstDirectory, true);
+                    Directory.Delete(destinationDirectory, true);
                 }
             }
         }
@@ -995,22 +995,22 @@ namespace Chrononizer
             Process.Start("explorer.exe", @"/select, " + file); //open windows explorer and selected the file
         }
 
-        private void button4_Click(object sender, EventArgs e)
+        private void btnLibraryLocation_Click(object sender, EventArgs e)
         {
             OpenFolderDialog(1);
         }
 
-        private void button5_Click(object sender, EventArgs e)
+        private void btnDownscaledLocation_Click(object sender, EventArgs e)
         {
             OpenFolderDialog(2);
         }
 
-        private void button6_Click(object sender, EventArgs e)
+        private void btnChiptunesLocation_Click(object sender, EventArgs e)
         {
             OpenFolderDialog(3);
         }
 
-        private void textBox1_Click(object sender, EventArgs e)
+        private void tbLibraryLocation_Click(object sender, EventArgs e)
         {
             OpenFolderDialog(1);
         }
@@ -1061,7 +1061,7 @@ namespace Chrononizer
             else if (TextBox == 5) tbLaptopLocation.Text = open.SelectedPath + "\\";
         }
 
-        private void checkBox2_CheckedChanged(object sender, EventArgs e)
+        private void cbAutoHandle_CheckedChanged(object sender, EventArgs e)
         {
             if (cbAutoHandle.Checked)
             {
@@ -1116,7 +1116,7 @@ namespace Chrononizer
             Properties.Settings.Default.Save();
         }
 
-        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        private void cbRemoveImproper_CheckedChanged(object sender, EventArgs e)
         {
             if (cbRemoveImproper.Checked)
             {
@@ -1132,35 +1132,35 @@ namespace Chrononizer
             Properties.Settings.Default.Save();
         }
 
-        private void checkBox3_CheckedChanged(object sender, EventArgs e)
+        private void cbShowImproper_CheckedChanged(object sender, EventArgs e)
         {
             ShowFiles = cbShowImproper.Checked;
             Properties.Settings.Default.ShowFiles = cbShowImproper.Checked;
             Properties.Settings.Default.Save();
         }
 
-        private void checkBox4_CheckedChanged(object sender, EventArgs e)
+        private void cbRemoveUnsupported_CheckedChanged(object sender, EventArgs e)
         {
             RemoveUnsupported = cbRemoveUnsupported.Checked;
             Properties.Settings.Default.RemoveUnsupported = cbRemoveUnsupported.Checked;
             Properties.Settings.Default.Save();
         }
 
-        private void checkBox5_CheckedChanged(object sender, EventArgs e)
+        private void cbRemoveUnnecessary_CheckedChanged(object sender, EventArgs e)
         {
             RemoveUnnecessary = cbRemoveUnnecessary.Checked;
             Properties.Settings.Default.RemoveUnnecessary = cbRemoveUnnecessary.Checked;
             Properties.Settings.Default.Save();
         }
 
-        private void checkBox6_CheckedChanged(object sender, EventArgs e)
+        private void cbRemoveEmpty_CheckedChanged(object sender, EventArgs e)
         {
             RemoveEmpty = cbRemoveEmpty.Checked;
             Properties.Settings.Default.RemoveEmpty = cbRemoveEmpty.Checked;
             Properties.Settings.Default.Save();
         }
 
-        private void checkBox7_CheckedChanged(object sender, EventArgs e)
+        private void cbChiptunesLibrary_CheckedChanged(object sender, EventArgs e)
         {
             if (cbChiptunesLibrary.Checked)
             {
@@ -1331,15 +1331,15 @@ namespace Chrononizer
                 SetupSyncPMP();
                 if (AutoExit)
                 {
-                    System.Media.SoundPlayer aSoundPlayer = new System.Media.SoundPlayer(Chrononizer.Properties.Resources.AaawYeah);
-                    aSoundPlayer.PlaySync();  //Plays the sound in sync with the current thread so that it isn't cut off when the program exits
+                    System.Media.SoundPlayer sound = new System.Media.SoundPlayer(Chrononizer.Properties.Resources.AaawYeah);
+                    sound.PlaySync();  //Plays the sound in sync with the current thread so that it isn't cut off when the program exits
 
                     System.Environment.Exit(0); //exit the program if auto exit is enabled
                 }
                 else
                 {
-                    System.Media.SoundPlayer aSoundPlayer = new System.Media.SoundPlayer(Chrononizer.Properties.Resources.AaawYeah);
-                    aSoundPlayer.Play();  //Plays the sound in a new thread
+                    System.Media.SoundPlayer sound = new System.Media.SoundPlayer(Chrononizer.Properties.Resources.AaawYeah);
+                    sound.Play();  //Plays the sound in a new thread
 
                     MessageBox.Show("Synchronization Complete!", "Chrononizer", MessageBoxButtons.OK, MessageBoxIcon.Information); //show the success window if at least one operation completed
                 }
@@ -1356,8 +1356,8 @@ namespace Chrononizer
         {
             this.Invoke(new MethodInvoker(() => PreferencesTab.Enabled = false)); //disallow changes to preferences
 
-            System.Media.SoundPlayer aSoundPlayer = new System.Media.SoundPlayer(Chrononizer.Properties.Resources.ScannerSweep);
-            aSoundPlayer.Play();  //Plays the sound in a new thread
+            System.Media.SoundPlayer sound = new System.Media.SoundPlayer(Chrononizer.Properties.Resources.ScannerSweep);
+            sound.Play();  //Plays the sound in a new thread
 
             this.Invoke (new MethodInvoker(() => lbNotDownscaled.Items.Clear())); //clear out previous items
 
@@ -1412,15 +1412,15 @@ namespace Chrononizer
                 SetupSyncLaptop();
                 if (AutoExit)
                 {
-                    System.Media.SoundPlayer aSoundPlayer = new System.Media.SoundPlayer(Chrononizer.Properties.Resources.AaawYeah);
-                    aSoundPlayer.PlaySync();  //Plays the sound in sync with the current thread so that it isn't cut off when the program exits
+                    System.Media.SoundPlayer sound = new System.Media.SoundPlayer(Chrononizer.Properties.Resources.AaawYeah);
+                    sound.PlaySync();  //Plays the sound in sync with the current thread so that it isn't cut off when the program exits
 
                     System.Environment.Exit(0); //exit the program if auto exit is enabled
                 }
                 else
                 {
-                    System.Media.SoundPlayer aSoundPlayer = new System.Media.SoundPlayer(Chrononizer.Properties.Resources.AaawYeah);
-                    aSoundPlayer.Play();  //Plays the sound in a new thread
+                    System.Media.SoundPlayer sound = new System.Media.SoundPlayer(Chrononizer.Properties.Resources.AaawYeah);
+                    sound.Play();  //Plays the sound in a new thread
 
                     MessageBox.Show("Synchronization Complete!", "Chrononizer", MessageBoxButtons.OK, MessageBoxIcon.Information); //show the success window if at least one operation completed
                 }
@@ -1447,29 +1447,29 @@ namespace Chrononizer
                 {
                     if (AutoExit && PMPSyncSuccess && LaptopSyncSuccess)
                     {
-                        System.Media.SoundPlayer aSoundPlayer = new System.Media.SoundPlayer(Chrononizer.Properties.Resources.AaawYeah);
-                        aSoundPlayer.PlaySync();  //Plays the sound in sync with the current thread so that it isn't cut off when the program exits
+                        System.Media.SoundPlayer sound = new System.Media.SoundPlayer(Chrononizer.Properties.Resources.AaawYeah);
+                        sound.PlaySync();  //Plays the sound in sync with the current thread so that it isn't cut off when the program exits
 
                         System.Environment.Exit(0); //exit the program if auto exit is enabled
                     }
                     if (AutoExitOne && (PMPSyncSuccess || LaptopSyncSuccess)) //auto exit if at least one succeeds
                     {
-                        System.Media.SoundPlayer aSoundPlayer = new System.Media.SoundPlayer(Chrononizer.Properties.Resources.AaawYeah);
-                        aSoundPlayer.PlaySync();  //Plays the sound in sync with the current thread so that it isn't cut off when the program exits
+                        System.Media.SoundPlayer sound = new System.Media.SoundPlayer(Chrononizer.Properties.Resources.AaawYeah);
+                        sound.PlaySync();  //Plays the sound in sync with the current thread so that it isn't cut off when the program exits
 
                         System.Environment.Exit(0); //exit the program if auto exit is enabled
                     }
                     if (PMPSyncSuccess || LaptopSyncSuccess)
                     {
-                        System.Media.SoundPlayer aSoundPlayer = new System.Media.SoundPlayer(Chrononizer.Properties.Resources.AaawYeah);
-                        aSoundPlayer.Play();  //Plays the sound in a new thread
+                        System.Media.SoundPlayer sound = new System.Media.SoundPlayer(Chrononizer.Properties.Resources.AaawYeah);
+                        sound.Play();  //Plays the sound in a new thread
 
                         MessageBox.Show("Synchronization Complete!", "Chrononizer", MessageBoxButtons.OK, MessageBoxIcon.Information); //show the success window if at least one operation completed
                     }
                     else
                     {
-                        System.Media.SoundPlayer aSoundPlayer = new System.Media.SoundPlayer(Chrononizer.Properties.Resources.OhNo);
-                        aSoundPlayer.Play();  //Plays the sound in a new thread
+                        System.Media.SoundPlayer sound = new System.Media.SoundPlayer(Chrononizer.Properties.Resources.OhNo);
+                        sound.Play();  //Plays the sound in a new thread
 
                         MessageBox.Show("Synchronization Failed!", "Chrononizer", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
@@ -1494,29 +1494,29 @@ namespace Chrononizer
                 {
                     if (AutoExit && PMPSyncSuccess && LaptopSyncSuccess)
                     {
-                        System.Media.SoundPlayer aSoundPlayer = new System.Media.SoundPlayer(Chrononizer.Properties.Resources.AaawYeah);
-                        aSoundPlayer.PlaySync();  //Plays the sound in sync with the current thread so that it isn't cut off when the program exits
+                        System.Media.SoundPlayer sound = new System.Media.SoundPlayer(Chrononizer.Properties.Resources.AaawYeah);
+                        sound.PlaySync();  //Plays the sound in sync with the current thread so that it isn't cut off when the program exits
 
                         System.Environment.Exit(0); //exit the program if auto exit is enabled
                     }
                     if (AutoExitOne && (PMPSyncSuccess || LaptopSyncSuccess)) //auto exit if at least one succeeds
                     {
-                        System.Media.SoundPlayer aSoundPlayer = new System.Media.SoundPlayer(Chrononizer.Properties.Resources.AaawYeah);
-                        aSoundPlayer.PlaySync();  //Plays the sound in sync with the current thread so that it isn't cut off when the program exits
+                        System.Media.SoundPlayer sound = new System.Media.SoundPlayer(Chrononizer.Properties.Resources.AaawYeah);
+                        sound.PlaySync();  //Plays the sound in sync with the current thread so that it isn't cut off when the program exits
 
                         System.Environment.Exit(0); //exit the program if auto exit is enabled
                     }
                     if (PMPSyncSuccess || LaptopSyncSuccess)
                     {
-                        System.Media.SoundPlayer aSoundPlayer = new System.Media.SoundPlayer(Chrononizer.Properties.Resources.AaawYeah);
-                        aSoundPlayer.Play();  //Plays the sound in a new thread
+                        System.Media.SoundPlayer sound = new System.Media.SoundPlayer(Chrononizer.Properties.Resources.AaawYeah);
+                        sound.Play();  //Plays the sound in a new thread
 
                         MessageBox.Show("Synchronization Complete!", "Chrononizer", MessageBoxButtons.OK, MessageBoxIcon.Information); //show the success window if at least one operation completed
                     }
                     else
                     {
-                        System.Media.SoundPlayer aSoundPlayer = new System.Media.SoundPlayer(Chrononizer.Properties.Resources.OhNo);
-                        aSoundPlayer.Play();  //Plays the sound in a new thread
+                        System.Media.SoundPlayer sound = new System.Media.SoundPlayer(Chrononizer.Properties.Resources.OhNo);
+                        sound.Play();  //Plays the sound in a new thread
 
                         MessageBox.Show("Synchronization Failed!", "Chrononizer", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
@@ -1539,24 +1539,24 @@ namespace Chrononizer
         {
             if (!Directory.Exists(MusicLibrary))
             {
-                System.Media.SoundPlayer aSoundPlayer = new System.Media.SoundPlayer(Chrononizer.Properties.Resources.OhNo);
-                aSoundPlayer.Play();  //Plays the sound in a new thread
+                System.Media.SoundPlayer sound = new System.Media.SoundPlayer(Chrononizer.Properties.Resources.OhNo);
+                sound.Play();  //Plays the sound in a new thread
 
                 MessageBox.Show("The music library could not be found at the following specified directory: " + MusicLibrary, "Chrononizer", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
             else if (!Directory.Exists(DownscaledLibrary))
             {
-                System.Media.SoundPlayer aSoundPlayer = new System.Media.SoundPlayer(Chrononizer.Properties.Resources.OhNo);
-                aSoundPlayer.Play();  //Plays the sound in a new thread
+                System.Media.SoundPlayer sound = new System.Media.SoundPlayer(Chrononizer.Properties.Resources.OhNo);
+                sound.Play();  //Plays the sound in a new thread
 
                 MessageBox.Show("The downscaled library could not be found at the following specified directory: " + DownscaledLibrary, "Chrononizer", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
             else if (!Directory.Exists(ChiptunesLibrary))
             {
-                System.Media.SoundPlayer aSoundPlayer = new System.Media.SoundPlayer(Chrononizer.Properties.Resources.OhNo);
-                aSoundPlayer.Play();  //Plays the sound in a new thread
+                System.Media.SoundPlayer sound = new System.Media.SoundPlayer(Chrononizer.Properties.Resources.OhNo);
+                sound.Play();  //Plays the sound in a new thread
 
                 MessageBox.Show("The chiptunes library could not be found at the following specified directory: " + ChiptunesLibrary, "Chrononizer", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
