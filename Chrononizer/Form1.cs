@@ -40,6 +40,7 @@ namespace Chrononizer
         Boolean OverridePMPPath = false;
         Boolean OverrideLaptopPath = false;
         Boolean HideMediaArtLocal = true;
+        Boolean AutoExit = false;
         Boolean PMPSyncSuccess = true;
         Boolean LaptopSyncSuccess = true;
 
@@ -93,6 +94,7 @@ namespace Chrononizer
                 cbOverridePMPPath.Checked = Properties.Settings.Default.OverridePMPPath;
                 cbOverrideLaptopPath.Checked = Properties.Settings.Default.OverrideLaptopPath;
                 cbHideMediaArtLocal.Checked = Properties.Settings.Default.HideMediaArtLocal;
+                cbAutoExit.Checked = Properties.Settings.Default.AutoExit;
             }
             else
             {
@@ -126,6 +128,7 @@ namespace Chrononizer
                 cbOverridePMPPath.Checked = Properties.Settings.Default.OverridePMPPath;
                 cbOverrideLaptopPath.Checked = Properties.Settings.Default.OverrideLaptopPath;
                 cbHideMediaArtLocal.Checked = Properties.Settings.Default.HideMediaArtLocal;
+                cbAutoExit.Checked = Properties.Settings.Default.AutoExit;
 
                 Properties.Settings.Default.Save();
 
@@ -152,6 +155,7 @@ namespace Chrononizer
             OverridePMPPath = cbOverrideLaptopPath.Checked;
             OverrideLaptopPath = cbOverrideLaptopPath.Checked;
             HideMediaArtLocal = cbHideMediaArtLocal.Checked;
+            AutoExit = cbAutoExit.Checked;
         }
 
         private void btnScan_Click(object sender, EventArgs e)
@@ -459,11 +463,11 @@ namespace Chrononizer
                         flow1.AutoSizeMode = AutoSizeMode.GrowAndShrink;
                         flow1.AutoSize = true;
                         lbl1 = new Label();
-                        lbl1.Text = "Synchronizing and Preparing PMP...";
+                        lbl1.Text = "Searching for PMP...";
                         lbl1.AutoSize = true;
                         flow1.Controls.Add(lbl1);
                         lbl2 = new Label();
-                        lbl2.Text = "0%";
+                        lbl2.Text = " ";
                         lbl2.AutoSize = true;
                         flow1.Controls.Add(lbl2);
 
@@ -497,11 +501,11 @@ namespace Chrononizer
                         LTflow.AutoSizeMode = AutoSizeMode.GrowAndShrink;
                         LTflow.AutoSize = true;
                         LTlbl1 = new Label();
-                        LTlbl1.Text = "Synchronizing and Preparing Laptop...";
+                        LTlbl1.Text = "Searching for Laptop...";
                         LTlbl1.AutoSize = true;
                         LTflow.Controls.Add(LTlbl1);
                         LTlbl2 = new Label();
-                        LTlbl2.Text = "0%";
+                        LTlbl2.Text = " ";
                         LTlbl2.AutoSize = true;
                         LTflow.Controls.Add(LTlbl2);
 
@@ -623,8 +627,18 @@ namespace Chrononizer
 
                     return true;
                 }
+                else //the user said no
+                {
+                    if (lbl1 != null)
+                        this.Invoke(new MethodInvoker(() => lbl1.Text = "Error: Synchronization with PMP canceled! "));
+                }
             }
-            else MessageBox.Show("PMP could not be found! Make sure that it is connected!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            else //could not find device
+            {
+                if (lbl1 != null)
+                    this.Invoke(new MethodInvoker(() => lbl1.Text = "Error: Synchronization with PMP failed! "));
+                MessageBox.Show("PMP could not be found! Make sure that it is connected!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
 
             return false;
         }
@@ -680,6 +694,7 @@ namespace Chrononizer
             {
                 pb1.Value = pb1.Maximum;
                 lbl2.Text = "100%";
+                lbl1.Text = "Synchronization with PMP complete! ";
             }));
         }
 
@@ -699,8 +714,18 @@ namespace Chrononizer
 
                     return true;
                 }
+                else //the user said no
+                {
+                    if (LTlbl1 != null)
+                        this.Invoke(new MethodInvoker(() => LTlbl1.Text = "Error: Synchronization with Laptop canceled! "));
+                }
             }
-            else MessageBox.Show("Laptop is not connected! Make sure that it is mounted properly!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            else //could not find device
+            {
+                if (LTlbl1 != null)
+                    this.Invoke(new MethodInvoker(() => LTlbl1.Text = "Error: Synchronization with Laptop failed! "));
+                MessageBox.Show("Laptop is not connected! Make sure that it is mounted properly!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
 
             return false;
         }
@@ -756,6 +781,7 @@ namespace Chrononizer
             {
                 LTpb.Value = LTpb.Maximum;
                 LTlbl2.Text = "100%";
+                LTlbl1.Text = "Synchronization with Laptop complete! ";
             }));
         }
 
@@ -1173,6 +1199,13 @@ namespace Chrononizer
             Properties.Settings.Default.Save();
         }
 
+        private void cbAutoExit_CheckedChanged(object sender, EventArgs e)
+        {
+            AutoExit = cbAutoExit.Checked;
+            Properties.Settings.Default.AutoExit = cbAutoExit.Checked;
+            Properties.Settings.Default.Save();
+        }
+
         private void cbOverridePMPPath_CheckedChanged(object sender, EventArgs e)
         {
             if (cbOverridePMPPath.Checked)
@@ -1272,7 +1305,12 @@ namespace Chrononizer
             if (PrepareSyncPMP())
             {
                 ShowSyncStatus(true, true, false);
+                this.Invoke(new MethodInvoker(() => lbl1.Text = "Scanning and preparing PMP... this may take some time..."));
                 SetupSyncPMP();
+                if (AutoExit)
+                    System.Environment.Exit(0); //exit the program if auto exit is enabled
+                else
+                    MessageBox.Show("Synchronization Complete!"); //show the success window if at least one operation completed
                 ShowSyncStatus(false, true, false);
             }
             this.Invoke(new MethodInvoker(() =>
@@ -1338,7 +1376,12 @@ namespace Chrononizer
             if (PrepareSyncLaptop())
             {
                 ShowSyncStatus(true, false, true);
+                this.Invoke(new MethodInvoker(() => LTlbl1.Text = "Scanning and preparing Laptop... this may take some time..."));
                 SetupSyncLaptop();
+                if (AutoExit)
+                    System.Environment.Exit(0); //exit the program if auto exit is enabled
+                else
+                    MessageBox.Show("Synchronization Complete!"); //show the success window if at least one operation completed
                 ShowSyncStatus(false, false, true);
             }
             this.Invoke (new MethodInvoker(() => 
@@ -1353,6 +1396,7 @@ namespace Chrononizer
             PMPSyncSuccess = PrepareSyncPMP();
             if (PMPSyncSuccess)
             {
+                this.Invoke(new MethodInvoker(() => lbl1.Text = "Scanning and preparing PMP... this may take some time..."));
                 SetupSyncPMP();
             }
             this.Invoke(new MethodInvoker(() =>
@@ -1360,7 +1404,12 @@ namespace Chrononizer
                 if (LaptopSyncTBW.IsBusy == false)
                 {
                     if (PMPSyncSuccess || LaptopSyncSuccess)
-                        MessageBox.Show("Synchronization Complete!"); //show the success window if at least one operation completed
+                    {
+                        if (AutoExit)
+                            System.Environment.Exit(0); //exit the program if auto exit is enabled
+                        else
+                            MessageBox.Show("Synchronization Complete!"); //show the success window if at least one operation completed
+                    }
                     else
                         MessageBox.Show("Synchronization Failed!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     ShowSyncStatus(false, true, true);
@@ -1375,6 +1424,7 @@ namespace Chrononizer
             LaptopSyncSuccess = PrepareSyncLaptop();
             if (LaptopSyncSuccess)
             {
+                this.Invoke(new MethodInvoker(() => LTlbl1.Text = "Scanning and preparing Laptop... this may take some time..."));
                 SetupSyncLaptop();
             }
             this.Invoke(new MethodInvoker(() =>
@@ -1382,7 +1432,12 @@ namespace Chrononizer
                 if (PMPSyncTBW.IsBusy == false)
                 {
                     if (PMPSyncSuccess || LaptopSyncSuccess)
-                        MessageBox.Show("Synchronization Complete!"); //show the success window if at least one operation completed
+                    {
+                        if (AutoExit)
+                            System.Environment.Exit(0); //exit the program if auto exit is enabled
+                        else
+                            MessageBox.Show("Synchronization Complete!"); //show the success window if at least one operation completed
+                    }
                     else
                         MessageBox.Show("Synchronization Failed!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     ShowSyncStatus(false, true, true);

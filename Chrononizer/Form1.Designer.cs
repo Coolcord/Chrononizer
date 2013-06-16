@@ -101,6 +101,7 @@
             this.LaptopSyncBW = new System.ComponentModel.BackgroundWorker();
             this.PMPSyncTBW = new System.ComponentModel.BackgroundWorker();
             this.LaptopSyncTBW = new System.ComponentModel.BackgroundWorker();
+            this.cbAutoExit = new System.Windows.Forms.CheckBox();
             this.tabControl.SuspendLayout();
             this.SyncTab.SuspendLayout();
             this.InfoTab.SuspendLayout();
@@ -427,6 +428,7 @@
             // 
             // PreferencesTab
             // 
+            this.PreferencesTab.Controls.Add(this.cbAutoExit);
             this.PreferencesTab.Controls.Add(this.cbHideMediaArtLocal);
             this.PreferencesTab.Controls.Add(this.btnLaptopLocation);
             this.PreferencesTab.Controls.Add(this.btnPMPLocation);
@@ -637,9 +639,9 @@
             this.cbAskSync.AutoSize = true;
             this.cbAskSync.Location = new System.Drawing.Point(12, 441);
             this.cbAskSync.Name = "cbAskSync";
-            this.cbAskSync.Size = new System.Drawing.Size(204, 21);
+            this.cbAskSync.Size = new System.Drawing.Size(235, 21);
             this.cbAskSync.TabIndex = 17;
-            this.cbAskSync.Text = "Always ask before synching";
+            this.cbAskSync.Text = "Always ask before synchronizing";
             this.cbAskSync.UseVisualStyleBackColor = true;
             this.cbAskSync.CheckedChanged += new System.EventHandler(this.cbAskSync_CheckedChanged);
             // 
@@ -862,6 +864,17 @@
             // 
             this.LaptopSyncTBW.DoWork += new System.ComponentModel.DoWorkEventHandler(this.LaptopSyncTBW_DoWork);
             // 
+            // cbAutoExit
+            // 
+            this.cbAutoExit.AutoSize = true;
+            this.cbAutoExit.Location = new System.Drawing.Point(12, 468);
+            this.cbAutoExit.Name = "cbAutoExit";
+            this.cbAutoExit.Size = new System.Drawing.Size(428, 21);
+            this.cbAutoExit.TabIndex = 36;
+            this.cbAutoExit.Text = "Automatically exit Chrononizer upon successful synchronization";
+            this.cbAutoExit.UseVisualStyleBackColor = true;
+            this.cbAutoExit.CheckedChanged += new System.EventHandler(this.cbAutoExit_CheckedChanged);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -966,6 +979,7 @@
         private System.Windows.Forms.Button btnLaptopLocation;
         private System.Windows.Forms.Button btnPMPLocation;
         private System.Windows.Forms.CheckBox cbHideMediaArtLocal;
+        private System.Windows.Forms.CheckBox cbAutoExit;
     }
 }
 

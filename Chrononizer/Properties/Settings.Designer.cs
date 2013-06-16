@@ -286,5 +286,17 @@ namespace Chrononizer.Properties {
                 this["HideMediaArtLocal"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool AutoExit {
+            get {
+                return ((bool)(this["AutoExit"]));
+            }
+            set {
+                this["AutoExit"] = value;
+            }
+        }
     }
 }
