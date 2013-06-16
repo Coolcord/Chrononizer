@@ -710,7 +710,7 @@
             this.tbChiptunesLocation.ReadOnly = true;
             this.tbChiptunesLocation.Size = new System.Drawing.Size(284, 22);
             this.tbChiptunesLocation.TabIndex = 12;
-            this.tbChiptunesLocation.Click += new System.EventHandler(this.textBox3_Click);
+            this.tbChiptunesLocation.Click += new System.EventHandler(this.tbChiptunesLocation_Click);
             this.tbChiptunesLocation.TextChanged += new System.EventHandler(this.tbChiptunesLocation_TextChanged);
             // 
             // cbRemoveEmpty
@@ -797,7 +797,7 @@
             this.tbDownscaledLocation.ReadOnly = true;
             this.tbDownscaledLocation.Size = new System.Drawing.Size(284, 22);
             this.tbDownscaledLocation.TabIndex = 4;
-            this.tbDownscaledLocation.Click += new System.EventHandler(this.textBox2_Click);
+            this.tbDownscaledLocation.Click += new System.EventHandler(this.tbDownscaledLocation_Click);
             this.tbDownscaledLocation.TextChanged += new System.EventHandler(this.tbDownscaledLocation_TextChanged);
             // 
             // lblDownscaledLocation
