@@ -298,5 +298,17 @@ namespace Chrononizer.Properties {
                 this["AutoExit"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool AutoExitOne {
+            get {
+                return ((bool)(this["AutoExitOne"]));
+            }
+            set {
+                this["AutoExitOne"] = value;
+            }
+        }
     }
 }

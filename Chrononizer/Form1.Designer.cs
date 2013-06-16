@@ -60,6 +60,7 @@
             this.lbNotDownscaled = new System.Windows.Forms.ListBox();
             this.btnScan = new System.Windows.Forms.Button();
             this.PreferencesTab = new System.Windows.Forms.TabPage();
+            this.cbAutoExit = new System.Windows.Forms.CheckBox();
             this.cbHideMediaArtLocal = new System.Windows.Forms.CheckBox();
             this.btnLaptopLocation = new System.Windows.Forms.Button();
             this.btnPMPLocation = new System.Windows.Forms.Button();
@@ -101,7 +102,7 @@
             this.LaptopSyncBW = new System.ComponentModel.BackgroundWorker();
             this.PMPSyncTBW = new System.ComponentModel.BackgroundWorker();
             this.LaptopSyncTBW = new System.ComponentModel.BackgroundWorker();
-            this.cbAutoExit = new System.Windows.Forms.CheckBox();
+            this.cbAutoExitOne = new System.Windows.Forms.CheckBox();
             this.tabControl.SuspendLayout();
             this.SyncTab.SuspendLayout();
             this.InfoTab.SuspendLayout();
@@ -428,6 +429,7 @@
             // 
             // PreferencesTab
             // 
+            this.PreferencesTab.Controls.Add(this.cbAutoExitOne);
             this.PreferencesTab.Controls.Add(this.cbAutoExit);
             this.PreferencesTab.Controls.Add(this.cbHideMediaArtLocal);
             this.PreferencesTab.Controls.Add(this.btnLaptopLocation);
@@ -470,10 +472,21 @@
             this.PreferencesTab.Text = "Preferences";
             this.PreferencesTab.UseVisualStyleBackColor = true;
             // 
+            // cbAutoExit
+            // 
+            this.cbAutoExit.AutoSize = true;
+            this.cbAutoExit.Location = new System.Drawing.Point(12, 440);
+            this.cbAutoExit.Name = "cbAutoExit";
+            this.cbAutoExit.Size = new System.Drawing.Size(428, 21);
+            this.cbAutoExit.TabIndex = 36;
+            this.cbAutoExit.Text = "Automatically exit Chrononizer upon successful synchronization";
+            this.cbAutoExit.UseVisualStyleBackColor = true;
+            this.cbAutoExit.CheckedChanged += new System.EventHandler(this.cbAutoExit_CheckedChanged);
+            // 
             // cbHideMediaArtLocal
             // 
             this.cbHideMediaArtLocal.AutoSize = true;
-            this.cbHideMediaArtLocal.Location = new System.Drawing.Point(12, 414);
+            this.cbHideMediaArtLocal.Location = new System.Drawing.Point(12, 386);
             this.cbHideMediaArtLocal.Name = "cbHideMediaArtLocal";
             this.cbHideMediaArtLocal.Size = new System.Drawing.Size(485, 21);
             this.cbHideMediaArtLocal.TabIndex = 35;
@@ -484,7 +497,7 @@
             // btnLaptopLocation
             // 
             this.btnLaptopLocation.Enabled = false;
-            this.btnLaptopLocation.Location = new System.Drawing.Point(741, 341);
+            this.btnLaptopLocation.Location = new System.Drawing.Point(741, 313);
             this.btnLaptopLocation.Name = "btnLaptopLocation";
             this.btnLaptopLocation.Size = new System.Drawing.Size(31, 23);
             this.btnLaptopLocation.TabIndex = 34;
@@ -495,7 +508,7 @@
             // btnPMPLocation
             // 
             this.btnPMPLocation.Enabled = false;
-            this.btnPMPLocation.Location = new System.Drawing.Point(741, 178);
+            this.btnPMPLocation.Location = new System.Drawing.Point(741, 150);
             this.btnPMPLocation.Name = "btnPMPLocation";
             this.btnPMPLocation.Size = new System.Drawing.Size(31, 23);
             this.btnPMPLocation.TabIndex = 33;
@@ -506,7 +519,7 @@
             // cbOverrideLaptopPath
             // 
             this.cbOverrideLaptopPath.AutoSize = true;
-            this.cbOverrideLaptopPath.Location = new System.Drawing.Point(451, 297);
+            this.cbOverrideLaptopPath.Location = new System.Drawing.Point(451, 269);
             this.cbOverrideLaptopPath.Name = "cbOverrideLaptopPath";
             this.cbOverrideLaptopPath.Size = new System.Drawing.Size(166, 21);
             this.cbOverrideLaptopPath.TabIndex = 32;
@@ -517,7 +530,7 @@
             // cbOverridePMPPath
             // 
             this.cbOverridePMPPath.AutoSize = true;
-            this.cbOverridePMPPath.Location = new System.Drawing.Point(451, 134);
+            this.cbOverridePMPPath.Location = new System.Drawing.Point(451, 106);
             this.cbOverridePMPPath.Name = "cbOverridePMPPath";
             this.cbOverridePMPPath.Size = new System.Drawing.Size(151, 21);
             this.cbOverridePMPPath.TabIndex = 31;
@@ -529,7 +542,7 @@
             // 
             this.tbLaptopLocation.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.tbLaptopLocation.Enabled = false;
-            this.tbLaptopLocation.Location = new System.Drawing.Point(451, 341);
+            this.tbLaptopLocation.Location = new System.Drawing.Point(451, 313);
             this.tbLaptopLocation.Name = "tbLaptopLocation";
             this.tbLaptopLocation.ReadOnly = true;
             this.tbLaptopLocation.Size = new System.Drawing.Size(284, 22);
@@ -541,7 +554,7 @@
             // 
             this.lblLaptopLocation.AutoSize = true;
             this.lblLaptopLocation.Enabled = false;
-            this.lblLaptopLocation.Location = new System.Drawing.Point(448, 321);
+            this.lblLaptopLocation.Location = new System.Drawing.Point(448, 293);
             this.lblLaptopLocation.Name = "lblLaptopLocation";
             this.lblLaptopLocation.Size = new System.Drawing.Size(114, 17);
             this.lblLaptopLocation.TabIndex = 27;
@@ -551,7 +564,7 @@
             // 
             this.tbPMPLocation.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.tbPMPLocation.Enabled = false;
-            this.tbPMPLocation.Location = new System.Drawing.Point(451, 177);
+            this.tbPMPLocation.Location = new System.Drawing.Point(451, 149);
             this.tbPMPLocation.Name = "tbPMPLocation";
             this.tbPMPLocation.ReadOnly = true;
             this.tbPMPLocation.Size = new System.Drawing.Size(284, 22);
@@ -563,7 +576,7 @@
             // 
             this.lblPMPLocation.AutoSize = true;
             this.lblPMPLocation.Enabled = false;
-            this.lblPMPLocation.Location = new System.Drawing.Point(448, 158);
+            this.lblPMPLocation.Location = new System.Drawing.Point(448, 130);
             this.lblPMPLocation.Name = "lblPMPLocation";
             this.lblPMPLocation.Size = new System.Drawing.Size(99, 17);
             this.lblPMPLocation.TabIndex = 25;
@@ -572,7 +585,7 @@
             // tbPMPVolumeLabel
             // 
             this.tbPMPVolumeLabel.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.tbPMPVolumeLabel.Location = new System.Drawing.Point(451, 79);
+            this.tbPMPVolumeLabel.Location = new System.Drawing.Point(451, 51);
             this.tbPMPVolumeLabel.Name = "tbPMPVolumeLabel";
             this.tbPMPVolumeLabel.Size = new System.Drawing.Size(284, 22);
             this.tbPMPVolumeLabel.TabIndex = 24;
@@ -581,7 +594,7 @@
             // lblPMPVolumeLabel
             // 
             this.lblPMPVolumeLabel.AutoSize = true;
-            this.lblPMPVolumeLabel.Location = new System.Drawing.Point(448, 59);
+            this.lblPMPVolumeLabel.Location = new System.Drawing.Point(448, 31);
             this.lblPMPVolumeLabel.Name = "lblPMPVolumeLabel";
             this.lblPMPVolumeLabel.Size = new System.Drawing.Size(131, 17);
             this.lblPMPVolumeLabel.TabIndex = 23;
@@ -590,7 +603,7 @@
             // tbLaptopUsername
             // 
             this.tbLaptopUsername.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.tbLaptopUsername.Location = new System.Drawing.Point(451, 269);
+            this.tbLaptopUsername.Location = new System.Drawing.Point(451, 241);
             this.tbLaptopUsername.Name = "tbLaptopUsername";
             this.tbLaptopUsername.Size = new System.Drawing.Size(284, 22);
             this.tbLaptopUsername.TabIndex = 22;
@@ -599,7 +612,7 @@
             // lblLaptopUsername
             // 
             this.lblLaptopUsername.AutoSize = true;
-            this.lblLaptopUsername.Location = new System.Drawing.Point(448, 249);
+            this.lblLaptopUsername.Location = new System.Drawing.Point(448, 221);
             this.lblLaptopUsername.Name = "lblLaptopUsername";
             this.lblLaptopUsername.Size = new System.Drawing.Size(125, 17);
             this.lblLaptopUsername.TabIndex = 21;
@@ -608,7 +621,7 @@
             // tbLaptopHostname
             // 
             this.tbLaptopHostname.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.tbLaptopHostname.Location = new System.Drawing.Point(451, 227);
+            this.tbLaptopHostname.Location = new System.Drawing.Point(451, 199);
             this.tbLaptopHostname.Name = "tbLaptopHostname";
             this.tbLaptopHostname.Size = new System.Drawing.Size(284, 22);
             this.tbLaptopHostname.TabIndex = 20;
@@ -617,7 +630,7 @@
             // lblLaptopHostname
             // 
             this.lblLaptopHostname.AutoSize = true;
-            this.lblLaptopHostname.Location = new System.Drawing.Point(448, 207);
+            this.lblLaptopHostname.Location = new System.Drawing.Point(448, 179);
             this.lblLaptopHostname.Name = "lblLaptopHostname";
             this.lblLaptopHostname.Size = new System.Drawing.Size(124, 17);
             this.lblLaptopHostname.TabIndex = 19;
@@ -626,7 +639,7 @@
             // cbCheckPMPSystem
             // 
             this.cbCheckPMPSystem.AutoSize = true;
-            this.cbCheckPMPSystem.Location = new System.Drawing.Point(451, 107);
+            this.cbCheckPMPSystem.Location = new System.Drawing.Point(451, 79);
             this.cbCheckPMPSystem.Name = "cbCheckPMPSystem";
             this.cbCheckPMPSystem.Size = new System.Drawing.Size(200, 21);
             this.cbCheckPMPSystem.TabIndex = 18;
@@ -637,7 +650,7 @@
             // cbAskSync
             // 
             this.cbAskSync.AutoSize = true;
-            this.cbAskSync.Location = new System.Drawing.Point(12, 441);
+            this.cbAskSync.Location = new System.Drawing.Point(12, 413);
             this.cbAskSync.Name = "cbAskSync";
             this.cbAskSync.Size = new System.Drawing.Size(235, 21);
             this.cbAskSync.TabIndex = 17;
@@ -648,7 +661,7 @@
             // cbPreventSynchingUpscaled
             // 
             this.cbPreventSynchingUpscaled.AutoSize = true;
-            this.cbPreventSynchingUpscaled.Location = new System.Drawing.Point(12, 387);
+            this.cbPreventSynchingUpscaled.Location = new System.Drawing.Point(12, 359);
             this.cbPreventSynchingUpscaled.Name = "cbPreventSynchingUpscaled";
             this.cbPreventSynchingUpscaled.Size = new System.Drawing.Size(464, 21);
             this.cbPreventSynchingUpscaled.TabIndex = 16;
@@ -659,7 +672,7 @@
             // cbChiptunesLibrary
             // 
             this.cbChiptunesLibrary.AutoSize = true;
-            this.cbChiptunesLibrary.Location = new System.Drawing.Point(12, 107);
+            this.cbChiptunesLibrary.Location = new System.Drawing.Point(12, 79);
             this.cbChiptunesLibrary.Name = "cbChiptunesLibrary";
             this.cbChiptunesLibrary.Size = new System.Drawing.Size(163, 21);
             this.cbChiptunesLibrary.TabIndex = 15;
@@ -670,7 +683,7 @@
             // btnChiptunesLocation
             // 
             this.btnChiptunesLocation.Enabled = false;
-            this.btnChiptunesLocation.Location = new System.Drawing.Point(302, 151);
+            this.btnChiptunesLocation.Location = new System.Drawing.Point(302, 123);
             this.btnChiptunesLocation.Name = "btnChiptunesLocation";
             this.btnChiptunesLocation.Size = new System.Drawing.Size(31, 23);
             this.btnChiptunesLocation.TabIndex = 14;
@@ -682,7 +695,7 @@
             // 
             this.lblChiptunesLocation.AutoSize = true;
             this.lblChiptunesLocation.Enabled = false;
-            this.lblChiptunesLocation.Location = new System.Drawing.Point(9, 131);
+            this.lblChiptunesLocation.Location = new System.Drawing.Point(9, 103);
             this.lblChiptunesLocation.Name = "lblChiptunesLocation";
             this.lblChiptunesLocation.Size = new System.Drawing.Size(181, 17);
             this.lblChiptunesLocation.TabIndex = 13;
@@ -692,7 +705,7 @@
             // 
             this.tbChiptunesLocation.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.tbChiptunesLocation.Enabled = false;
-            this.tbChiptunesLocation.Location = new System.Drawing.Point(12, 151);
+            this.tbChiptunesLocation.Location = new System.Drawing.Point(12, 123);
             this.tbChiptunesLocation.Name = "tbChiptunesLocation";
             this.tbChiptunesLocation.ReadOnly = true;
             this.tbChiptunesLocation.Size = new System.Drawing.Size(284, 22);
@@ -703,7 +716,7 @@
             // cbRemoveEmpty
             // 
             this.cbRemoveEmpty.AutoSize = true;
-            this.cbRemoveEmpty.Location = new System.Drawing.Point(12, 251);
+            this.cbRemoveEmpty.Location = new System.Drawing.Point(12, 223);
             this.cbRemoveEmpty.Name = "cbRemoveEmpty";
             this.cbRemoveEmpty.Size = new System.Drawing.Size(347, 21);
             this.cbRemoveEmpty.TabIndex = 11;
@@ -714,7 +727,7 @@
             // cbRemoveUnnecessary
             // 
             this.cbRemoveUnnecessary.AutoSize = true;
-            this.cbRemoveUnnecessary.Location = new System.Drawing.Point(12, 306);
+            this.cbRemoveUnnecessary.Location = new System.Drawing.Point(12, 278);
             this.cbRemoveUnnecessary.Name = "cbRemoveUnnecessary";
             this.cbRemoveUnnecessary.Size = new System.Drawing.Size(427, 21);
             this.cbRemoveUnnecessary.TabIndex = 10;
@@ -725,7 +738,7 @@
             // cbRemoveUnsupported
             // 
             this.cbRemoveUnsupported.AutoSize = true;
-            this.cbRemoveUnsupported.Location = new System.Drawing.Point(12, 278);
+            this.cbRemoveUnsupported.Location = new System.Drawing.Point(12, 250);
             this.cbRemoveUnsupported.Name = "cbRemoveUnsupported";
             this.cbRemoveUnsupported.Size = new System.Drawing.Size(433, 21);
             this.cbRemoveUnsupported.TabIndex = 9;
@@ -736,7 +749,7 @@
             // cbShowImproper
             // 
             this.cbShowImproper.AutoSize = true;
-            this.cbShowImproper.Location = new System.Drawing.Point(12, 360);
+            this.cbShowImproper.Location = new System.Drawing.Point(12, 332);
             this.cbShowImproper.Name = "cbShowImproper";
             this.cbShowImproper.Size = new System.Drawing.Size(430, 21);
             this.cbShowImproper.TabIndex = 8;
@@ -747,7 +760,7 @@
             // cbAutoHandle
             // 
             this.cbAutoHandle.AutoSize = true;
-            this.cbAutoHandle.Location = new System.Drawing.Point(12, 179);
+            this.cbAutoHandle.Location = new System.Drawing.Point(12, 151);
             this.cbAutoHandle.Name = "cbAutoHandle";
             this.cbAutoHandle.Size = new System.Drawing.Size(281, 21);
             this.cbAutoHandle.TabIndex = 7;
@@ -758,7 +771,7 @@
             // cbRemoveImproper
             // 
             this.cbRemoveImproper.AutoSize = true;
-            this.cbRemoveImproper.Location = new System.Drawing.Point(12, 333);
+            this.cbRemoveImproper.Location = new System.Drawing.Point(12, 305);
             this.cbRemoveImproper.Name = "cbRemoveImproper";
             this.cbRemoveImproper.Size = new System.Drawing.Size(412, 21);
             this.cbRemoveImproper.TabIndex = 6;
@@ -768,7 +781,7 @@
             // 
             // btnDownscaledLocation
             // 
-            this.btnDownscaledLocation.Location = new System.Drawing.Point(302, 222);
+            this.btnDownscaledLocation.Location = new System.Drawing.Point(302, 194);
             this.btnDownscaledLocation.Name = "btnDownscaledLocation";
             this.btnDownscaledLocation.Size = new System.Drawing.Size(31, 23);
             this.btnDownscaledLocation.TabIndex = 5;
@@ -779,7 +792,7 @@
             // tbDownscaledLocation
             // 
             this.tbDownscaledLocation.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.tbDownscaledLocation.Location = new System.Drawing.Point(12, 223);
+            this.tbDownscaledLocation.Location = new System.Drawing.Point(12, 195);
             this.tbDownscaledLocation.Name = "tbDownscaledLocation";
             this.tbDownscaledLocation.ReadOnly = true;
             this.tbDownscaledLocation.Size = new System.Drawing.Size(284, 22);
@@ -790,7 +803,7 @@
             // lblDownscaledLocation
             // 
             this.lblDownscaledLocation.AutoSize = true;
-            this.lblDownscaledLocation.Location = new System.Drawing.Point(9, 203);
+            this.lblDownscaledLocation.Location = new System.Drawing.Point(9, 175);
             this.lblDownscaledLocation.Name = "lblDownscaledLocation";
             this.lblDownscaledLocation.Size = new System.Drawing.Size(194, 17);
             this.lblDownscaledLocation.TabIndex = 3;
@@ -798,7 +811,7 @@
             // 
             // btnLibraryLocation
             // 
-            this.btnLibraryLocation.Location = new System.Drawing.Point(302, 78);
+            this.btnLibraryLocation.Location = new System.Drawing.Point(302, 50);
             this.btnLibraryLocation.Name = "btnLibraryLocation";
             this.btnLibraryLocation.Size = new System.Drawing.Size(31, 23);
             this.btnLibraryLocation.TabIndex = 2;
@@ -809,7 +822,7 @@
             // lblLibraryLocation
             // 
             this.lblLibraryLocation.AutoSize = true;
-            this.lblLibraryLocation.Location = new System.Drawing.Point(9, 59);
+            this.lblLibraryLocation.Location = new System.Drawing.Point(9, 31);
             this.lblLibraryLocation.Name = "lblLibraryLocation";
             this.lblLibraryLocation.Size = new System.Drawing.Size(154, 17);
             this.lblLibraryLocation.TabIndex = 1;
@@ -818,7 +831,7 @@
             // tbLibraryLocation
             // 
             this.tbLibraryLocation.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.tbLibraryLocation.Location = new System.Drawing.Point(12, 79);
+            this.tbLibraryLocation.Location = new System.Drawing.Point(12, 51);
             this.tbLibraryLocation.Name = "tbLibraryLocation";
             this.tbLibraryLocation.ReadOnly = true;
             this.tbLibraryLocation.Size = new System.Drawing.Size(284, 22);
@@ -864,16 +877,17 @@
             // 
             this.LaptopSyncTBW.DoWork += new System.ComponentModel.DoWorkEventHandler(this.LaptopSyncTBW_DoWork);
             // 
-            // cbAutoExit
+            // cbAutoExitOne
             // 
-            this.cbAutoExit.AutoSize = true;
-            this.cbAutoExit.Location = new System.Drawing.Point(12, 468);
-            this.cbAutoExit.Name = "cbAutoExit";
-            this.cbAutoExit.Size = new System.Drawing.Size(428, 21);
-            this.cbAutoExit.TabIndex = 36;
-            this.cbAutoExit.Text = "Automatically exit Chrononizer upon successful synchronization";
-            this.cbAutoExit.UseVisualStyleBackColor = true;
-            this.cbAutoExit.CheckedChanged += new System.EventHandler(this.cbAutoExit_CheckedChanged);
+            this.cbAutoExitOne.AutoSize = true;
+            this.cbAutoExitOne.Enabled = false;
+            this.cbAutoExitOne.Location = new System.Drawing.Point(12, 467);
+            this.cbAutoExitOne.Name = "cbAutoExitOne";
+            this.cbAutoExitOne.Size = new System.Drawing.Size(479, 21);
+            this.cbAutoExitOne.TabIndex = 37;
+            this.cbAutoExitOne.Text = "Always automatically exit as long as at least one operation is successful";
+            this.cbAutoExitOne.UseVisualStyleBackColor = true;
+            this.cbAutoExitOne.CheckedChanged += new System.EventHandler(this.cbAutoExitOne_CheckedChanged);
             // 
             // Form1
             // 
@@ -980,6 +994,7 @@
         private System.Windows.Forms.Button btnPMPLocation;
         private System.Windows.Forms.CheckBox cbHideMediaArtLocal;
         private System.Windows.Forms.CheckBox cbAutoExit;
+        private System.Windows.Forms.CheckBox cbAutoExitOne;
     }
 }
 
