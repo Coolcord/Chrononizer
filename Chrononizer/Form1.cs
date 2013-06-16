@@ -13,7 +13,6 @@ using System.Security.Principal;
 using System.Media;
 using Microsoft.Synchronization;
 using Microsoft.Synchronization.Files;
-//using Microsoft.WindowsAPICodePack.dll;
 using Luminescence.Xiph;
 
 namespace Chrononizer
@@ -48,13 +47,12 @@ namespace Chrononizer
         Boolean ShowFiles = false;
         
         Dictionary<string, Boolean> checkedFiles = new Dictionary<string, Boolean>();
+        DirectoryInfo PMPDrive = null;
 
-        ProgressBar pb1, LTpb;
+        FlowLayoutPanel PMPflow, LTflow;
         Label lbl1, lbl2, LTlbl1, LTlbl2;
         ListBox lb1, LTlb;
-        FlowLayoutPanel flow1, LTflow;
-
-        DirectoryInfo PMPDrive = null;
+        ProgressBar PMPpb, LTpb;
 
         public struct UpdateLocation
         {
@@ -1017,8 +1015,9 @@ namespace Chrononizer
                         {
                             this.Invoke(new MethodInvoker(() =>
                             {
-                                //taskDialog.SetProgressBarState(PBST_ERROR);
-                                lbl1.Text = "Error: Synchronization with Laptop failed! ";
+                                LTpb.Value = 0;
+                                LTlbl2.Text = " ";
+                                LTlbl1.Text = "Error: Synchronization with Laptop failed! ";
                             }));
                             return false;
                         }
@@ -1104,7 +1103,8 @@ namespace Chrononizer
                         {
                             this.Invoke(new MethodInvoker(() =>
                             {
-                                //taskDialog.SetProgressBarState(PBST_ERROR);
+                                PMPpb.Value = 0;
+                                lbl2.Text = " ";
                                 lbl1.Text = "Error: Synchronization with PMP failed! ";
                             }));
                             return false;
@@ -1122,7 +1122,7 @@ namespace Chrononizer
                 }
                 this.Invoke(new MethodInvoker(() =>
                 {
-                    pb1.Value = progress; //get the file's size
+                    PMPpb.Value = progress; //get the file's size
                     lbl2.Text = percent.ToString() + "%";
                     lb1.Items.Remove(destination);
                 }));
@@ -1130,7 +1130,7 @@ namespace Chrononizer
 
             this.Invoke(new MethodInvoker(() =>
             {
-                pb1.Value = pb1.Maximum;
+                PMPpb.Value = PMPpb.Maximum;
                 lbl2.Text = "100%";
                 lbl1.Text = "Synchronization with PMP complete! ";
             }));
@@ -1641,26 +1641,26 @@ namespace Chrononizer
                     if (pmp)
                     {
                         //Status text
-                        flow1 = new FlowLayoutPanel();
-                        flow1.FlowDirection = FlowDirection.LeftToRight;
-                        flow1.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-                        flow1.AutoSize = true;
+                        PMPflow = new FlowLayoutPanel();
+                        PMPflow.FlowDirection = FlowDirection.LeftToRight;
+                        PMPflow.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+                        PMPflow.AutoSize = true;
                         lbl1 = new Label();
                         lbl1.Text = "Searching for PMP...";
                         lbl1.AutoSize = true;
-                        flow1.Controls.Add(lbl1);
+                        PMPflow.Controls.Add(lbl1);
                         lbl2 = new Label();
                         lbl2.Text = " ";
                         lbl2.AutoSize = true;
-                        flow1.Controls.Add(lbl2);
+                        PMPflow.Controls.Add(lbl2);
 
                         //Progressbar
-                        pb1 = new ProgressBar();
-                        pb1.Maximum = 100000;
-                        pb1.Value = 0;
-                        pb1.Width = 765;
-                        pb1.Height = 38;
-                        pb1.Value = 0;
+                        PMPpb = new ProgressBar();
+                        PMPpb.Maximum = 100000;
+                        PMPpb.Value = 0;
+                        PMPpb.Width = 765;
+                        PMPpb.Height = 38;
+                        PMPpb.Value = 0;
 
                         //Listbox
                         lb1 = new ListBox();
@@ -1671,8 +1671,8 @@ namespace Chrononizer
                             lb1.Height = 450; //when there is one
 
                         //Add the objects to the layout
-                        flowLayoutPanel2.Controls.Add(flow1);
-                        flowLayoutPanel2.Controls.Add(pb1);
+                        flowLayoutPanel2.Controls.Add(PMPflow);
+                        flowLayoutPanel2.Controls.Add(PMPpb);
                         flowLayoutPanel2.Controls.Add(lb1);
                     }
 
@@ -1724,15 +1724,15 @@ namespace Chrononizer
                     if (pmp)
                     {
                         //Clear out the status screen
-                        flow1.Controls.Remove(lbl1);
-                        flow1.Controls.Remove(lbl2);
+                        PMPflow.Controls.Remove(lbl1);
+                        PMPflow.Controls.Remove(lbl2);
                         flowLayoutPanel2.Controls.Remove(lb1);
-                        flowLayoutPanel2.Controls.Remove(pb1);
-                        flowLayoutPanel2.Controls.Remove(flow1);
+                        flowLayoutPanel2.Controls.Remove(PMPpb);
+                        flowLayoutPanel2.Controls.Remove(PMPflow);
                         lbl1 = null;
                         lbl2 = null;
-                        flow1 = null;
-                        pb1 = null;
+                        PMPflow = null;
+                        PMPpb = null;
                         lb1 = null;
                     }
 
