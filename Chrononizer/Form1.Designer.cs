@@ -883,9 +883,9 @@
             this.cbAutoExitOne.Enabled = false;
             this.cbAutoExitOne.Location = new System.Drawing.Point(12, 467);
             this.cbAutoExitOne.Name = "cbAutoExitOne";
-            this.cbAutoExitOne.Size = new System.Drawing.Size(479, 21);
+            this.cbAutoExitOne.Size = new System.Drawing.Size(518, 21);
             this.cbAutoExitOne.TabIndex = 37;
-            this.cbAutoExitOne.Text = "Always automatically exit as long as at least one operation is successful";
+            this.cbAutoExitOne.Text = "Always automatically exit as long as at least one synchronization is successful";
             this.cbAutoExitOne.UseVisualStyleBackColor = true;
             this.cbAutoExitOne.CheckedChanged += new System.EventHandler(this.cbAutoExitOne_CheckedChanged);
             // 

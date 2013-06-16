@@ -278,7 +278,6 @@ namespace Chrononizer
                 if (Path.GetFullPath(name) == DownscaledLibrary.Substring(0, DownscaledLibrary.Length - 1)) continue; //don't scan through the downscaled files
                 //hide all .mediaartlocal folders
                 else if (HideMediaArtLocal && Path.GetFileName(name) == ".mediaartlocal") File.SetAttributes(Path.GetFullPath(name), FileAttributes.Hidden | FileAttributes.System);
-
                 num = GetDirectorySize(name, num, ref flac, ref mp3, ref wma, ref m4a, ref ogg, ref wav, ref xm, ref mod, ref nsf); //recurse through the folders
             }
             return num;
@@ -916,16 +915,20 @@ namespace Chrononizer
 
         private bool DirExists(string path)
         {
+            Boolean exists = false;
             //create destination directory if not exist
             if (!Directory.Exists(path))
             {
                 Directory.CreateDirectory(path);
-                return true;
+                exists = true;
             }
             else
             {
-                return false;
+                exists = false;
             }
+            //hide all .mediaartlocal folders
+            if (HideMediaArtLocal && Path.GetFileName(path) == ".mediaartlocal") File.SetAttributes(Path.GetFullPath(path), FileAttributes.Hidden | FileAttributes.System);
+            return exists;
         }
 
         private static void DeleteOldDestinationFiles(string[] sourceFiles, string destinationPath)
