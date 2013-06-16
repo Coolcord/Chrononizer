@@ -13,6 +13,7 @@ using System.Security.Principal;
 using System.Media;
 using Microsoft.Synchronization;
 using Microsoft.Synchronization.Files;
+//using Microsoft.WindowsAPICodePack.dll;
 using Luminescence.Xiph;
 
 namespace Chrononizer
@@ -563,20 +564,27 @@ namespace Chrononizer
             {
                 ShowSyncStatus(true, false, true);
                 this.Invoke(new MethodInvoker(() => LTlbl1.Text = "Scanning and preparing Laptop... this may take some time..."));
-                PerformSyncLaptop();
-                if (AutoExit)
+                LaptopSyncSuccess = PerformSyncLaptop();
+                if (AutoExit && LaptopSyncSuccess)
                 {
                     System.Media.SoundPlayer sound = new System.Media.SoundPlayer(Chrononizer.Properties.Resources.AaawYeah);
                     sound.PlaySync();  //Plays the sound in sync with the current thread so that it isn't cut off when the program exits
 
                     System.Environment.Exit(0); //exit the program if auto exit is enabled
                 }
-                else
+                else if (LaptopSyncSuccess)
                 {
                     System.Media.SoundPlayer sound = new System.Media.SoundPlayer(Chrononizer.Properties.Resources.AaawYeah);
                     sound.Play();  //Plays the sound in a new thread
 
                     MessageBox.Show("Synchronization Complete!", "Chrononizer", MessageBoxButtons.OK, MessageBoxIcon.Information); //show the success window if at least one operation completed
+                }
+                else
+                {
+                    System.Media.SoundPlayer sound = new System.Media.SoundPlayer(Chrononizer.Properties.Resources.OhNo);
+                    sound.Play();  //Plays the sound in a new thread
+
+                    MessageBox.Show("Synchronization Failed!", "Chrononizer", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
                 ShowSyncStatus(false, false, true);
             }
@@ -589,16 +597,18 @@ namespace Chrononizer
 
         //
         // LaptopSyncBW_DoWork(object sender, DoWorkEventArgs e)
-        // Background worker for synchronizing with the laptop while the PMP is being synchronized as well.
+        // Background worker for synchronizing with the laptop while the PMP is being synchronized as well
         //
         private void LaptopSyncTBW_DoWork(object sender, DoWorkEventArgs e)
         {
-            LaptopSyncSuccess = FindLaptop();
-            if (LaptopSyncSuccess)
+            Boolean FoundLaptop = FindLaptop();
+            if (FoundLaptop)
             {
                 this.Invoke(new MethodInvoker(() => LTlbl1.Text = "Scanning and preparing Laptop... this may take some time..."));
-                PerformSyncLaptop();
+                LaptopSyncSuccess = PerformSyncLaptop();
             }
+            else
+                LaptopSyncSuccess = false;
             this.Invoke(new MethodInvoker(() =>
             {
                 if (PMPSyncTBW.IsBusy == false)
@@ -648,20 +658,27 @@ namespace Chrononizer
             {
                 ShowSyncStatus(true, true, false);
                 this.Invoke(new MethodInvoker(() => lbl1.Text = "Scanning and preparing PMP... this may take some time..."));
-                PerformSyncPMP();
-                if (AutoExit)
+                PMPSyncSuccess = PerformSyncPMP();
+                if (AutoExit && PMPSyncSuccess)
                 {
                     System.Media.SoundPlayer sound = new System.Media.SoundPlayer(Chrononizer.Properties.Resources.AaawYeah);
                     sound.PlaySync();  //Plays the sound in sync with the current thread so that it isn't cut off when the program exits
 
                     System.Environment.Exit(0); //exit the program if auto exit is enabled
                 }
-                else
+                else if (PMPSyncSuccess)
                 {
                     System.Media.SoundPlayer sound = new System.Media.SoundPlayer(Chrononizer.Properties.Resources.AaawYeah);
                     sound.Play();  //Plays the sound in a new thread
 
                     MessageBox.Show("Synchronization Complete!", "Chrononizer", MessageBoxButtons.OK, MessageBoxIcon.Information); //show the success window if at least one operation completed
+                }
+                else
+                {
+                    System.Media.SoundPlayer sound = new System.Media.SoundPlayer(Chrononizer.Properties.Resources.OhNo);
+                    sound.Play();  //Plays the sound in a new thread
+
+                    MessageBox.Show("Synchronization Failed!", "Chrononizer", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
                 ShowSyncStatus(false, true, false);
             }
@@ -674,16 +691,18 @@ namespace Chrononizer
 
         //
         // PMPSyncTBW_DoWork(object sender, DoWorkEventArgs e)
-        // Background worker for synchronizing with the PMP while the laptop is being synchronized as well.
+        // Background worker for synchronizing with the PMP while the laptop is being synchronized as well
         //
         private void PMPSyncTBW_DoWork(object sender, DoWorkEventArgs e)
         {
-            PMPSyncSuccess = FindPMP();
-            if (PMPSyncSuccess)
+            Boolean FoundPMP = FindPMP();
+            if (FoundPMP)
             {
                 this.Invoke(new MethodInvoker(() => lbl1.Text = "Scanning and preparing PMP... this may take some time..."));
-                PerformSyncPMP();
+                PMPSyncSuccess = PerformSyncPMP();
             }
+            else
+                PMPSyncSuccess = false;
             this.Invoke(new MethodInvoker(() =>
             {
                 if (LaptopSyncTBW.IsBusy == false)
@@ -725,7 +744,7 @@ namespace Chrononizer
 
         //
         // ScanBW_DoWork(object sender, DoWorkEventArgs e)
-        // Background worker for scanning the music library.
+        // Background worker for scanning the music library
         //
         private void ScanBW_DoWork(object sender, DoWorkEventArgs e)
         {
@@ -949,7 +968,7 @@ namespace Chrononizer
         // PerformSyncLaptop()
         // Synchronizes the laptop with the music library
         //
-        public void PerformSyncLaptop()
+        public Boolean PerformSyncLaptop()
         {
             double CopySize = 0;
             Queue<UpdateLocation> UpdateFiles = new Queue<UpdateLocation>();
@@ -983,11 +1002,37 @@ namespace Chrononizer
                 string destination = update.DestinationFile;
                 FileInfo info = new FileInfo(source);
 
-                File.Copy(source, destination, true); //copy the file
+                DialogResult result = DialogResult.Retry;
+                while (result == DialogResult.Retry) //be ready in case of an error
+                {
+                    if (File.Exists(source))
+                    {
+                        File.Copy(source, destination, true); //copy the file
+                        break;
+                    }
+                    else
+                    {
+                        result = MessageBox.Show("The file " + Path.GetFileName(source) + " cannot be found in the music library!", "Chrononizer", MessageBoxButtons.AbortRetryIgnore, MessageBoxIcon.Error);
+                        if (result == DialogResult.Abort)
+                        {
+                            this.Invoke(new MethodInvoker(() =>
+                            {
+                                //taskDialog.SetProgressBarState(PBST_ERROR);
+                                lbl1.Text = "Error: Synchronization with Laptop failed! ";
+                            }));
+                            return false;
+                        }
+                        else if (result == DialogResult.Ignore)
+                            break;
+                    }
+                }
 
                 //calculate progress
-                progress += (int)(((info.Length / CopySize) * 100000));
-                percent = Math.Round((((double)progress) / 1000), 2);
+                if (result == DialogResult.Retry)
+                {
+                    progress += (int)(((info.Length / CopySize) * 100000));
+                    percent = Math.Round((((double)progress) / 1000), 2);
+                }
                 this.Invoke(new MethodInvoker(() =>
                 {
                     LTpb.Value = progress; //get the file's size
@@ -1002,13 +1047,15 @@ namespace Chrononizer
                 LTlbl2.Text = "100%";
                 LTlbl1.Text = "Synchronization with Laptop complete! ";
             }));
+
+            return true;
         }
 
         //
         // PerformSyncPMP()
         // Synchronizes the PMP with the music library
         //
-        public void PerformSyncPMP()
+        public Boolean PerformSyncPMP()
         {
             double CopySize = 0;
             Queue<UpdateLocation> UpdateFiles = new Queue<UpdateLocation>();
@@ -1042,11 +1089,37 @@ namespace Chrononizer
                 string destination = update.DestinationFile;
                 FileInfo info = new FileInfo(source);
 
-                File.Copy(source, destination, true); //copy the file
+                DialogResult result = DialogResult.Retry;
+                while (result == DialogResult.Retry) //be ready in case of an error
+                {
+                    if (File.Exists(source))
+                    {
+                        File.Copy(source, destination, true); //copy the file
+                        break;
+                    }
+                    else
+                    {
+                        result = MessageBox.Show("The file " + Path.GetFileName(source) + " cannot be found in the music library!", "Chrononizer", MessageBoxButtons.AbortRetryIgnore, MessageBoxIcon.Error);
+                        if (result == DialogResult.Abort)
+                        {
+                            this.Invoke(new MethodInvoker(() =>
+                            {
+                                //taskDialog.SetProgressBarState(PBST_ERROR);
+                                lbl1.Text = "Error: Synchronization with PMP failed! ";
+                            }));
+                            return false;
+                        }
+                        else if (result == DialogResult.Ignore)
+                            break;
+                    }
+                }
 
                 //calculate progress
-                progress += (int)(((info.Length / CopySize) * 100000));
-                percent = Math.Round((((double)progress) / 1000), 2);
+                if (result == DialogResult.Retry)
+                {
+                    progress += (int)(((info.Length / CopySize) * 100000));
+                    percent = Math.Round((((double)progress) / 1000), 2);
+                }
                 this.Invoke(new MethodInvoker(() =>
                 {
                     pb1.Value = progress; //get the file's size
@@ -1061,11 +1134,13 @@ namespace Chrononizer
                 lbl2.Text = "100%";
                 lbl1.Text = "Synchronization with PMP complete! ";
             }));
+
+            return true;
         }
 
         //
         // PrepareSyncLaptop(string sourcePath, string destinationPath, ref Queue<UpdateLocation> UpdateFiles)
-        // Scans the laptop, removes unnecessary files and folders, and determines what new files need to be copied.
+        // Scans the laptop, removes unnecessary files and folders, and determines what new files need to be copied
         //
         public double PrepareSyncLaptop(string sourcePath, string destinationPath, ref Queue<UpdateLocation> UpdateFiles)
         {
@@ -1122,7 +1197,7 @@ namespace Chrononizer
 
         //
         // PrepareSyncPMP(string sourcePath, string destinationPath, ref Queue<UpdateLocation> UpdateFiles)
-        // Scans the PMP, removes unnecessary files and folders, and determines what new files need to be copied.
+        // Scans the PMP, removes unnecessary files and folders, and determines what new files need to be copied
         //
         public double PrepareSyncPMP(string sourcePath, string destinationPath, ref Queue<UpdateLocation> UpdateFiles)
         {
@@ -1286,7 +1361,7 @@ namespace Chrononizer
 
         //
         // DoLibrariesExist()
-        // Makes sure that the library paths are valid. If they are not, an error will be thrown.
+        // Makes sure that the library paths are valid. If they are not, an error will be thrown
         //
         private Boolean DoLibrariesExist()
         {
@@ -1319,7 +1394,7 @@ namespace Chrononizer
 
         //
         // Plural(long value, string units)
-        // Make a string plural or singular depending upon the number of units.
+        // Make a string plural or singular depending upon the number of units
         //
         public static string Plural(long value, string units)
         {
@@ -1333,7 +1408,7 @@ namespace Chrononizer
 
         //
         // OpenFolderDialog(int TextBox)
-        // Opens the FolderBrowserDialog() for a specific text box.
+        // Opens the FolderBrowserDialog() for a specific text box
         //
         private void OpenFolderDialog(int TextBox)
         {
