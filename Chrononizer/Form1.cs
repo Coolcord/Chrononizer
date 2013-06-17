@@ -998,14 +998,21 @@ namespace Chrononizer
                 UpdateLocation update = CopyFiles.Dequeue();
                 string source = update.SourceFile;
                 string destination = update.DestinationFile;
-                FileInfo info = new FileInfo(source);
 
                 DialogResult result = DialogResult.Retry;
                 while (result == DialogResult.Retry) //be ready in case of an error
                 {
                     if (File.Exists(source))
                     {
-                        File.Copy(source, destination, true); //copy the file
+                        //read source file info
+                        FileInfo info = new FileInfo(source);
+
+                        //copy the file
+                        File.Copy(source, destination, true);
+
+                        //calculate progress
+                        progress += (int)(((info.Length / CopySize) * 100000));
+                        percent = Math.Round((((double)progress) / 1000), 2);
                         break;
                     }
                     else
@@ -1026,12 +1033,6 @@ namespace Chrononizer
                     }
                 }
 
-                //calculate progress
-                if (result == DialogResult.Retry)
-                {
-                    progress += (int)(((info.Length / CopySize) * 100000));
-                    percent = Math.Round((((double)progress) / 1000), 2);
-                }
                 this.Invoke(new MethodInvoker(() =>
                 {
                     LTpb.Value = progress; //get the file's size
@@ -1086,14 +1087,21 @@ namespace Chrononizer
                 UpdateLocation update = CopyFiles.Dequeue();
                 string source = update.SourceFile;
                 string destination = update.DestinationFile;
-                FileInfo info = new FileInfo(source);
 
                 DialogResult result = DialogResult.Retry;
                 while (result == DialogResult.Retry) //be ready in case of an error
                 {
                     if (File.Exists(source))
                     {
-                        File.Copy(source, destination, true); //copy the file
+                        //read source file info
+                        FileInfo info = new FileInfo(source);
+
+                        //copy the file
+                        File.Copy(source, destination, true);
+
+                        //calculate progress
+                        progress += (int)(((info.Length / CopySize) * 100000));
+                        percent = Math.Round((((double)progress) / 1000), 2);
                         break;
                     }
                     else
@@ -1114,12 +1122,6 @@ namespace Chrononizer
                     }
                 }
 
-                //calculate progress
-                if (result == DialogResult.Retry)
-                {
-                    progress += (int)(((info.Length / CopySize) * 100000));
-                    percent = Math.Round((((double)progress) / 1000), 2);
-                }
                 this.Invoke(new MethodInvoker(() =>
                 {
                     PMPpb.Value = progress; //get the file's size
