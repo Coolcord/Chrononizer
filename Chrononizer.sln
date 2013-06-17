@@ -3,16 +3,29 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chrononizer", "Chrononizer\Chrononizer.csproj", "{66F526E0-210F-48D1-A54F-249E5DD20038}"
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Chrononizer Setup", "Chrononizer Setup\Chrononizer Setup.vdproj", "{21F4DFDC-82F9-4351-B0B3-4DDE1F323294}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
 		Debug|x86 = Debug|x86
+		Release|x64 = Release|x64
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{66F526E0-210F-48D1-A54F-249E5DD20038}.Debug|x64.ActiveCfg = Release|x64
+		{66F526E0-210F-48D1-A54F-249E5DD20038}.Debug|x64.Build.0 = Release|x64
 		{66F526E0-210F-48D1-A54F-249E5DD20038}.Debug|x86.ActiveCfg = Debug|x86
 		{66F526E0-210F-48D1-A54F-249E5DD20038}.Debug|x86.Build.0 = Debug|x86
-		{66F526E0-210F-48D1-A54F-249E5DD20038}.Release|x86.ActiveCfg = Release|x86
-		{66F526E0-210F-48D1-A54F-249E5DD20038}.Release|x86.Build.0 = Release|x86
+		{66F526E0-210F-48D1-A54F-249E5DD20038}.Release|x64.ActiveCfg = Release|x64
+		{66F526E0-210F-48D1-A54F-249E5DD20038}.Release|x64.Build.0 = Release|x64
+		{66F526E0-210F-48D1-A54F-249E5DD20038}.Release|x86.ActiveCfg = Release|x64
+		{66F526E0-210F-48D1-A54F-249E5DD20038}.Release|x86.Build.0 = Release|x64
+		{21F4DFDC-82F9-4351-B0B3-4DDE1F323294}.Debug|x64.ActiveCfg = Debug
+		{21F4DFDC-82F9-4351-B0B3-4DDE1F323294}.Debug|x86.ActiveCfg = Debug
+		{21F4DFDC-82F9-4351-B0B3-4DDE1F323294}.Release|x64.ActiveCfg = Release
+		{21F4DFDC-82F9-4351-B0B3-4DDE1F323294}.Release|x64.Build.0 = Release
+		{21F4DFDC-82F9-4351-B0B3-4DDE1F323294}.Release|x86.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

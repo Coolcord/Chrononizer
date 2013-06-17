@@ -20,3 +20,7 @@ E:\Documents\Visual Studio 2010\Projects\Chrononizer\Chrononizer\obj\x86\Debug\C
 E:\Documents\Visual Studio 2010\Projects\Chrononizer\Chrononizer\obj\x86\Debug\Chrononizer.Properties.Resources.resources
 E:\Documents\Visual Studio 2010\Projects\Chrononizer\Chrononizer\obj\x86\Debug\GenerateResource.read.1.tlog
 E:\Documents\Visual Studio 2010\Projects\Chrononizer\Chrononizer\obj\x86\Debug\GenerateResource.write.1.tlog
+E:\Documents\Visual Studio 2010\Projects\Chrononizer\Chrononizer\bin\Debug\Chrononizer.exe.manifest
+E:\Documents\Visual Studio 2010\Projects\Chrononizer\Chrononizer\bin\Debug\Chrononizer.application
+E:\Documents\Visual Studio 2010\Projects\Chrononizer\Chrononizer\obj\x86\Debug\Chrononizer.exe.manifest
+E:\Documents\Visual Studio 2010\Projects\Chrononizer\Chrononizer\obj\x86\Debug\Chrononizer.application
