@@ -58,14 +58,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Chrononizer.exe" size="727552">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Chrononizer.exe" size="729600">
       <assemblyIdentity name="Chrononizer" version="1.0.0.0" language="neutral" processorArchitecture="amd64" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>/OxjwZhpa39wxT9iBW0OCuWEeJ8=</dsig:DigestValue>
+        <dsig:DigestValue>aMfTn+lBV6bIW5yvSz7KcqZANt4=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

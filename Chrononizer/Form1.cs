@@ -160,6 +160,8 @@ namespace Chrononizer
             if (!Properties.Settings.Default.FirstBoot)
             {
                 //load saved settings
+                cbOverridePMPPath.Checked = Properties.Settings.Default.OverridePMPPath;
+                cbOverrideLaptopPath.Checked = Properties.Settings.Default.OverrideLaptopPath;
                 tbLibraryLocation.Text = Properties.Settings.Default.MusicLibrary;
                 tbDownscaledLocation.Text = Properties.Settings.Default.DownscaledLibrary;
                 tbChiptunesLocation.Text = Properties.Settings.Default.ChiptunesLibrary;
@@ -179,8 +181,6 @@ namespace Chrononizer
                 cbPreventSynchingUpscaled.Checked = Properties.Settings.Default.PreventSynchingUpscaled;
                 cbAskSync.Checked = Properties.Settings.Default.AskSync;
                 cbCheckPMPSystem.Checked = Properties.Settings.Default.CheckPMPSystem;
-                cbOverridePMPPath.Checked = Properties.Settings.Default.OverridePMPPath;
-                cbOverrideLaptopPath.Checked = Properties.Settings.Default.OverrideLaptopPath;
                 cbHideMediaArtLocal.Checked = Properties.Settings.Default.HideMediaArtLocal;
                 cbAutoExit.Checked = Properties.Settings.Default.AutoExit;
                 cbAutoExitOne.Checked = Properties.Settings.Default.AutoExitOne;
@@ -196,6 +196,8 @@ namespace Chrononizer
                 string username = WindowsIdentity.GetCurrent().Name.Split('\\')[1]; //get username from login
                 
                 //load default settings
+                cbOverridePMPPath.Checked = Properties.Settings.Default.OverridePMPPath;
+                cbOverrideLaptopPath.Checked = Properties.Settings.Default.OverrideLaptopPath;
                 tbLibraryLocation.Text = Environment.GetFolderPath(Environment.SpecialFolder.MyMusic) + "\\";
                 tbDownscaledLocation.Text = Environment.GetFolderPath(Environment.SpecialFolder.MyMusic) + "\\.downscaled\\";
                 tbChiptunesLocation.Text = Environment.GetFolderPath(Environment.SpecialFolder.MyMusic) + "\\Chiptunes\\";
@@ -214,8 +216,6 @@ namespace Chrononizer
                 cbPreventSynchingUpscaled.Checked = Properties.Settings.Default.PreventSynchingUpscaled;
                 cbAskSync.Checked = Properties.Settings.Default.AskSync;
                 cbCheckPMPSystem.Checked = Properties.Settings.Default.CheckPMPSystem;
-                cbOverridePMPPath.Checked = Properties.Settings.Default.OverridePMPPath;
-                cbOverrideLaptopPath.Checked = Properties.Settings.Default.OverrideLaptopPath;
                 cbHideMediaArtLocal.Checked = Properties.Settings.Default.HideMediaArtLocal;
                 cbAutoExit.Checked = Properties.Settings.Default.AutoExit;
                 cbAutoExitOne.Checked = Properties.Settings.Default.AutoExitOne;
@@ -225,28 +225,6 @@ namespace Chrononizer
                 DialogResult result = MessageBox.Show("It is highly recommended that you check and configure your preferences before you synchronize any devices.\n\nWould you like to do so now?", "Welcome to Chrononizer!", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (result == DialogResult.Yes) tabControl.SelectedTab = PreferencesTab; //show the preferences tab
             }
-
-            //store the values
-            MusicLibrary = tbLibraryLocation.Text;
-            DownscaledLibrary = tbDownscaledLocation.Text;
-            ChiptunesLibrary = tbChiptunesLocation.Text;
-            PMPLocation = tbPMPLocation.Text;
-            LaptopLocation = tbLaptopLocation.Text;
-            AutoHandle = cbAutoHandle.Checked;
-            RemoveImproper = cbRemoveImproper.Checked;
-            ShowFiles = cbShowImproper.Checked;
-            RemoveUnsupported = cbRemoveUnsupported.Checked;
-            RemoveUnnecessary = cbRemoveUnnecessary.Checked;
-            RemoveEmpty = cbRemoveEmpty.Checked;
-            PreventSynchingUpscaled = cbPreventSynchingUpscaled.Checked;
-            EnableChiptunes = cbChiptunesLibrary.Checked;
-            AskSync = cbAskSync.Checked;
-            CheckPMPSystem = cbCheckPMPSystem.Checked;
-            OverridePMPPath = cbOverrideLaptopPath.Checked;
-            OverrideLaptopPath = cbOverrideLaptopPath.Checked;
-            HideMediaArtLocal = cbHideMediaArtLocal.Checked;
-            AutoExit = cbAutoExit.Checked;
-            AutoExitOne = cbAutoExitOne.Checked;
         }
 
 
@@ -458,7 +436,8 @@ namespace Chrononizer
             {
                 lblPMPLocation.Enabled = true;
                 tbPMPLocation.Enabled = true;
-                tbPMPLocation.Text = " ";
+                if (tbPMPLocation.Text == "*:\\Music\\")
+                    tbPMPLocation.Text = " ";
                 btnPMPLocation.Enabled = true;
                 cbCheckPMPSystem.Enabled = false;
                 lblPMPVolumeLabel.Enabled = false;
@@ -581,11 +560,6 @@ namespace Chrononizer
         {
             OpenFolderDialog(5);
         }
-
-        private void tbLibraryLocation_Click(object sender, EventArgs e)
-        {
-            OpenFolderDialog(1);
-        }
         
         private void tbLaptopLocation_TextChanged(object sender, EventArgs e)
         {
@@ -603,9 +577,16 @@ namespace Chrononizer
             Properties.Settings.Default.Save();
         }
 
+        private void tbLibraryLocation_Click(object sender, EventArgs e)
+        {
+            OpenFolderDialog(1);
+        }
+
         private void tbLibraryLocation_TextChanged(object sender, EventArgs e)
         {
             MusicLibrary = tbLibraryLocation.Text;
+            if (!ChiptunesLibrary.Contains(MusicLibrary))
+                tbChiptunesLocation.Text = MusicLibrary + "Chiptunes\\";
             Properties.Settings.Default.MusicLibrary = tbLibraryLocation.Text;
             Properties.Settings.Default.Save();
         }
@@ -648,7 +629,7 @@ namespace Chrononizer
             if (FindLaptop())
             {
                 ShowSyncStatus(true, false, true);
-                this.Invoke(new MethodInvoker(() => LTlbl1.Text = "Scanning and preparing Laptop... this may take some time..."));
+                this.Invoke(new MethodInvoker(() => LTlbl1.Text = "Scanning and preparing Laptop... DO NOT DISCONNECT THE DEVICE! This may take some time..."));
                 LaptopSyncSuccess = PerformSyncLaptop();
                 if (AutoExit && LaptopSyncSuccess)
                 {
@@ -689,7 +670,7 @@ namespace Chrononizer
             Boolean FoundLaptop = FindLaptop();
             if (FoundLaptop)
             {
-                this.Invoke(new MethodInvoker(() => LTlbl1.Text = "Scanning and preparing Laptop... this may take some time..."));
+                this.Invoke(new MethodInvoker(() => LTlbl1.Text = "Scanning and preparing Laptop... DO NOT DISCONNECT THE DEVICE! This may take some time..."));
                 LaptopSyncSuccess = PerformSyncLaptop();
             }
             else
@@ -742,7 +723,7 @@ namespace Chrononizer
             if (FindPMP())
             {
                 ShowSyncStatus(true, true, false);
-                this.Invoke(new MethodInvoker(() => lbl1.Text = "Scanning and preparing PMP... this may take some time..."));
+                this.Invoke(new MethodInvoker(() => lbl1.Text = "Scanning and preparing PMP... DO NOT DISCONNECT THE DEVICE! This may take some time..."));
                 PMPSyncSuccess = PerformSyncPMP();
                 if (AutoExit && PMPSyncSuccess)
                 {
@@ -783,7 +764,7 @@ namespace Chrononizer
             Boolean FoundPMP = FindPMP();
             if (FoundPMP)
             {
-                this.Invoke(new MethodInvoker(() => lbl1.Text = "Scanning and preparing PMP... this may take some time..."));
+                this.Invoke(new MethodInvoker(() => lbl1.Text = "Scanning and preparing PMP... DO NOT DISCONNECT THE DEVICE! This may take some time..."));
                 PMPSyncSuccess = PerformSyncPMP();
             }
             else
@@ -848,7 +829,16 @@ namespace Chrononizer
             lSize = GetDirectorySize(MusicLibrary, 0, ref flac, ref mp3, ref wma, ref m4a, ref ogg, ref wav, ref xm, ref mod, ref nsf);
             dSize = GetDownscaledDirectorySize(DownscaledLibrary, dSize, ref dFlac); //recurse through the downscaled files
             if (AutoHandle && Directory.Exists(MusicLibrary) && Directory.Exists(DownscaledLibrary)) //set the file attributes if auto handling is on
-                File.SetAttributes(DownscaledLibrary, FileAttributes.Hidden | FileAttributes.System);
+            {
+                try
+                {
+                    File.SetAttributes(DownscaledLibrary, FileAttributes.Hidden | FileAttributes.System);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex);
+                }
+            }
             audioTotal = flac + mp3 + wma + m4a + ogg + wav;
             chiptunesTotal = xm + mod + nsf;
             total = audioTotal + chiptunesTotal;
@@ -899,7 +889,16 @@ namespace Chrononizer
         private static void DeleteOldDestinationDirectories(string[] sourceDirectories, string destinationPath)
         {
             //get the destination files
-            string[] destinationDirectories = Directory.GetDirectories(destinationPath);
+            string[] destinationDirectories = null;
+            try
+            {
+                destinationDirectories = Directory.GetDirectories(destinationPath);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                return;
+            }
 
             foreach (string destinationDirectory in destinationDirectories)
             {
@@ -909,7 +908,14 @@ namespace Chrononizer
                 if (found.Length == 0)
                 {
                     //delete file if not found in destination
-                    Directory.Delete(destinationDirectory, true);
+                    try
+                    {
+                        Directory.Delete(destinationDirectory, true);
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex);
+                    }
                 }
             }
         }
@@ -921,7 +927,16 @@ namespace Chrononizer
         private static void DeleteOldDestinationFiles(string[] sourceFiles, string destinationPath)
         {
             //get the destination files
-            string[] destinationFiles = Directory.GetFiles(destinationPath);
+            string[] destinationFiles = null;
+            try
+            {
+                destinationFiles = Directory.GetFiles(destinationPath);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                return;
+            }
 
             foreach (string destinationFile in destinationFiles)
             {
@@ -931,7 +946,14 @@ namespace Chrononizer
                 if (found.Length == 0)
                 {
                     //delete file if not found in destination
-                    File.Delete(destinationFile);
+                    try
+                    {
+                        File.Delete(destinationFile);
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex);
+                    }
                 }
             }
         }
@@ -1079,7 +1101,7 @@ namespace Chrononizer
                 LTlbl2.Text = "0%";
             }));
 
-            //copy files to PMP here
+            //copy files to laptop here
             while (CopyFiles.Count > 0)
             {
                 UpdateLocation update = CopyFiles.Dequeue();
@@ -1095,7 +1117,33 @@ namespace Chrononizer
                         FileInfo info = new FileInfo(source);
 
                         //copy the file
-                        File.Copy(source, destination, true);
+                        try
+                        {
+                            File.Copy(source, destination, true);
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine(ex);
+                            if (!File.Exists(Path.GetFullPath(destination))) //check to see if the error was because of a lost connection
+                                result = MessageBox.Show("Connection to the Laptop has been lost!", "Chrononizer", MessageBoxButtons.RetryCancel, MessageBoxIcon.Error);
+                            else if (!File.Exists(source)) //the source file no longer exists
+                                result = MessageBox.Show("The file " + Path.GetFileName(source) + " cannot be found in the music library!", "Chrononizer", MessageBoxButtons.AbortRetryIgnore, MessageBoxIcon.Error);
+                            else
+                                return false; //unkown error, so stop the synchronization process
+
+                            if (result == DialogResult.Abort || result == DialogResult.Cancel)
+                            {
+                                this.Invoke(new MethodInvoker(() =>
+                                {
+                                    PMPpb.Value = 0;
+                                    lbl2.Text = " ";
+                                    lbl1.Text = "Error: Synchronization with Laptop failed! ";
+                                }));
+                                return false;
+                            }
+                            else if (result == DialogResult.Retry)
+                                continue;
+                        }
 
                         //calculate progress
                         progress += (int)(((info.Length / CopySize) * 100000));
@@ -1184,7 +1232,33 @@ namespace Chrononizer
                         FileInfo info = new FileInfo(source);
 
                         //copy the file
-                        File.Copy(source, destination, true);
+                        try
+                        {
+                            File.Copy(source, destination, true);
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine(ex);
+                            if (!File.Exists(Path.GetFullPath(destination))) //check to see if the error was because of a lost connection
+                                result = MessageBox.Show("The PMP has been disconnected!", "Chrononizer", MessageBoxButtons.RetryCancel, MessageBoxIcon.Error);
+                            else if (!File.Exists(source)) //the source file no longer exists
+                                result = MessageBox.Show("The file " + Path.GetFileName(source) + " cannot be found in the music library!", "Chrononizer", MessageBoxButtons.AbortRetryIgnore, MessageBoxIcon.Error);
+                            else
+                                return false; //unkown error, so stop the synchronization process
+
+                            if (result == DialogResult.Abort || result == DialogResult.Cancel)
+                            {
+                                this.Invoke(new MethodInvoker(() =>
+                                {
+                                    PMPpb.Value = 0;
+                                    lbl2.Text = " ";
+                                    lbl1.Text = "Error: Synchronization with PMP failed! ";
+                                }));
+                                return false;
+                            }
+                            else if (result == DialogResult.Retry)
+                                continue;
+                        }
 
                         //calculate progress
                         progress += (int)(((info.Length / CopySize) * 100000));
@@ -1235,9 +1309,20 @@ namespace Chrononizer
         {
             double size = 0; //size of all files in this directory that will need to be copied
             bool dirExisted = DirExisted(destinationPath);
+            if (!Directory.Exists(destinationPath))
+                return size; //the directory could not be accessed
 
             //get the source files
-            string[] sourceFiles = Directory.GetFiles(sourcePath);
+            string[] sourceFiles = null;
+            try
+            {
+                sourceFiles = Directory.GetFiles(sourcePath);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                return size;
+            }
             foreach (string sourceFile in sourceFiles)
             {
                 FileInfo sourceInfo = new FileInfo(sourceFile);
@@ -1271,7 +1356,16 @@ namespace Chrononizer
             DeleteOldDestinationFiles(sourceFiles, destinationPath);
 
             //now process the directories if exist
-            string[] dirs = Directory.GetDirectories(sourcePath);
+            string[] dirs = null;
+            try
+            {
+                dirs = Directory.GetDirectories(sourcePath);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                return size;
+            }
             DeleteOldDestinationDirectories(dirs, destinationPath);
             foreach (string dir in dirs)
             {
@@ -1292,9 +1386,20 @@ namespace Chrononizer
         {
             double size = 0; //size of all files in this directory that will need to be copied
             bool dirExisted = DirExisted(destinationPath);
+            if (!Directory.Exists(destinationPath))
+                return size; //the directory could not be accessed
 
             //get the source files
-            string[] sourceFiles = Directory.GetFiles(sourcePath);
+            string[] sourceFiles = null;
+            try
+            {
+                sourceFiles = Directory.GetFiles(sourcePath);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                return size;
+            }
             foreach (string sourceFile in sourceFiles)
             {
                 string correctFile = sourceFile;
@@ -1342,7 +1447,16 @@ namespace Chrononizer
             DeleteOldDestinationFiles(sourceFiles, destinationPath);
 
             //now process the directories if exist
-            string[] dirs = Directory.GetDirectories(sourcePath);
+            string[] dirs = null;
+            try
+            {
+                dirs = Directory.GetDirectories(sourcePath);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                return size;
+            }
             DeleteOldDestinationDirectories(dirs, destinationPath);
             foreach (string dir in dirs)
             {
@@ -1437,14 +1551,32 @@ namespace Chrononizer
             //create destination directory if not exist
             if (!Directory.Exists(path))
             {
-                Directory.CreateDirectory(path);
+                try
+                {
+                    Directory.CreateDirectory(path);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex);
+                    return false; //directory creation failed
+                }
                 exists = false;
             }
             else
                 exists = true;
             //hide all .mediaartlocal folders
             if (HideMediaArtLocal && Path.GetFileName(path) == ".mediaartlocal")
-                File.SetAttributes(Path.GetFullPath(path), FileAttributes.Hidden | FileAttributes.System);
+            {
+                try
+                {
+                    File.SetAttributes(Path.GetFullPath(path), FileAttributes.Hidden | FileAttributes.System);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex);
+                    return false;
+                }
+            }
             return exists;
         }
 
@@ -1510,9 +1642,33 @@ namespace Chrononizer
                 if (cbAutoHandle.Checked) tbDownscaledLocation.Text = tbLibraryLocation.Text + ".downscaled\\";
             }
             else if (TextBox == 2) tbDownscaledLocation.Text = open.SelectedPath + "\\";
-            else if (TextBox == 3) tbChiptunesLocation.Text = open.SelectedPath + "\\";
-            else if (TextBox == 4) tbPMPLocation.Text = open.SelectedPath + "\\";
-            else if (TextBox == 5) tbLaptopLocation.Text = open.SelectedPath + "\\";
+            else if (TextBox == 3)
+            {
+                if (!open.SelectedPath.Contains(MusicLibrary))
+                    MessageBox.Show("The chiptunes library is expected to be inside the music library!", "Chrononizer", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                else
+                    tbChiptunesLocation.Text = open.SelectedPath + "\\";
+            }
+            else if (TextBox == 4)
+            {
+                if (MusicLibrary.Contains(open.SelectedPath) || open.SelectedPath.Contains(MusicLibrary)
+                    || DownscaledLibrary.Contains(open.SelectedPath) || open.SelectedPath.Contains(DownscaledLibrary))
+                {
+                    MessageBox.Show("The override path cannot be related to the any of the libraries!", "Chrononizer", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                else
+                    tbPMPLocation.Text = open.SelectedPath + "\\";
+            }
+            else if (TextBox == 5)
+            {
+                if (MusicLibrary.Contains(open.SelectedPath) || open.SelectedPath.Contains(MusicLibrary)
+                    || DownscaledLibrary.Contains(open.SelectedPath) || open.SelectedPath.Contains(DownscaledLibrary))
+                {
+                    MessageBox.Show("The override path cannot be related to the any of the libraries!", "Chrononizer", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                else
+                    tbLaptopLocation.Text = open.SelectedPath + "\\";
+            }
         }
 
         //
@@ -1522,8 +1678,18 @@ namespace Chrononizer
         private double GetDirectorySize(string root, double size, ref long flac, ref long mp3, ref long wma, ref long m4a, ref long ogg, ref long wav, ref long xm, ref long mod, ref long nsf)
         {
             if (!Directory.Exists(root)) return size; //path is invalid
-            string[] files = Directory.GetFiles(root, "*.*"); //get array of all file names
-            string[] folders = Directory.GetDirectories(root); //get array of all folder names for this directory
+            string[] files = null;
+            string[] folders = null;
+            try
+            {
+                files = Directory.GetFiles(root, "*.*"); //get array of all file names
+                folders = Directory.GetDirectories(root); //get array of all folder names for this directory
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                return size;
+            }
 
             foreach (string name in files)
             {
@@ -1569,7 +1735,17 @@ namespace Chrononizer
                 if (Path.GetFullPath(name) == DownscaledLibrary.Substring(0, DownscaledLibrary.Length - 1)) continue; //don't scan through the downscaled files
                 //hide all .mediaartlocal folders
                 else if (HideMediaArtLocal && Path.GetFileName(name) == ".mediaartlocal")
-                    File.SetAttributes(Path.GetFullPath(name), FileAttributes.Hidden | FileAttributes.System);
+                {
+                    try
+                    {
+                        File.SetAttributes(Path.GetFullPath(name), FileAttributes.Hidden | FileAttributes.System);
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex);
+                        return size;
+                    }
+                }
                 size = GetDirectorySize(name, size, ref flac, ref mp3, ref wma, ref m4a, ref ogg, ref wav, ref xm, ref mod, ref nsf); //recurse through the folders
             }
             return size;
@@ -1586,8 +1762,18 @@ namespace Chrononizer
                 if (AutoHandle && Directory.Exists(MusicLibrary)) Directory.CreateDirectory(root); //create the directory if it doesn't exist
                 return size;
             }
-            string[] files = Directory.GetFiles(root, "*.*"); //get array of all file names
-            string[] folders = Directory.GetDirectories(root); //get array of all folder names for this directory
+            string[] files = null;
+            string[] folders = null;
+            try
+            {
+                files = Directory.GetFiles(root, "*.*"); //get array of all file names
+                folders = Directory.GetDirectories(root); //get array of all folder names for this directory
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                return size;
+            }
 
             foreach (string name in files)
             {
@@ -1607,7 +1793,16 @@ namespace Chrononizer
                     else if (scanned && !valid)
                     {
                         if (RemoveImproper)
-                            File.Delete(name); //downscaled flac not necessary
+                        {
+                            try
+                            {
+                                File.Delete(name); //downscaled flac not necessary
+                            }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine(ex);
+                            }
+                        }
                         else
                         {
                             if (ShowFiles) this.Invoke(new MethodInvoker(() => lbNotDownscaled.Items.Add(name))); //show the file in the list
@@ -1629,7 +1824,17 @@ namespace Chrononizer
                         }
                         else if (scanned && valid)
                         {
-                            if (RemoveUnnecessary) File.Delete(name); //file is unnecessary
+                            if (RemoveUnnecessary)
+                            {
+                                try
+                                {
+                                    File.Delete(name); //file is unnecessary
+                                }
+                                catch (Exception ex)
+                                {
+                                    Console.WriteLine(ex);
+                                }
+                            }
                         }
                         else
                         {
@@ -1637,7 +1842,16 @@ namespace Chrononizer
                             if (!File.Exists(defaultFile))
                             {
                                 if (RemoveUnnecessary)
-                                    File.Delete(name); //flac's upscaled file does not exist and is unnecessary
+                                {
+                                    try
+                                    {
+                                        File.Delete(name); //flac's upscaled file does not exist and is unnecessary
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        Console.WriteLine(ex);
+                                    }
+                                }
                                 else
                                 {
                                     size += info.Length; //add to the size
@@ -1647,7 +1861,16 @@ namespace Chrononizer
                             else if (flacTag.BitsPerSample > 16 || flacTag.SampleRate > 48000)
                             {
                                 if (RemoveImproper)
-                                    File.Delete(name); //downscaled flac not necessary
+                                {
+                                    try
+                                    {
+                                        File.Delete(name); //downscaled flac not necessary
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        Console.WriteLine(ex);
+                                    }
+                                }
                                 else
                                 {
                                     if (ShowFiles) this.Invoke(new MethodInvoker(() => lbNotDownscaled.Items.Add(name))); //show the file in the list
@@ -1666,7 +1889,16 @@ namespace Chrononizer
                                 else
                                 {
                                     if (RemoveUnnecessary)
-                                        File.Delete(name); //flac did not need downscaling and is unnecessary
+                                    {
+                                        try
+                                        {
+                                            File.Delete(name); //flac did not need downscaling and is unnecessary
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            Console.WriteLine(ex);
+                                        }
+                                    }
                                     else
                                     {
                                         size += info.Length; //add to the size
@@ -1678,7 +1910,17 @@ namespace Chrononizer
                         }
                     }
                 }
-                else if (RemoveUnsupported) File.Delete(name); //remove unsupported files
+                else if (RemoveUnsupported)
+                {
+                    try
+                    {
+                        File.Delete(name); //remove unsupported files
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex);
+                    }
+                }
             }
             foreach (string name in folders)
             {
@@ -1687,7 +1929,14 @@ namespace Chrononizer
 
             if (RemoveEmpty && !Directory.EnumerateFileSystemEntries(root).Any() && Path.GetFullPath(root) != DownscaledLibrary)
             {
-                Directory.Delete(root); //delete empty folders
+                try
+                {
+                    Directory.Delete(root); //delete empty folders
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex);
+                }
                 return size;
             }
             return size;
@@ -1699,10 +1948,26 @@ namespace Chrononizer
         //
         private void RemoveEmptyDirectories(string root)
         {
-            string[] folders = Directory.GetDirectories(root); //get array of all folder names for this directory
+            string[] folders = null;
+            try
+            {
+                folders = Directory.GetDirectories(root); //get array of all folder names for this directory
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                return;
+            }
             if (!Directory.EnumerateFileSystemEntries(root).Any() && Path.GetFullPath(root) != MusicLibrary)
             {
-                Directory.Delete(root); //delete empty folders
+                try
+                {
+                    Directory.Delete(root); //delete empty folders
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex);
+                }
                 return;
             }
             foreach (string name in folders)
