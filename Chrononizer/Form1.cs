@@ -1,5 +1,4 @@
-﻿/*
- * -======================- License and Distribution -======================-
+﻿/* -========================- License and Distribution -========================-
  * 
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -15,8 +14,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* 
- * -==========================- About Chrononizer -==========================-
+/* -===========================- About Chrononizer -===========================-
  *  
  *  Chrononizer is a simple music synchronization application that I designed 
  *  for myself to make my daily updates to my music library much easier. The
@@ -60,8 +58,7 @@
  *  feel free to send me an email at coolcord24@gmail.com
  */
 
-/* 
- * -================================- Credits -================================-
+/* -================================- Credits -================================-
  *  
  *  The following files included with Chrononizer (though some modified)
  *  were not originally created by me. Credit shall be given where it is due!
@@ -106,6 +103,7 @@ namespace Chrononizer
 {
     public partial class Form1 : Form
     {
+        #region Initialization and Startup
         private string ChiptunesLibrary = " ";
         private string DownscaledLibrary = " ";
         private string LaptopHostname = " ";
@@ -137,9 +135,9 @@ namespace Chrononizer
         DirectoryInfo PMPDrive = null;
 
         FlowLayoutPanel PMPflow, LTflow;
-        Label lbl1, lbl2, LTlbl1, LTlbl2;
-        ListBox lb1, LTlb;
-        ProgressBar PMPpb, LTpb;
+        Label lblPMPStatus, lblPMPProgress, lblLTStatus, lblLTProgress;
+        ListBox lbPMP, lbLT;
+        ProgressBar pbPMP, pbLT;
 
         public struct UpdateLocation
         {
@@ -253,9 +251,9 @@ namespace Chrononizer
         }
 
 
+        #endregion
 
-
-
+        #region Interface Event Handlers
         //===========================================================================
         //
         // Interface Event Handlers
@@ -636,9 +634,9 @@ namespace Chrononizer
         }
 
 
+        #endregion
 
-
-
+        #region Background Worker Handlers
         //===========================================================================
         //
         // Background Worker Handlers
@@ -654,7 +652,7 @@ namespace Chrononizer
             if (FindLaptop())
             {
                 ShowSyncStatus(true, false, true);
-                this.Invoke(new MethodInvoker(() => LTlbl1.Text = "Scanning and preparing Laptop... DO NOT DISCONNECT THE DEVICE! This may take some time..."));
+                this.Invoke(new MethodInvoker(() => lblLTStatus.Text = "Scanning and preparing Laptop... DO NOT DISCONNECT THE DEVICE! This may take some time..."));
                 LaptopSyncSuccess = PerformSyncLaptop();
                 if (AutoExit && LaptopSyncSuccess)
                 {
@@ -695,7 +693,7 @@ namespace Chrononizer
             Boolean FoundLaptop = FindLaptop();
             if (FoundLaptop)
             {
-                this.Invoke(new MethodInvoker(() => LTlbl1.Text = "Scanning and preparing Laptop... DO NOT DISCONNECT THE DEVICE! This may take some time..."));
+                this.Invoke(new MethodInvoker(() => lblLTStatus.Text = "Scanning and preparing Laptop... DO NOT DISCONNECT THE DEVICE! This may take some time..."));
                 LaptopSyncSuccess = PerformSyncLaptop();
             }
             else
@@ -748,7 +746,7 @@ namespace Chrononizer
             if (FindPMP())
             {
                 ShowSyncStatus(true, true, false);
-                this.Invoke(new MethodInvoker(() => lbl1.Text = "Scanning and preparing PMP... DO NOT DISCONNECT THE DEVICE! This may take some time..."));
+                this.Invoke(new MethodInvoker(() => lblPMPStatus.Text = "Scanning and preparing PMP... DO NOT DISCONNECT THE DEVICE! This may take some time..."));
                 PMPSyncSuccess = PerformSyncPMP();
                 if (AutoExit && PMPSyncSuccess)
                 {
@@ -789,7 +787,7 @@ namespace Chrononizer
             Boolean FoundPMP = FindPMP();
             if (FoundPMP)
             {
-                this.Invoke(new MethodInvoker(() => lbl1.Text = "Scanning and preparing PMP... DO NOT DISCONNECT THE DEVICE! This may take some time..."));
+                this.Invoke(new MethodInvoker(() => lblPMPStatus.Text = "Scanning and preparing PMP... DO NOT DISCONNECT THE DEVICE! This may take some time..."));
                 PMPSyncSuccess = PerformSyncPMP();
             }
             else
@@ -898,9 +896,9 @@ namespace Chrononizer
         }
 
 
+        #endregion
 
-
-
+        #region Synchronize Functions
         //===========================================================================
         //
         // Synchronize Functions
@@ -1005,14 +1003,14 @@ namespace Chrononizer
                 }
                 else //the user said no
                 {
-                    if (LTlbl1 != null)
-                        this.Invoke(new MethodInvoker(() => LTlbl1.Text = "Error: Synchronization with Laptop canceled! "));
+                    if (lblLTStatus != null)
+                        this.Invoke(new MethodInvoker(() => lblLTStatus.Text = "Error: Synchronization with Laptop canceled! "));
                 }
             }
             else //could not find device
             {
-                if (LTlbl1 != null)
-                    this.Invoke(new MethodInvoker(() => LTlbl1.Text = "Error: Synchronization with Laptop failed! "));
+                if (lblLTStatus != null)
+                    this.Invoke(new MethodInvoker(() => lblLTStatus.Text = "Error: Synchronization with Laptop failed! "));
                 MessageBox.Show("Laptop is not connected! Make sure that it is mounted properly!", "Chrononizer", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
@@ -1081,14 +1079,14 @@ namespace Chrononizer
                 }
                 else //the user said no
                 {
-                    if (lbl1 != null)
-                        this.Invoke(new MethodInvoker(() => lbl1.Text = "Error: Synchronization with PMP canceled! "));
+                    if (lblPMPStatus != null)
+                        this.Invoke(new MethodInvoker(() => lblPMPStatus.Text = "Error: Synchronization with PMP canceled! "));
                 }
             }
             else //could not find device
             {
-                if (lbl1 != null)
-                    this.Invoke(new MethodInvoker(() => lbl1.Text = "Error: Synchronization with PMP failed! "));
+                if (lblPMPStatus != null)
+                    this.Invoke(new MethodInvoker(() => lblPMPStatus.Text = "Error: Synchronization with PMP failed! "));
 
                 MessageBox.Show("PMP could not be found! Make sure that it is connected!", "Chrononizer", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -1113,7 +1111,7 @@ namespace Chrononizer
             while (UpdateFiles.Count > 0)
             {
                 UpdateLocation update = UpdateFiles.Dequeue();
-                this.Invoke(new MethodInvoker(() => LTlb.Items.Add(update.DestinationFile)));
+                this.Invoke(new MethodInvoker(() => lbLT.Items.Add(update.DestinationFile)));
                 CopyFiles.Enqueue(update);
             }
 
@@ -1122,8 +1120,8 @@ namespace Chrononizer
             double percent = 0;
             this.Invoke(new MethodInvoker(() =>
             {
-                LTlbl1.Text = "Copying updated files to Laptop...";
-                LTlbl2.Text = "0%";
+                lblLTStatus.Text = "Copying updated files to Laptop...";
+                lblLTProgress.Text = "0%";
             }));
 
             //copy files to laptop here
@@ -1160,9 +1158,9 @@ namespace Chrononizer
                             {
                                 this.Invoke(new MethodInvoker(() =>
                                 {
-                                    PMPpb.Value = 0;
-                                    lbl2.Text = " ";
-                                    lbl1.Text = "Error: Synchronization with Laptop failed! ";
+                                    pbPMP.Value = 0;
+                                    lblPMPProgress.Text = " ";
+                                    lblPMPStatus.Text = "Error: Synchronization with Laptop failed! ";
                                 }));
                                 return false;
                             }
@@ -1182,9 +1180,9 @@ namespace Chrononizer
                         {
                             this.Invoke(new MethodInvoker(() =>
                             {
-                                LTpb.Value = 0;
-                                LTlbl2.Text = " ";
-                                LTlbl1.Text = "Error: Synchronization with Laptop failed! ";
+                                pbLT.Value = 0;
+                                lblLTProgress.Text = " ";
+                                lblLTStatus.Text = "Error: Synchronization with Laptop failed! ";
                             }));
                             return false;
                         }
@@ -1195,17 +1193,17 @@ namespace Chrononizer
 
                 this.Invoke(new MethodInvoker(() =>
                 {
-                    LTpb.Value = progress; //get the file's size
-                    LTlbl2.Text = percent.ToString() + "%";
-                    LTlb.Items.Remove(destination);
+                    pbLT.Value = progress; //get the file's size
+                    lblLTProgress.Text = percent.ToString() + "%";
+                    lbLT.Items.Remove(destination);
                 }));
             }
 
             this.Invoke(new MethodInvoker(() =>
             {
-                LTpb.Value = LTpb.Maximum;
-                LTlbl2.Text = "100%";
-                LTlbl1.Text = "Synchronization with Laptop complete! ";
+                pbLT.Value = pbLT.Maximum;
+                lblLTProgress.Text = "100%";
+                lblLTStatus.Text = "Synchronization with Laptop complete! ";
             }));
 
             return true;
@@ -1228,7 +1226,7 @@ namespace Chrononizer
             while (UpdateFiles.Count > 0)
             {
                 UpdateLocation update = UpdateFiles.Dequeue();
-                this.Invoke(new MethodInvoker(() => lb1.Items.Add(update.DestinationFile)));
+                this.Invoke(new MethodInvoker(() => lbPMP.Items.Add(update.DestinationFile)));
                 CopyFiles.Enqueue(update);
             }
 
@@ -1237,8 +1235,8 @@ namespace Chrononizer
             double percent = 0;
             this.Invoke(new MethodInvoker(() =>
             {
-                lbl1.Text = "Copying updated files to PMP...";
-                lbl2.Text = "0%";
+                lblPMPStatus.Text = "Copying updated files to PMP...";
+                lblPMPProgress.Text = "0%";
             }));
 
             //copy files to PMP here
@@ -1275,9 +1273,9 @@ namespace Chrononizer
                             {
                                 this.Invoke(new MethodInvoker(() =>
                                 {
-                                    PMPpb.Value = 0;
-                                    lbl2.Text = " ";
-                                    lbl1.Text = "Error: Synchronization with PMP failed! ";
+                                    pbPMP.Value = 0;
+                                    lblPMPProgress.Text = " ";
+                                    lblPMPStatus.Text = "Error: Synchronization with PMP failed! ";
                                 }));
                                 return false;
                             }
@@ -1297,9 +1295,9 @@ namespace Chrononizer
                         {
                             this.Invoke(new MethodInvoker(() =>
                             {
-                                PMPpb.Value = 0;
-                                lbl2.Text = " ";
-                                lbl1.Text = "Error: Synchronization with PMP failed! ";
+                                pbPMP.Value = 0;
+                                lblPMPProgress.Text = " ";
+                                lblPMPStatus.Text = "Error: Synchronization with PMP failed! ";
                             }));
                             return false;
                         }
@@ -1310,17 +1308,17 @@ namespace Chrononizer
 
                 this.Invoke(new MethodInvoker(() =>
                 {
-                    PMPpb.Value = progress; //get the file's size
-                    lbl2.Text = percent.ToString() + "%";
-                    lb1.Items.Remove(destination);
+                    pbPMP.Value = progress; //get the file's size
+                    lblPMPProgress.Text = percent.ToString() + "%";
+                    lbPMP.Items.Remove(destination);
                 }));
             }
 
             this.Invoke(new MethodInvoker(() =>
             {
-                PMPpb.Value = PMPpb.Maximum;
-                lbl2.Text = "100%";
-                lbl1.Text = "Synchronization with PMP complete! ";
+                pbPMP.Value = pbPMP.Maximum;
+                lblPMPProgress.Text = "100%";
+                lblPMPStatus.Text = "Synchronization with PMP complete! ";
             }));
 
             return true;
@@ -1431,13 +1429,20 @@ namespace Chrononizer
 
                 if (Path.GetExtension(sourceFile) == ".flac")
                 {
-                    Luminescence.Xiph.FlacTagger flacTag = new FlacTagger(correctFile); //get the flac's tag
-                    if (flacTag.BitsPerSample > 16 || flacTag.SampleRate > 48000)
+                    try
                     {
-                        if (File.Exists(DownscaledLibrary + sourceFile.Substring(MusicLibrary.Length)))
-                            correctFile = DownscaledLibrary + sourceFile.Substring(MusicLibrary.Length); //redirect to downscaled file
-                        else if (PreventSynchingUpscaled)
-                            continue;
+                        Luminescence.Xiph.FlacTagger flacTag = new FlacTagger(correctFile); //get the flac's tag
+                        if (flacTag.BitsPerSample > 16 || flacTag.SampleRate > 48000)
+                        {
+                            if (File.Exists(DownscaledLibrary + sourceFile.Substring(MusicLibrary.Length)))
+                                correctFile = DownscaledLibrary + sourceFile.Substring(MusicLibrary.Length); //redirect to downscaled file
+                            else if (PreventSynchingUpscaled)
+                                continue;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex);
                     }
                 }
 
@@ -1499,9 +1504,9 @@ namespace Chrononizer
         }
 
 
+        #endregion
 
-
-
+        #region Miscellaneous Functions
         //===========================================================================
         //
         // Miscellaneous Functions
@@ -1719,32 +1724,48 @@ namespace Chrononizer
             foreach (string name in files)
             {
                 FileInfo info = new FileInfo(name); //read in the file
-                String ext = Path.GetExtension(name); //get the file's extension
+                String ext = Path.GetExtension(name).ToLowerInvariant(); //get the file's extension
                 size += info.Length; //get the length
                 //increment count based upon file type and extension type
                 if (ext == ".flac")
                 {
                     flac++;
-                    Luminescence.Xiph.FlacTagger flacTag = new FlacTagger(name); //get the flac's tag
-                    if (flacTag.BitsPerSample > 16 || flacTag.SampleRate > 48000)
+                    try
                     {
-                        checkedFiles.Add(name, false); //mark that it has been checked and is proper
-                        string downscaledFile = DownscaledLibrary + name.Substring(MusicLibrary.Length);
-                        if (File.Exists(downscaledFile))
+                        Luminescence.Xiph.FlacTagger flacTag = new FlacTagger(name); //get the flac's tag
+                        if (flacTag.BitsPerSample > 16 || flacTag.SampleRate > 48000)
                         {
-                            flacTag = new FlacTagger(downscaledFile);
-                            if (flacTag.BitsPerSample > 16 || flacTag.SampleRate > 48000)
+                            checkedFiles.Add(name, false); //mark that it has been checked and is proper
+                            string downscaledFile = DownscaledLibrary + name.Substring(MusicLibrary.Length);
+                            if (File.Exists(downscaledFile))
                             {
-                                this.Invoke(new MethodInvoker(() => lbNotDownscaled.Items.Add(name))); //if it does not meet the minimum requirements, it needs to be downscaled
-                                checkedFiles.Add(downscaledFile, false); //mark that it has been checked and is not proper
+                                try
+                                {
+                                    flacTag = new FlacTagger(downscaledFile);
+                                    if (flacTag.BitsPerSample > 16 || flacTag.SampleRate > 48000)
+                                    {
+                                        this.Invoke(new MethodInvoker(() => lbNotDownscaled.Items.Add(name))); //if it does not meet the minimum requirements, it needs to be downscaled
+                                        checkedFiles.Add(downscaledFile, false); //mark that it has been checked and is not proper
+                                    }
+                                    else checkedFiles.Add(downscaledFile, true); //mark that it has been checked and is proper
+                                }
+                                catch (Exception ex)
+                                {
+                                    Console.WriteLine(ex);
+                                    this.Invoke(new MethodInvoker(() => lbNotDownscaled.Items.Add(name))); //something is wrong with the downscaled file
+                                    checkedFiles.Add(downscaledFile, false); //mark that it has been checked and is not proper
+                                }
                             }
-                            else checkedFiles.Add(downscaledFile, true); //mark that it has been checked and is proper
+                            else
+                                this.Invoke(new MethodInvoker(() => lbNotDownscaled.Items.Add(name))); //no downscaled file exists
                         }
-                        else
-                            this.Invoke(new MethodInvoker(() => lbNotDownscaled.Items.Add(name))); //no downscaled file exists
+                        else checkedFiles.Add(name, true); //mark that it has been checked and is not proper
+                        flacTag = null; //make sure it is not accessed again
                     }
-                    else checkedFiles.Add(name, true); //mark that it has been checked and is not proper
-                    flacTag = null; //make sure it is not accessed again
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex);
+                    }
                 }
                 else if (ext == ".mp3") mp3++;
                 else if (ext == ".wma") wma++;
@@ -1803,7 +1824,7 @@ namespace Chrononizer
             foreach (string name in files)
             {
                 FileInfo info = new FileInfo(name); //read in the file
-                String ext = Path.GetExtension(name); //get the file's extension
+                String ext = Path.GetExtension(name).ToLowerInvariant(); //get the file's extension
                 //increment count based upon file type and extension type
                 if (ext == ".flac")
                 {
@@ -1863,61 +1884,16 @@ namespace Chrononizer
                         }
                         else
                         {
-                            Luminescence.Xiph.FlacTagger flacTag = new FlacTagger(name); //get the flac's tag
-                            if (!File.Exists(defaultFile))
+                            try
                             {
-                                if (RemoveUnnecessary)
-                                {
-                                    try
-                                    {
-                                        File.Delete(name); //flac's upscaled file does not exist and is unnecessary
-                                    }
-                                    catch (Exception ex)
-                                    {
-                                        Console.WriteLine(ex);
-                                    }
-                                }
-                                else
-                                {
-                                    size += info.Length; //add to the size
-                                    flac++;
-                                }
-                            }
-                            else if (flacTag.BitsPerSample > 16 || flacTag.SampleRate > 48000)
-                            {
-                                if (RemoveImproper)
-                                {
-                                    try
-                                    {
-                                        File.Delete(name); //downscaled flac not necessary
-                                    }
-                                    catch (Exception ex)
-                                    {
-                                        Console.WriteLine(ex);
-                                    }
-                                }
-                                else
-                                {
-                                    if (ShowFiles) this.Invoke(new MethodInvoker(() => lbNotDownscaled.Items.Add(name))); //show the file in the list
-                                    size += info.Length; //add to the size
-                                    flac++;
-                                }
-                            }
-                            else
-                            {
-                                flacTag = new FlacTagger(defaultFile);
-                                if (flacTag.BitsPerSample > 16 || flacTag.SampleRate > 48000)
-                                {
-                                    size += info.Length; //add to the size
-                                    flac++; //flac is ok to use
-                                }
-                                else
+                                Luminescence.Xiph.FlacTagger flacTag = new FlacTagger(name); //get the flac's tag
+                                if (!File.Exists(defaultFile))
                                 {
                                     if (RemoveUnnecessary)
                                     {
                                         try
                                         {
-                                            File.Delete(name); //flac did not need downscaling and is unnecessary
+                                            File.Delete(name); //flac's upscaled file does not exist and is unnecessary
                                         }
                                         catch (Exception ex)
                                         {
@@ -1930,8 +1906,76 @@ namespace Chrononizer
                                         flac++;
                                     }
                                 }
+                                else if (flacTag.BitsPerSample > 16 || flacTag.SampleRate > 48000)
+                                {
+                                    if (RemoveImproper)
+                                    {
+                                        try
+                                        {
+                                            File.Delete(name); //downscaled flac not necessary
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            Console.WriteLine(ex);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (ShowFiles) this.Invoke(new MethodInvoker(() => lbNotDownscaled.Items.Add(name))); //show the file in the list
+                                        size += info.Length; //add to the size
+                                        flac++;
+                                    }
+                                }
+                                else
+                                {
+                                    try
+                                    {
+                                        flacTag = new FlacTagger(defaultFile);
+                                        if (flacTag.BitsPerSample > 16 || flacTag.SampleRate > 48000)
+                                        {
+                                            size += info.Length; //add to the size
+                                            flac++; //flac is ok to use
+                                        }
+                                        else
+                                        {
+                                            if (RemoveUnnecessary)
+                                            {
+                                                try
+                                                {
+                                                    File.Delete(name); //flac did not need downscaling and is unnecessary
+                                                }
+                                                catch (Exception ex)
+                                                {
+                                                    Console.WriteLine(ex);
+                                                }
+                                            }
+                                            else
+                                            {
+                                                size += info.Length; //add to the size
+                                                flac++;
+                                            }
+                                        }
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        Console.WriteLine(ex);
+                                        try
+                                        {
+                                            if (RemoveImproper)
+                                                File.Delete(name); //flactag could not be read, so assume the file is invalid
+                                        }
+                                        catch (Exception exDelete)
+                                        {
+                                            Console.WriteLine(exDelete);
+                                        }
+                                    }
+                                }
+                                flacTag = null;
                             }
-                            flacTag = null;
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine(ex);
+                            }
                         }
                     }
                 }
@@ -2024,35 +2068,35 @@ namespace Chrononizer
                         PMPflow.FlowDirection = FlowDirection.LeftToRight;
                         PMPflow.AutoSizeMode = AutoSizeMode.GrowAndShrink;
                         PMPflow.AutoSize = true;
-                        lbl1 = new Label();
-                        lbl1.Text = "Searching for PMP...";
-                        lbl1.AutoSize = true;
-                        PMPflow.Controls.Add(lbl1);
-                        lbl2 = new Label();
-                        lbl2.Text = " ";
-                        lbl2.AutoSize = true;
-                        PMPflow.Controls.Add(lbl2);
+                        lblPMPStatus = new Label();
+                        lblPMPStatus.Text = "Searching for PMP...";
+                        lblPMPStatus.AutoSize = true;
+                        PMPflow.Controls.Add(lblPMPStatus);
+                        lblPMPProgress = new Label();
+                        lblPMPProgress.Text = " ";
+                        lblPMPProgress.AutoSize = true;
+                        PMPflow.Controls.Add(lblPMPProgress);
 
                         //Progressbar
-                        PMPpb = new ProgressBar();
-                        PMPpb.Maximum = 100000;
-                        PMPpb.Value = 0;
-                        PMPpb.Width = 765;
-                        PMPpb.Height = 38;
-                        PMPpb.Value = 0;
+                        pbPMP = new ProgressBar();
+                        pbPMP.Maximum = 100000;
+                        pbPMP.Value = 0;
+                        pbPMP.Width = 765;
+                        pbPMP.Height = 38;
+                        pbPMP.Value = 0;
 
                         //Listbox
-                        lb1 = new ListBox();
-                        lb1.Width = 765;
+                        lbPMP = new ListBox();
+                        lbPMP.Width = 765;
                         if (pmp && laptop)
-                            lb1.Height = 180; //when there is two
+                            lbPMP.Height = 180; //when there is two
                         else
-                            lb1.Height = 450; //when there is one
+                            lbPMP.Height = 450; //when there is one
 
                         //Add the objects to the layout
                         flowLayoutPanel2.Controls.Add(PMPflow);
-                        flowLayoutPanel2.Controls.Add(PMPpb);
-                        flowLayoutPanel2.Controls.Add(lb1);
+                        flowLayoutPanel2.Controls.Add(pbPMP);
+                        flowLayoutPanel2.Controls.Add(lbPMP);
                     }
 
                     if (laptop)
@@ -2062,35 +2106,35 @@ namespace Chrononizer
                         LTflow.FlowDirection = FlowDirection.LeftToRight;
                         LTflow.AutoSizeMode = AutoSizeMode.GrowAndShrink;
                         LTflow.AutoSize = true;
-                        LTlbl1 = new Label();
-                        LTlbl1.Text = "Searching for Laptop...";
-                        LTlbl1.AutoSize = true;
-                        LTflow.Controls.Add(LTlbl1);
-                        LTlbl2 = new Label();
-                        LTlbl2.Text = " ";
-                        LTlbl2.AutoSize = true;
-                        LTflow.Controls.Add(LTlbl2);
+                        lblLTStatus = new Label();
+                        lblLTStatus.Text = "Searching for Laptop...";
+                        lblLTStatus.AutoSize = true;
+                        LTflow.Controls.Add(lblLTStatus);
+                        lblLTProgress = new Label();
+                        lblLTProgress.Text = " ";
+                        lblLTProgress.AutoSize = true;
+                        LTflow.Controls.Add(lblLTProgress);
 
                         //Progressbar
-                        LTpb = new ProgressBar();
-                        LTpb.Maximum = 100000;
-                        LTpb.Value = 0;
-                        LTpb.Width = 765;
-                        LTpb.Height = 38;
-                        LTpb.Value = 0;
+                        pbLT = new ProgressBar();
+                        pbLT.Maximum = 100000;
+                        pbLT.Value = 0;
+                        pbLT.Width = 765;
+                        pbLT.Height = 38;
+                        pbLT.Value = 0;
 
                         //Listbox
-                        LTlb = new ListBox();
-                        LTlb.Width = 765;
+                        lbLT = new ListBox();
+                        lbLT.Width = 765;
                         if (pmp && laptop)
-                            LTlb.Height = 180;
+                            lbLT.Height = 180;
                         else
-                            LTlb.Height = 450;
+                            lbLT.Height = 450;
 
                         //Add the objects to the layout
                         flowLayoutPanel2.Controls.Add(LTflow);
-                        flowLayoutPanel2.Controls.Add(LTpb);
-                        flowLayoutPanel2.Controls.Add(LTlb);
+                        flowLayoutPanel2.Controls.Add(pbLT);
+                        flowLayoutPanel2.Controls.Add(lbLT);
                     }
                 }
                 else
@@ -2103,34 +2147,38 @@ namespace Chrononizer
                     if (pmp)
                     {
                         //Clear out the status screen
-                        PMPflow.Controls.Remove(lbl1);
-                        PMPflow.Controls.Remove(lbl2);
-                        flowLayoutPanel2.Controls.Remove(lb1);
-                        flowLayoutPanel2.Controls.Remove(PMPpb);
+                        PMPflow.Controls.Remove(lblPMPStatus);
+                        PMPflow.Controls.Remove(lblPMPProgress);
+                        flowLayoutPanel2.Controls.Remove(lbPMP);
+                        flowLayoutPanel2.Controls.Remove(pbPMP);
                         flowLayoutPanel2.Controls.Remove(PMPflow);
-                        lbl1 = null;
-                        lbl2 = null;
+                        lblPMPStatus = null;
+                        lblPMPProgress = null;
                         PMPflow = null;
-                        PMPpb = null;
-                        lb1 = null;
+                        pbPMP = null;
+                        lbPMP = null;
                     }
 
                     if (laptop)
                     {
                         //Status text
-                        LTflow.Controls.Remove(LTlbl1);
-                        LTflow.Controls.Remove(LTlbl2);
-                        flowLayoutPanel2.Controls.Remove(LTlb);
-                        flowLayoutPanel2.Controls.Remove(LTpb);
+                        LTflow.Controls.Remove(lblLTStatus);
+                        LTflow.Controls.Remove(lblLTProgress);
+                        flowLayoutPanel2.Controls.Remove(lbLT);
+                        flowLayoutPanel2.Controls.Remove(pbLT);
                         flowLayoutPanel2.Controls.Remove(LTflow);
-                        LTlbl1 = null;
-                        LTlbl2 = null;
+                        lblLTStatus = null;
+                        lblLTProgress = null;
                         LTflow = null;
-                        LTpb = null;
-                        LTlb = null;
+                        pbLT = null;
+                        lbLT = null;
                     }
                 }
             }));
         }
+
+
+
+        #endregion
     }
 }

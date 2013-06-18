@@ -4,12 +4,3 @@ E:\Documents\Visual Studio 2010\Projects\Chrononizer\Chrononizer\bin\x64\Debug\C
 E:\Documents\Visual Studio 2010\Projects\Chrononizer\Chrononizer\bin\x64\Debug\Chrononizer.exe
 E:\Documents\Visual Studio 2010\Projects\Chrononizer\Chrononizer\bin\x64\Debug\Chrononizer.pdb
 E:\Documents\Visual Studio 2010\Projects\Chrononizer\Chrononizer\bin\x64\Debug\Luminescence.Xiph.dll
-E:\Documents\Visual Studio 2010\Projects\Chrononizer\Chrononizer\obj\x64\Debug\ResolveAssemblyReference.cache
-E:\Documents\Visual Studio 2010\Projects\Chrononizer\Chrononizer\obj\x64\Debug\Chrononizer.Form1.resources
-E:\Documents\Visual Studio 2010\Projects\Chrononizer\Chrononizer\obj\x64\Debug\Chrononizer.Properties.Resources.resources
-E:\Documents\Visual Studio 2010\Projects\Chrononizer\Chrononizer\obj\x64\Debug\GenerateResource.read.1.tlog
-E:\Documents\Visual Studio 2010\Projects\Chrononizer\Chrononizer\obj\x64\Debug\GenerateResource.write.1.tlog
-E:\Documents\Visual Studio 2010\Projects\Chrononizer\Chrononizer\obj\x64\Debug\Chrononizer.exe.manifest
-E:\Documents\Visual Studio 2010\Projects\Chrononizer\Chrononizer\obj\x64\Debug\Chrononizer.application
-E:\Documents\Visual Studio 2010\Projects\Chrononizer\Chrononizer\obj\x64\Debug\Chrononizer.exe
-E:\Documents\Visual Studio 2010\Projects\Chrononizer\Chrononizer\obj\x64\Debug\Chrononizer.pdb
