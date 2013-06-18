@@ -159,12 +159,12 @@ namespace Chrononizer
 
             if (!Properties.Settings.Default.FirstBoot)
             {
-                //load saved settings
+                //Load saved settings. Order is important!
                 cbOverridePMPPath.Checked = Properties.Settings.Default.OverridePMPPath;
                 cbOverrideLaptopPath.Checked = Properties.Settings.Default.OverrideLaptopPath;
+                tbChiptunesLocation.Text = Properties.Settings.Default.ChiptunesLibrary;
                 tbLibraryLocation.Text = Properties.Settings.Default.MusicLibrary;
                 tbDownscaledLocation.Text = Properties.Settings.Default.DownscaledLibrary;
-                tbChiptunesLocation.Text = Properties.Settings.Default.ChiptunesLibrary;
                 tbLaptopHostname.Text = Properties.Settings.Default.LaptopHostname;
                 tbLaptopUsername.Text = Properties.Settings.Default.LaptopUsername;
                 tbPMPVolumeLabel.Text = Properties.Settings.Default.PMPVolumeLabel;
@@ -194,13 +194,13 @@ namespace Chrononizer
                 string drive = Environment.GetFolderPath(Environment.SpecialFolder.System);
                 drive = drive.Substring(0, 1); //get drive letter
                 string username = WindowsIdentity.GetCurrent().Name.Split('\\')[1]; //get username from login
-                
-                //load default settings
+
+                //Load default settings. Order is important!
                 cbOverridePMPPath.Checked = Properties.Settings.Default.OverridePMPPath;
                 cbOverrideLaptopPath.Checked = Properties.Settings.Default.OverrideLaptopPath;
+                tbChiptunesLocation.Text = Environment.GetFolderPath(Environment.SpecialFolder.MyMusic) + "\\Chiptunes\\";
                 tbLibraryLocation.Text = Environment.GetFolderPath(Environment.SpecialFolder.MyMusic) + "\\";
                 tbDownscaledLocation.Text = Environment.GetFolderPath(Environment.SpecialFolder.MyMusic) + "\\.downscaled\\";
-                tbChiptunesLocation.Text = Environment.GetFolderPath(Environment.SpecialFolder.MyMusic) + "\\Chiptunes\\";
                 tbLaptopHostname.Text = "Laptop";
                 tbLaptopUsername.Text = Environment.UserName; //assume that the laptop's username is the same as the user running the app
                 tbPMPVolumeLabel.Text = "X7 HDD";
@@ -227,9 +227,9 @@ namespace Chrononizer
             }
 
             //store the values
+            ChiptunesLibrary = tbChiptunesLocation.Text;
             MusicLibrary = tbLibraryLocation.Text;
             DownscaledLibrary = tbDownscaledLocation.Text;
-            ChiptunesLibrary = tbChiptunesLocation.Text;
             PMPLocation = tbPMPLocation.Text;
             PMPVolumeLabel = tbPMPVolumeLabel.Text;
             LaptopLocation = tbLaptopLocation.Text;
