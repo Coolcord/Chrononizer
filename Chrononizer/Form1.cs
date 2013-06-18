@@ -225,6 +225,31 @@ namespace Chrononizer
                 DialogResult result = MessageBox.Show("It is highly recommended that you check and configure your preferences before you synchronize any devices.\n\nWould you like to do so now?", "Welcome to Chrononizer!", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (result == DialogResult.Yes) tabControl.SelectedTab = PreferencesTab; //show the preferences tab
             }
+
+            //store the values
+            MusicLibrary = tbLibraryLocation.Text;
+            DownscaledLibrary = tbDownscaledLocation.Text;
+            ChiptunesLibrary = tbChiptunesLocation.Text;
+            PMPLocation = tbPMPLocation.Text;
+            PMPVolumeLabel = tbPMPVolumeLabel.Text;
+            LaptopLocation = tbLaptopLocation.Text;
+            LaptopHostname = tbLaptopHostname.Text;
+            LaptopUsername = tbLaptopUsername.Text;
+            AutoHandle = cbAutoHandle.Checked;
+            RemoveImproper = cbRemoveImproper.Checked;
+            ShowFiles = cbShowImproper.Checked;
+            RemoveUnsupported = cbRemoveUnsupported.Checked;
+            RemoveUnnecessary = cbRemoveUnnecessary.Checked;
+            RemoveEmpty = cbRemoveEmpty.Checked;
+            PreventSynchingUpscaled = cbPreventSynchingUpscaled.Checked;
+            EnableChiptunes = cbChiptunesLibrary.Checked;
+            AskSync = cbAskSync.Checked;
+            CheckPMPSystem = cbCheckPMPSystem.Checked;
+            OverridePMPPath = cbOverridePMPPath.Checked;
+            OverrideLaptopPath = cbOverrideLaptopPath.Checked;
+            HideMediaArtLocal = cbHideMediaArtLocal.Checked;
+            AutoExit = cbAutoExit.Checked;
+            AutoExitOne = cbAutoExitOne.Checked;
         }
 
 

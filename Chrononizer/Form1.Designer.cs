@@ -60,6 +60,7 @@
             this.lbNotDownscaled = new System.Windows.Forms.ListBox();
             this.btnScan = new System.Windows.Forms.Button();
             this.PreferencesTab = new System.Windows.Forms.TabPage();
+            this.cbAutoExitOne = new System.Windows.Forms.CheckBox();
             this.cbAutoExit = new System.Windows.Forms.CheckBox();
             this.cbHideMediaArtLocal = new System.Windows.Forms.CheckBox();
             this.btnLaptopLocation = new System.Windows.Forms.Button();
@@ -102,7 +103,6 @@
             this.LaptopSyncBW = new System.ComponentModel.BackgroundWorker();
             this.PMPSyncTBW = new System.ComponentModel.BackgroundWorker();
             this.LaptopSyncTBW = new System.ComponentModel.BackgroundWorker();
-            this.cbAutoExitOne = new System.Windows.Forms.CheckBox();
             this.tabControl.SuspendLayout();
             this.SyncTab.SuspendLayout();
             this.InfoTab.SuspendLayout();
@@ -472,6 +472,18 @@
             this.PreferencesTab.Text = "Preferences";
             this.PreferencesTab.UseVisualStyleBackColor = true;
             // 
+            // cbAutoExitOne
+            // 
+            this.cbAutoExitOne.AutoSize = true;
+            this.cbAutoExitOne.Enabled = false;
+            this.cbAutoExitOne.Location = new System.Drawing.Point(12, 467);
+            this.cbAutoExitOne.Name = "cbAutoExitOne";
+            this.cbAutoExitOne.Size = new System.Drawing.Size(518, 21);
+            this.cbAutoExitOne.TabIndex = 37;
+            this.cbAutoExitOne.Text = "Always automatically exit as long as at least one synchronization is successful";
+            this.cbAutoExitOne.UseVisualStyleBackColor = true;
+            this.cbAutoExitOne.CheckedChanged += new System.EventHandler(this.cbAutoExitOne_CheckedChanged);
+            // 
             // cbAutoExit
             // 
             this.cbAutoExit.AutoSize = true;
@@ -497,7 +509,7 @@
             // btnLaptopLocation
             // 
             this.btnLaptopLocation.Enabled = false;
-            this.btnLaptopLocation.Location = new System.Drawing.Point(741, 313);
+            this.btnLaptopLocation.Location = new System.Drawing.Point(741, 316);
             this.btnLaptopLocation.Name = "btnLaptopLocation";
             this.btnLaptopLocation.Size = new System.Drawing.Size(31, 23);
             this.btnLaptopLocation.TabIndex = 34;
@@ -519,7 +531,7 @@
             // cbOverrideLaptopPath
             // 
             this.cbOverrideLaptopPath.AutoSize = true;
-            this.cbOverrideLaptopPath.Location = new System.Drawing.Point(451, 269);
+            this.cbOverrideLaptopPath.Location = new System.Drawing.Point(451, 272);
             this.cbOverrideLaptopPath.Name = "cbOverrideLaptopPath";
             this.cbOverrideLaptopPath.Size = new System.Drawing.Size(166, 21);
             this.cbOverrideLaptopPath.TabIndex = 32;
@@ -542,7 +554,7 @@
             // 
             this.tbLaptopLocation.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.tbLaptopLocation.Enabled = false;
-            this.tbLaptopLocation.Location = new System.Drawing.Point(451, 313);
+            this.tbLaptopLocation.Location = new System.Drawing.Point(451, 316);
             this.tbLaptopLocation.Name = "tbLaptopLocation";
             this.tbLaptopLocation.ReadOnly = true;
             this.tbLaptopLocation.Size = new System.Drawing.Size(284, 22);
@@ -554,7 +566,7 @@
             // 
             this.lblLaptopLocation.AutoSize = true;
             this.lblLaptopLocation.Enabled = false;
-            this.lblLaptopLocation.Location = new System.Drawing.Point(448, 293);
+            this.lblLaptopLocation.Location = new System.Drawing.Point(448, 296);
             this.lblLaptopLocation.Name = "lblLaptopLocation";
             this.lblLaptopLocation.Size = new System.Drawing.Size(114, 17);
             this.lblLaptopLocation.TabIndex = 27;
@@ -603,7 +615,7 @@
             // tbLaptopUsername
             // 
             this.tbLaptopUsername.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.tbLaptopUsername.Location = new System.Drawing.Point(451, 241);
+            this.tbLaptopUsername.Location = new System.Drawing.Point(451, 244);
             this.tbLaptopUsername.Name = "tbLaptopUsername";
             this.tbLaptopUsername.Size = new System.Drawing.Size(284, 22);
             this.tbLaptopUsername.TabIndex = 22;
@@ -612,7 +624,7 @@
             // lblLaptopUsername
             // 
             this.lblLaptopUsername.AutoSize = true;
-            this.lblLaptopUsername.Location = new System.Drawing.Point(448, 221);
+            this.lblLaptopUsername.Location = new System.Drawing.Point(448, 224);
             this.lblLaptopUsername.Name = "lblLaptopUsername";
             this.lblLaptopUsername.Size = new System.Drawing.Size(125, 17);
             this.lblLaptopUsername.TabIndex = 21;
@@ -876,18 +888,6 @@
             // LaptopSyncTBW
             // 
             this.LaptopSyncTBW.DoWork += new System.ComponentModel.DoWorkEventHandler(this.LaptopSyncTBW_DoWork);
-            // 
-            // cbAutoExitOne
-            // 
-            this.cbAutoExitOne.AutoSize = true;
-            this.cbAutoExitOne.Enabled = false;
-            this.cbAutoExitOne.Location = new System.Drawing.Point(12, 467);
-            this.cbAutoExitOne.Name = "cbAutoExitOne";
-            this.cbAutoExitOne.Size = new System.Drawing.Size(518, 21);
-            this.cbAutoExitOne.TabIndex = 37;
-            this.cbAutoExitOne.Text = "Always automatically exit as long as at least one synchronization is successful";
-            this.cbAutoExitOne.UseVisualStyleBackColor = true;
-            this.cbAutoExitOne.CheckedChanged += new System.EventHandler(this.cbAutoExitOne_CheckedChanged);
             // 
             // Form1
             // 
