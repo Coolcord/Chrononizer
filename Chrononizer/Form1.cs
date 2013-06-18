@@ -698,43 +698,43 @@ namespace Chrononizer
             }
             else
                 LaptopSyncSuccess = false;
-            this.Invoke(new MethodInvoker(() =>
+            if (PMPSyncTBW.IsBusy == false)
             {
-                if (PMPSyncTBW.IsBusy == false)
+                if (AutoExit && PMPSyncSuccess && LaptopSyncSuccess)
                 {
-                    if (AutoExit && PMPSyncSuccess && LaptopSyncSuccess)
-                    {
-                        System.Media.SoundPlayer sound = new System.Media.SoundPlayer(Chrononizer.Properties.Resources.AaawYeah);
-                        sound.PlaySync();  //Plays the sound in sync with the current thread so that it isn't cut off when the program exits
+                    System.Media.SoundPlayer sound = new System.Media.SoundPlayer(Chrononizer.Properties.Resources.AaawYeah);
+                    sound.PlaySync();  //Plays the sound in sync with the current thread so that it isn't cut off when the program exits
 
-                        System.Environment.Exit(0); //exit the program if auto exit is enabled
-                    }
-                    if (AutoExitOne && (PMPSyncSuccess || LaptopSyncSuccess)) //auto exit if at least one succeeds
-                    {
-                        System.Media.SoundPlayer sound = new System.Media.SoundPlayer(Chrononizer.Properties.Resources.AaawYeah);
-                        sound.PlaySync();  //Plays the sound in sync with the current thread so that it isn't cut off when the program exits
+                    System.Environment.Exit(0); //exit the program if auto exit is enabled
+                }
+                if (AutoExitOne && (PMPSyncSuccess || LaptopSyncSuccess)) //auto exit if at least one succeeds
+                {
+                    System.Media.SoundPlayer sound = new System.Media.SoundPlayer(Chrononizer.Properties.Resources.AaawYeah);
+                    sound.PlaySync();  //Plays the sound in sync with the current thread so that it isn't cut off when the program exits
 
-                        System.Environment.Exit(0); //exit the program if auto exit is enabled
-                    }
-                    if (PMPSyncSuccess || LaptopSyncSuccess)
-                    {
-                        System.Media.SoundPlayer sound = new System.Media.SoundPlayer(Chrononizer.Properties.Resources.AaawYeah);
-                        sound.Play();  //Plays the sound in a new thread
+                    System.Environment.Exit(0); //exit the program if auto exit is enabled
+                }
+                if (PMPSyncSuccess || LaptopSyncSuccess)
+                {
+                    System.Media.SoundPlayer sound = new System.Media.SoundPlayer(Chrononizer.Properties.Resources.AaawYeah);
+                    sound.Play();  //Plays the sound in a new thread
 
-                        MessageBox.Show("Synchronization Complete!", "Chrononizer", MessageBoxButtons.OK, MessageBoxIcon.Information); //show the success window if at least one operation completed
-                    }
-                    else
-                    {
-                        System.Media.SoundPlayer sound = new System.Media.SoundPlayer(Chrononizer.Properties.Resources.OhNo);
-                        sound.Play();  //Plays the sound in a new thread
+                    MessageBox.Show("Synchronization Complete!", "Chrononizer", MessageBoxButtons.OK, MessageBoxIcon.Information); //show the success window if at least one operation completed
+                }
+                else
+                {
+                    System.Media.SoundPlayer sound = new System.Media.SoundPlayer(Chrononizer.Properties.Resources.OhNo);
+                    sound.Play();  //Plays the sound in a new thread
 
-                        MessageBox.Show("Synchronization Failed!", "Chrononizer", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
+                    MessageBox.Show("Synchronization Failed!", "Chrononizer", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                this.Invoke(new MethodInvoker(() =>
+                {
                     ShowSyncStatus(false, true, true);
                     btnSyncBoth.Text = "Synchronize Both";
                     PreferencesTab.Enabled = true; //allow changes to preferences
-                }
-            }));
+                }));
+            }
         }
 
         //
@@ -792,43 +792,43 @@ namespace Chrononizer
             }
             else
                 PMPSyncSuccess = false;
-            this.Invoke(new MethodInvoker(() =>
+            if (LaptopSyncTBW.IsBusy == false)
             {
-                if (LaptopSyncTBW.IsBusy == false)
+                if (AutoExit && PMPSyncSuccess && LaptopSyncSuccess)
                 {
-                    if (AutoExit && PMPSyncSuccess && LaptopSyncSuccess)
-                    {
-                        System.Media.SoundPlayer sound = new System.Media.SoundPlayer(Chrononizer.Properties.Resources.AaawYeah);
-                        sound.PlaySync();  //Plays the sound in sync with the current thread so that it isn't cut off when the program exits
+                    System.Media.SoundPlayer sound = new System.Media.SoundPlayer(Chrononizer.Properties.Resources.AaawYeah);
+                    sound.PlaySync();  //Plays the sound in sync with the current thread so that it isn't cut off when the program exits
 
-                        System.Environment.Exit(0); //exit the program if auto exit is enabled
-                    }
-                    if (AutoExitOne && (PMPSyncSuccess || LaptopSyncSuccess)) //auto exit if at least one succeeds
-                    {
-                        System.Media.SoundPlayer sound = new System.Media.SoundPlayer(Chrononizer.Properties.Resources.AaawYeah);
-                        sound.PlaySync();  //Plays the sound in sync with the current thread so that it isn't cut off when the program exits
+                    System.Environment.Exit(0); //exit the program if auto exit is enabled
+                }
+                if (AutoExitOne && (PMPSyncSuccess || LaptopSyncSuccess)) //auto exit if at least one succeeds
+                {
+                    System.Media.SoundPlayer sound = new System.Media.SoundPlayer(Chrononizer.Properties.Resources.AaawYeah);
+                    sound.PlaySync();  //Plays the sound in sync with the current thread so that it isn't cut off when the program exits
 
-                        System.Environment.Exit(0); //exit the program if auto exit is enabled
-                    }
-                    if (PMPSyncSuccess || LaptopSyncSuccess)
-                    {
-                        System.Media.SoundPlayer sound = new System.Media.SoundPlayer(Chrononizer.Properties.Resources.AaawYeah);
-                        sound.Play();  //Plays the sound in a new thread
+                    System.Environment.Exit(0); //exit the program if auto exit is enabled
+                }
+                if (PMPSyncSuccess || LaptopSyncSuccess)
+                {
+                    System.Media.SoundPlayer sound = new System.Media.SoundPlayer(Chrononizer.Properties.Resources.AaawYeah);
+                    sound.Play();  //Plays the sound in a new thread
 
-                        MessageBox.Show("Synchronization Complete!", "Chrononizer", MessageBoxButtons.OK, MessageBoxIcon.Information); //show the success window if at least one operation completed
-                    }
-                    else
-                    {
-                        System.Media.SoundPlayer sound = new System.Media.SoundPlayer(Chrononizer.Properties.Resources.OhNo);
-                        sound.Play();  //Plays the sound in a new thread
+                    MessageBox.Show("Synchronization Complete!", "Chrononizer", MessageBoxButtons.OK, MessageBoxIcon.Information); //show the success window if at least one operation completed
+                }
+                else
+                {
+                    System.Media.SoundPlayer sound = new System.Media.SoundPlayer(Chrononizer.Properties.Resources.OhNo);
+                    sound.Play();  //Plays the sound in a new thread
 
-                        MessageBox.Show("Synchronization Failed!", "Chrononizer", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
+                    MessageBox.Show("Synchronization Failed!", "Chrononizer", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                this.Invoke(new MethodInvoker(() =>
+                {
                     ShowSyncStatus(false, true, true);
                     btnSyncBoth.Text = "Synchronize Both";
                     PreferencesTab.Enabled = true; //allow changes to preferences
-                }
-            }));
+                }));
+            }
         }
 
         //
@@ -1664,7 +1664,15 @@ namespace Chrononizer
         private void OpenFolderDialog(int TextBox)
         {
             FolderBrowserDialog open = new FolderBrowserDialog();
+            open.RootFolder = Environment.SpecialFolder.MyComputer;
+
+            //set the starting path if relevant
+            if (TextBox == 1) open.SelectedPath = MusicLibrary;
+            else if (TextBox == 2) open.SelectedPath = DownscaledLibrary;
+            else if (TextBox == 3) open.SelectedPath = ChiptunesLibrary;
+
             if (open.ShowDialog() != DialogResult.OK) return;
+
             //set the path accordingly
             if (TextBox == 1)
             {

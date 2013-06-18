@@ -58,38 +58,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Chrononizer.exe" size="741376">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Chrononizer.exe" size="730624">
       <assemblyIdentity name="Chrononizer" version="1.0.0.0" language="neutral" processorArchitecture="amd64" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>35LzRfo36ECAtaomk1hM0Gm6gA8=</dsig:DigestValue>
-      </hash>
-    </dependentAssembly>
-  </dependency>
-  <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="CUETools.Codecs.dll" size="36864">
-      <assemblyIdentity name="CUETools.Codecs" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
-      <hash>
-        <dsig:Transforms>
-          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
-        </dsig:Transforms>
-        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>/4dXbKuJLWlCnR88HF6nhXlRjS8=</dsig:DigestValue>
-      </hash>
-    </dependentAssembly>
-  </dependency>
-  <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="CUETools.Codecs.FLAKE.dll" size="65536">
-      <assemblyIdentity name="CUETools.Codecs.FLAKE" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
-      <hash>
-        <dsig:Transforms>
-          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
-        </dsig:Transforms>
-        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>KXzoc9Q/N5LCfpcNhaoC+xn3S0o=</dsig:DigestValue>
+        <dsig:DigestValue>zMhYsB8aAyBVWAW1o+HqoIRVOkU=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
