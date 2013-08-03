@@ -103,6 +103,7 @@
             this.LaptopSyncBW = new System.ComponentModel.BackgroundWorker();
             this.PMPSyncTBW = new System.ComponentModel.BackgroundWorker();
             this.LaptopSyncTBW = new System.ComponentModel.BackgroundWorker();
+            this.btnAbout = new System.Windows.Forms.Button();
             this.tabControl.SuspendLayout();
             this.SyncTab.SuspendLayout();
             this.InfoTab.SuspendLayout();
@@ -429,6 +430,7 @@
             // 
             // PreferencesTab
             // 
+            this.PreferencesTab.Controls.Add(this.btnAbout);
             this.PreferencesTab.Controls.Add(this.cbAutoExitOne);
             this.PreferencesTab.Controls.Add(this.cbAutoExit);
             this.PreferencesTab.Controls.Add(this.cbHideMediaArtLocal);
@@ -889,6 +891,16 @@
             // 
             this.LaptopSyncTBW.DoWork += new System.ComponentModel.DoWorkEventHandler(this.LaptopSyncTBW_DoWork);
             // 
+            // btnAbout
+            // 
+            this.btnAbout.Location = new System.Drawing.Point(529, 385);
+            this.btnAbout.Name = "btnAbout";
+            this.btnAbout.Size = new System.Drawing.Size(206, 75);
+            this.btnAbout.TabIndex = 38;
+            this.btnAbout.Text = "About Chrononizer";
+            this.btnAbout.UseVisualStyleBackColor = true;
+            this.btnAbout.Click += new System.EventHandler(this.btnAbout_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -995,6 +1007,7 @@
         private System.Windows.Forms.CheckBox cbHideMediaArtLocal;
         private System.Windows.Forms.CheckBox cbAutoExit;
         private System.Windows.Forms.CheckBox cbAutoExitOne;
+        private System.Windows.Forms.Button btnAbout;
     }
 }
 

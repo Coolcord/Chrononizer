@@ -90,6 +90,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
@@ -259,6 +260,42 @@ namespace Chrononizer
         // Interface Event Handlers
         //
         //===========================================================================
+
+        private void btnAbout_Click(object sender, EventArgs e)
+        {
+            Form aboutForm = new Form() { FormBorderStyle = FormBorderStyle.FixedSingle, MinimizeBox = false, MaximizeBox = false };
+            aboutForm.StartPosition = FormStartPosition.CenterParent;
+            aboutForm.Width = 400;
+            aboutForm.Height = 200;
+            aboutForm.Text = "Chrononizer";
+
+            //Get the version number
+            Assembly assembly = Assembly.GetExecutingAssembly();
+            FileVersionInfo fileVersionInfo = FileVersionInfo.GetVersionInfo(assembly.Location);
+
+            Label aboutText = new Label()
+            {
+                Width = 400,
+                Height = 130,
+                Location = new Point(0, 0),
+                ImageAlign = ContentAlignment.MiddleCenter,
+                TextAlign = ContentAlignment.MiddleCenter,
+                Text = "Chrononizer v" + fileVersionInfo.ProductMajorPart + "." + fileVersionInfo.ProductMinorPart + "." + fileVersionInfo.ProductBuildPart + "\n\n" +
+                    "Music Synchronization and\n" + "Library Management Application\n\n" +
+                    "Programmed and Designed by Coolcord"
+            };
+            Font aboutFont = new Font("Microsoft Sans Serif", 8, FontStyle.Bold);
+            aboutText.Font = aboutFont;
+            Button btnOk = new Button() { Width = 100, Height = 30, Text = "OK", Location = new Point(150, 130), ImageAlign = ContentAlignment.MiddleCenter, TextAlign = ContentAlignment.MiddleCenter };
+            btnOk.Click += (btnSender, btnE) => aboutForm.Close(); //click ok to close
+            aboutForm.Controls.Add(aboutText);
+            aboutForm.Controls.Add(btnOk);
+            aboutForm.ShowDialog();
+            aboutForm.Dispose();
+            btnOk.Dispose();
+            aboutText.Dispose();
+            aboutFont.Dispose();
+        }
 
         private void btnChiptunesLocation_Click(object sender, EventArgs e)
         {
@@ -1671,7 +1708,11 @@ namespace Chrononizer
             else if (TextBox == 2) open.SelectedPath = DownscaledLibrary;
             else if (TextBox == 3) open.SelectedPath = ChiptunesLibrary;
 
-            if (open.ShowDialog() != DialogResult.OK) return;
+            if (open.ShowDialog() != DialogResult.OK)
+            {
+                open.Dispose();
+                return;
+            }
 
             //set the path accordingly
             if (TextBox == 1)
@@ -1707,6 +1748,7 @@ namespace Chrononizer
                 else
                     tbLaptopLocation.Text = open.SelectedPath + "\\";
             }
+            open.Dispose();
         }
 
         //
@@ -2160,6 +2202,11 @@ namespace Chrononizer
                         flowLayoutPanel2.Controls.Remove(lbPMP);
                         flowLayoutPanel2.Controls.Remove(pbPMP);
                         flowLayoutPanel2.Controls.Remove(PMPflow);
+                        lblPMPStatus.Dispose();
+                        lblPMPProgress.Dispose();
+                        PMPflow.Dispose();
+                        pbPMP.Dispose();
+                        lbPMP.Dispose();
                         lblPMPStatus = null;
                         lblPMPProgress = null;
                         PMPflow = null;
@@ -2175,6 +2222,11 @@ namespace Chrononizer
                         flowLayoutPanel2.Controls.Remove(lbLT);
                         flowLayoutPanel2.Controls.Remove(pbLT);
                         flowLayoutPanel2.Controls.Remove(LTflow);
+                        lblLTStatus.Dispose();
+                        lblLTProgress.Dispose();
+                        LTflow.Dispose();
+                        pbLT.Dispose();
+                        lbLT.Dispose();
                         lblLTStatus = null;
                         lblLTProgress = null;
                         LTflow = null;
