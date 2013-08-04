@@ -72,6 +72,13 @@ namespace Chrononizer.Properties {
             }
         }
         
+        internal static System.Drawing.Icon chrononizer {
+            get {
+                object obj = ResourceManager.GetObject("chrononizer", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
         internal static System.IO.UnmanagedMemoryStream OhNo {
             get {
                 return ResourceManager.GetStream("OhNo", resourceCulture);

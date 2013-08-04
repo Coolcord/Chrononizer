@@ -268,6 +268,7 @@ namespace Chrononizer
             aboutForm.Width = 400;
             aboutForm.Height = 200;
             aboutForm.Text = "Chrononizer";
+            aboutForm.Icon = Chrononizer.Properties.Resources.chrononizer;
 
             //Get the version number
             Assembly assembly = Assembly.GetExecutingAssembly();
