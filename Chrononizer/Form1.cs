@@ -1009,6 +1009,7 @@ namespace Chrononizer
                     //delete file if not found in destination
                     try
                     {
+                        File.SetAttributes(destinationFile, FileAttributes.Normal);
                         File.Delete(destinationFile);
                     }
                     catch (Exception ex)
@@ -1893,6 +1894,7 @@ namespace Chrononizer
                         {
                             try
                             {
+                                File.SetAttributes(name, FileAttributes.Normal);
                                 File.Delete(name); //downscaled flac not necessary
                             }
                             catch (Exception ex)
@@ -1925,6 +1927,7 @@ namespace Chrononizer
                             {
                                 try
                                 {
+                                    File.SetAttributes(name, FileAttributes.Normal);
                                     File.Delete(name); //file is unnecessary
                                 }
                                 catch (Exception ex)
@@ -1944,6 +1947,7 @@ namespace Chrononizer
                                     {
                                         try
                                         {
+                                            File.SetAttributes(name, FileAttributes.Normal);
                                             File.Delete(name); //flac's upscaled file does not exist and is unnecessary
                                         }
                                         catch (Exception ex)
@@ -1963,6 +1967,7 @@ namespace Chrononizer
                                     {
                                         try
                                         {
+                                            File.SetAttributes(name, FileAttributes.Normal);
                                             File.Delete(name); //downscaled flac not necessary
                                         }
                                         catch (Exception ex)
@@ -1993,6 +1998,7 @@ namespace Chrononizer
                                             {
                                                 try
                                                 {
+                                                    File.SetAttributes(name, FileAttributes.Normal);
                                                     File.Delete(name); //flac did not need downscaling and is unnecessary
                                                 }
                                                 catch (Exception ex)
@@ -2013,7 +2019,10 @@ namespace Chrononizer
                                         try
                                         {
                                             if (RemoveImproper)
+                                            {
+                                                File.SetAttributes(name, FileAttributes.Normal);
                                                 File.Delete(name); //flactag could not be read, so assume the file is invalid
+                                            }
                                         }
                                         catch (Exception exDelete)
                                         {
@@ -2034,6 +2043,7 @@ namespace Chrononizer
                 {
                     try
                     {
+                        File.SetAttributes(name, FileAttributes.Normal);
                         File.Delete(name); //remove unsupported files
                     }
                     catch (Exception ex)

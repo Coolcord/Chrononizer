@@ -472,15 +472,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Chrononizer"
-        "ProductCode" = "8:{FBCBD36A-35A2-47E8-99D5-46D746E28D96}"
-        "PackageCode" = "8:{49D78B0A-90A1-4E9C-9DB3-F5A798F6F9E5}"
+        "ProductCode" = "8:{4C0A69C5-8D8C-45E1-9B45-6D56C40FD33D}"
+        "PackageCode" = "8:{516851AA-F6CB-4196-8909-BE41E70E1547}"
         "UpgradeCode" = "8:{2A7A2A84-0BA9-4BAD-A42D-04011B0B9BBC}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:1.0.1"
+        "ProductVersion" = "8:1.0.2"
         "Manufacturer" = "8:Coolcord"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
@@ -1022,7 +1022,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_C4829B02A06341AA93EE8D76631D31ED"
             {
-            "SourcePath" = "8:..\\Chrononizer\\obj\\x64\\Debug\\Chrononizer.exe"
+            "SourcePath" = "8:..\\Chrononizer\\obj\\x64\\Release\\Chrononizer.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_DF0F68A9C1E344AD92B4C76D0AAFA6BA"
