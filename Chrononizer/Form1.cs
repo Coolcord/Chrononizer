@@ -267,7 +267,7 @@ namespace Chrononizer
             aboutForm.StartPosition = FormStartPosition.CenterParent;
             aboutForm.Width = 400;
             aboutForm.Height = 200;
-            aboutForm.Text = "Chrononizer";
+            aboutForm.Text = "About Chrononizer";
             aboutForm.Icon = Chrononizer.Properties.Resources.chrononizer;
 
             //Get the version number
