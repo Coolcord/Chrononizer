@@ -1,6 +1,6 @@
 ﻿namespace Chrononizer
 {
-    partial class Form1
+    partial class Chrononizer
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Chrononizer));
             this.tabControl = new System.Windows.Forms.TabControl();
             this.SyncTab = new System.Windows.Forms.TabPage();
             this.btnSyncLaptop = new System.Windows.Forms.Button();
