@@ -151,10 +151,10 @@ namespace Chrononizer
             InitializeComponent();
         }
 
-        private void Form1_Load(object sender, EventArgs e)
+        private void Chrononizer_Load(object sender, EventArgs e)
         {
-            Form form1 = this;
-            form1.FormBorderStyle = FormBorderStyle.FixedDialog;
+            Form chrononizer = this;
+            chrononizer.FormBorderStyle = FormBorderStyle.FixedDialog;
 
             if (!Properties.Settings.Default.FirstBoot)
             {
