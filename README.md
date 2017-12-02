@@ -45,4 +45,4 @@ Music synchronization and library management application. Intended for use with 
  to create a music synchronizer for their own personal use that meets their needs.
 
  If you wish to contact me about the application, or anything of the like,
- feel free to send me an email at coolcord24@gmail.com
+ feel free to send me an email at coolcord24@tutanota.com
